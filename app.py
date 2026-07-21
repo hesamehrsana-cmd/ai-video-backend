@@ -1,4 +1,4 @@
-```python
+
 import os
 import base64
 
@@ -138,4 +138,3 @@ def generate_video(request: VideoRequest):
             detail=str(e)
 
         )
-```
