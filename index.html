@@ -1,0 +1,328 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Video Studio</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            background: #0b0b12;
+            color: white;
+            display: flex;
+            justify-content: center;
+            padding: 30px 15px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .header h1 {
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #aaa;
+            font-size: 17px;
+        }
+
+        .card {
+            background: #15151f;
+            border: 1px solid #2a2a38;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            resize: vertical;
+            background: #0d0d15;
+            color: white;
+            border: 1px solid #333344;
+            border-radius: 12px;
+            padding: 15px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        textarea:focus {
+            border-color: #7777ff;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 15px;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+            background: #6c63ff;
+            color: white;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            opacity: 0.85;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .status {
+            margin-top: 15px;
+            text-align: center;
+            color: #aaa;
+            min-height: 25px;
+        }
+
+        .video-container {
+            display: none;
+            margin-top: 20px;
+        }
+
+        video {
+            width: 100%;
+            border-radius: 15px;
+            background: black;
+        }
+
+        .download {
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            margin-top: 15px;
+            padding: 13px;
+            border-radius: 10px;
+            background: #222230;
+            color: white;
+        }
+
+        .footer {
+            text-align: center;
+            color: #666;
+            margin-top: 25px;
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>🎬 AI Video Studio</h1>
+        <p>Turn your imagination into video with AI</p>
+    </div>
+
+    <div class="card">
+
+        <label for="prompt">
+            Describe your video
+        </label>
+
+        <textarea
+            id="prompt"
+            placeholder="Example: A cinematic shot of a futuristic city at night, flying cars, neon lights, realistic, 4K..."
+        ></textarea>
+
+        <button id="generateButton">
+            ✨ Generate Video
+        </button>
+
+        <div class="status" id="status"></div>
+
+    </div>
+
+    <div class="card video-container" id="videoContainer">
+
+        <h2>🎥 Your Video</h2>
+
+        <video
+            id="video"
+            controls
+        ></video>
+
+        <a
+            id="download"
+            class="download"
+            download="ai-video.mp4"
+        >
+            ⬇️ Download Video
+        </a>
+
+    </div>
+
+    <div class="footer">
+        AI Video Studio • Powered by AI
+    </div>
+
+</div>
+
+
+<script>
+
+const API_URL =
+    "https://ai-video-backend-31re.onrender.com";
+
+const promptInput =
+    document.getElementById("prompt");
+
+const generateButton =
+    document.getElementById("generateButton");
+
+const status =
+    document.getElementById("status");
+
+const videoContainer =
+    document.getElementById("videoContainer");
+
+const video =
+    document.getElementById("video");
+
+const download =
+    document.getElementById("download");
+
+
+generateButton.addEventListener(
+    "click",
+    async function () {
+
+        const prompt =
+            promptInput.value.trim();
+
+        if (!prompt) {
+
+            status.textContent =
+                "⚠️ Please enter a prompt.";
+
+            return;
+        }
+
+
+        generateButton.disabled =
+            true;
+
+        videoContainer.style.display =
+            "none";
+
+        status.textContent =
+            "⏳ Generating your video... Please wait.";
+
+
+        try {
+
+            const response =
+                await fetch(
+                    API_URL + "/generate",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify({
+                                prompt: prompt
+                            })
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.detail ||
+                    "Something went wrong."
+                );
+
+            }
+
+
+            if (!data.video) {
+
+                throw new Error(
+                    "No video was returned."
+                );
+
+            }
+
+
+            const videoUrl =
+                "data:video/mp4;base64," +
+                data.video;
+
+
+            video.src =
+                videoUrl;
+
+            download.href =
+                videoUrl;
+
+
+            videoContainer.style.display =
+                "block";
+
+
+            status.textContent =
+                "✅ Video generated successfully!";
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            status.textContent =
+                "❌ Error: " +
+                error.message;
+
+        }
+
+
+        generateButton.disabled =
+            false;
+
+    }
+);
+
+</script>
+
+</body>
+</html>
+```
