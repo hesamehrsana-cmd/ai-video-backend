@@ -1,30 +1,40 @@
+```python
 import os
-import uuid
-import tempfile
+import base64
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from huggingface_hub import InferenceClient
 
+
 app = FastAPI(title="AI Video Studio API")
 
-# اجازه دسترسی سایت به Backend
+
+# -----------------------------
+# CORS
+# -----------------------------
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "https://hesamehrsana-cmd.github.io"
     ],
     allow_credentials=False,
-    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# API Key باید در Environment Variable باشد
+
+# -----------------------------
+# Hugging Face API
+# -----------------------------
+
 HF_TOKEN = os.environ.get("HF_TOKEN")
 
 if not HF_TOKEN:
     print("WARNING: HF_TOKEN is not configured.")
+
 
 client = InferenceClient(
     provider="fal-ai",
@@ -32,69 +42,100 @@ client = InferenceClient(
 )
 
 
+# -----------------------------
+# Request Model
+# -----------------------------
+
 class VideoRequest(BaseModel):
     prompt: str
 
 
+# -----------------------------
+# Home
+# -----------------------------
+
 @app.get("/")
 def home():
+
     return {
         "status": "online",
         "service": "AI Video Studio"
     }
 
 
+# -----------------------------
+# Generate Video
+# -----------------------------
+
 @app.post("/generate")
 def generate_video(request: VideoRequest):
 
     if not HF_TOKEN:
+
         raise HTTPException(
             status_code=500,
             detail="HF_TOKEN is not configured."
         )
 
-    if not request.prompt.strip():
+
+    prompt = request.prompt.strip()
+
+
+    if not prompt:
+
         raise HTTPException(
             status_code=400,
             detail="Prompt cannot be empty."
         )
 
+
     try:
 
+        print(
+            f"Generating video for: {prompt}"
+        )
+
+
+        # Generate video
         video_bytes = client.text_to_video(
-            request.prompt,
-            model="Lightricks/LTX-Video-0.9.5",
+
+            prompt,
+
+            model=
+            "Lightricks/LTX-Video-0.9.5",
+
         )
 
-        filename = f"{uuid.uuid4()}.mp4"
 
-        output_dir = "generated_videos"
+        # Convert video to Base64
+        video_base64 = base64.b64encode(
+            video_bytes
+        ).decode("utf-8")
 
-        os.makedirs(
-            output_dir,
-            exist_ok=True
-        )
-
-        output_path = os.path.join(
-            output_dir,
-            filename
-        )
-
-        with open(
-            output_path,
-            "wb"
-        ) as f:
-
-            f.write(video_bytes)
 
         return {
+
             "success": True,
-            "video_url": f"/videos/{filename}"
+
+            "video":
+            video_base64
+
         }
+
 
     except Exception as e:
 
-        raise HTTPException(
-            status_code=500,
-            detail=str(e)
+        print(
+            "VIDEO GENERATION ERROR:",
+            str(e)
         )
+
+
+        raise HTTPException(
+
+            status_code=500,
+
+            detail=str(e)
+
+        )
+```
