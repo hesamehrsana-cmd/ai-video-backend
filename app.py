@@ -12,7 +12,7 @@ app = FastAPI(title="AI Video Studio API")
 # اجازه دسترسی سایت به Backend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["https://hesamehrsana-cmd.github.io"],
     allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
