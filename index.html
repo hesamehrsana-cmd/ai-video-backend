@@ -1,4 +1,4 @@
-
+```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,8 +6,10 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
 <title>Spirit Maze</title>
 
@@ -62,8 +64,8 @@ body {
     background:
         radial-gradient(
             circle at center,
-            rgba(30, 90, 50, .45),
-            rgba(3, 10, 6, .98)
+            rgba(30, 90, 50, 0.45),
+            rgba(3, 10, 6, 0.98)
         );
 
 }
@@ -107,10 +109,10 @@ body {
     border-radius: 18px;
 
     border: 1px solid
-        rgba(120, 255, 170, .4);
+        rgba(120, 255, 170, 0.4);
 
     background:
-        rgba(20, 50, 32, .8);
+        rgba(20, 50, 32, 0.8);
 
     color: white;
 
@@ -118,7 +120,7 @@ body {
 
     font-size: 20px;
 
-    transition: .25s;
+    transition: 0.25s;
 
 }
 
@@ -130,13 +132,13 @@ body {
 
     box-shadow:
         0 0 25px
-        rgba(80, 255, 150, .5);
+        rgba(80, 255, 150, 0.5);
 
 }
 
 .level.locked {
 
-    opacity: .35;
+    opacity: 0.35;
 
     cursor: not-allowed;
 
@@ -157,7 +159,7 @@ body {
     color: white;
 
     background:
-        rgba(0, 0, 0, .55);
+        rgba(0, 0, 0, 0.55);
 
     padding: 12px 16px;
 
@@ -183,7 +185,7 @@ body {
     color: white;
 
     background:
-        rgba(0, 0, 0, .6);
+        rgba(0, 0, 0, 0.65);
 
     padding: 10px 20px;
 
@@ -213,7 +215,7 @@ body {
     display: none;
 
     background:
-        rgba(0, 0, 0, .9);
+        rgba(0, 0, 0, 0.9);
 
     padding: 30px 45px;
 
@@ -221,7 +223,7 @@ body {
 
     box-shadow:
         0 0 40px
-        rgba(50, 255, 150, .25);
+        rgba(50, 255, 150, 0.25);
 
 }
 
@@ -256,8 +258,8 @@ body {
     background:
         radial-gradient(
             circle,
-            rgba(160, 255, 210, .9),
-            rgba(80, 255, 160, .25),
+            rgba(160, 255, 210, 0.9),
+            rgba(80, 255, 160, 0.25),
             transparent 70%
         );
 
@@ -288,7 +290,8 @@ body {
 
         <button
             class="level"
-            id="level1">
+            id="level1"
+        >
 
             LEVEL 1
 
@@ -301,7 +304,8 @@ body {
 
         <button
             class="level locked"
-            id="level2">
+            id="level2"
+        >
 
             🔒
 
@@ -314,7 +318,8 @@ body {
 
         <button
             class="level locked"
-            id="level3">
+            id="level3"
+        >
 
             🔒
 
@@ -332,12 +337,18 @@ body {
 <div id="hud">
 
     LEVEL:
-    <span id="levelNumber">1</span>
+
+    <span id="levelNumber">
+        1
+    </span>
 
     &nbsp; | &nbsp;
 
     TIME:
-    <span id="timer">0.0</span>
+
+    <span id="timer">
+        0.0
+    </span>
 
 </div>
 
@@ -424,6 +435,7 @@ new THREE.PerspectiveCamera(
 70,
 
 window.innerWidth /
+
 window.innerHeight,
 
 0.1,
@@ -491,18 +503,22 @@ THREE.SRGBColorSpace;
 
 document
 
-.getElementById("game")
+.getElementById(
+
+    "game"
+
+)
 
 .appendChild(
 
-renderer.domElement
+    renderer.domElement
 
 );
 
 
 
 // =====================================================
-// LIGHTING
+// LIGHT
 // =====================================================
 
 
@@ -528,7 +544,11 @@ sun.position.set(
 );
 
 
-scene.add(sun);
+scene.add(
+
+sun
+
+);
 
 
 
@@ -545,7 +565,11 @@ new THREE.HemisphereLight(
 );
 
 
-scene.add(ambient);
+scene.add(
+
+ambient
+
+);
 
 
 
@@ -597,7 +621,7 @@ new THREE.MeshStandardMaterial({
 
 
 // =====================================================
-// VARIABLES
+// GAME VARIABLES
 // =====================================================
 
 
@@ -634,6 +658,19 @@ Number(
 
 
 // =====================================================
+// COLLISION SETTINGS
+// =====================================================
+
+
+const playerRadius = 0.42;
+
+const wallHeight = 6;
+
+let wallColliders = [];
+
+
+
+// =====================================================
 // PLAYER
 // =====================================================
 
@@ -654,14 +691,8 @@ const player = {
 
 
 
-// Player collision radius
-
-const playerRadius = 0.38;
-
-
-
 // =====================================================
-// CAMERA ANGLES
+// CAMERA ROTATION
 // =====================================================
 
 
@@ -672,7 +703,7 @@ let pitch = 0;
 
 
 // =====================================================
-// KEYS
+// INPUT
 // =====================================================
 
 
@@ -682,25 +713,29 @@ const keys = {};
 
 window.addEventListener(
 
-"keydown",
+    "keydown",
 
-e => {
+    e => {
 
-    keys[e.code] = true;
+        keys[e.code] = true;
 
-});
+    }
+
+);
 
 
 
 window.addEventListener(
 
-"keyup",
+    "keyup",
 
-e => {
+    e => {
 
-    keys[e.code] = false;
+        keys[e.code] = false;
 
-});
+    }
+
+);
 
 
 
@@ -774,7 +809,7 @@ function generateMaze(size) {
 
         directions.sort(
 
-            () => Math.random() - .5
+            () => Math.random() - 0.5
 
         );
 
@@ -819,7 +854,13 @@ function generateMaze(size) {
                 ] = 0;
 
 
-                carve(nx, nz);
+                carve(
+
+                    nx,
+
+                    nz
+
+                );
 
             }
 
@@ -829,7 +870,13 @@ function generateMaze(size) {
 
 
 
-    carve(1, 1);
+    carve(
+
+        1,
+
+        1
+
+    );
 
 
     return grid;
@@ -846,7 +893,11 @@ function generateMaze(size) {
 function buildMaze() {
 
 
-    if (mazeGroup) {
+    if (
+
+        mazeGroup
+
+    ) {
 
 
         scene.remove(
@@ -856,6 +907,7 @@ function buildMaze() {
         );
 
     }
+
 
 
     mazeGroup =
@@ -868,6 +920,11 @@ function buildMaze() {
         mazeGroup
 
     );
+
+
+
+    wallColliders = [];
+
 
 
     maze =
@@ -888,7 +945,9 @@ function buildMaze() {
 
 
 
-    // Ground
+    // =================================================
+    // GROUND
+    // =================================================
 
 
     const ground =
@@ -921,7 +980,9 @@ function buildMaze() {
 
 
 
-    // Walls
+    // =================================================
+    // WALLS
+    // =================================================
 
 
     for (
@@ -953,6 +1014,37 @@ function buildMaze() {
             ) {
 
 
+                const wallX =
+
+                (
+
+                    x -
+
+                    mazeSize / 2
+
+                ) *
+
+                cellSize;
+
+
+
+                const wallZ =
+
+                (
+
+                    z -
+
+                    mazeSize / 2
+
+                ) *
+
+                cellSize;
+
+
+
+                // Visual wall
+
+
                 const wall =
 
                 new THREE.Mesh(
@@ -961,7 +1053,7 @@ function buildMaze() {
 
                         cellSize,
 
-                        5,
+                        wallHeight,
 
                         cellSize
 
@@ -974,27 +1066,11 @@ function buildMaze() {
 
                 wall.position.set(
 
-                    (
+                    wallX,
 
-                        x -
+                    wallHeight / 2,
 
-                        mazeSize / 2
-
-                    ) *
-
-                    cellSize,
-
-                    2.5,
-
-                    (
-
-                        z -
-
-                        mazeSize / 2
-
-                    ) *
-
-                    cellSize
+                    wallZ
 
                 );
 
@@ -1005,6 +1081,42 @@ function buildMaze() {
 
                 );
 
+
+
+                // Collision box
+
+
+                wallColliders.push({
+
+                    minX:
+
+                    wallX -
+
+                    cellSize / 2,
+
+
+                    maxX:
+
+                    wallX +
+
+                    cellSize / 2,
+
+
+                    minZ:
+
+                    wallZ -
+
+                    cellSize / 2,
+
+
+                    maxZ:
+
+                    wallZ +
+
+                    cellSize / 2
+
+                });
+
             }
 
         }
@@ -1013,7 +1125,9 @@ function buildMaze() {
 
 
 
-    // Exit
+    // =================================================
+    // EXIT
+    // =================================================
 
 
     exitPosition = {
@@ -1058,7 +1172,7 @@ function buildMaze() {
 
             1.2,
 
-            .15,
+            0.15,
 
             24
 
@@ -1073,7 +1187,7 @@ function buildMaze() {
 
         exitPosition.x,
 
-        .08,
+        0.08,
 
         exitPosition.z
 
@@ -1114,7 +1228,7 @@ new THREE.Mesh(
 
     new THREE.SphereGeometry(
 
-        .55,
+        0.55,
 
         16,
 
@@ -1128,7 +1242,7 @@ new THREE.Mesh(
 
         transparent: true,
 
-        opacity: .9
+        opacity: 0.9
 
     })
 
@@ -1178,11 +1292,6 @@ false;
 let spiritTime = 0;
 
 
-let spiritStart =
-
-new THREE.Vector3();
-
-
 
 function startSpiritAnimation() {
 
@@ -1199,20 +1308,13 @@ function startSpiritAnimation() {
     true;
 
 
-    spiritStart.set(
+    spiritGroup.position.set(
 
         player.x,
 
         24,
 
         player.z
-
-    );
-
-
-    spiritGroup.position.copy(
-
-        spiritStart
 
     );
 
@@ -1245,7 +1347,11 @@ function startSpiritAnimation() {
 function updateSpiritAnimation() {
 
 
-    if (!introAnimation)
+    if (
+
+        !introAnimation
+
+    )
 
         return;
 
@@ -1253,7 +1359,7 @@ function updateSpiritAnimation() {
 
     spiritTime +=
 
-    .016;
+    0.016;
 
 
 
@@ -1269,18 +1375,22 @@ function updateSpiritAnimation() {
 
 
 
-    // Smooth easing
-
-
     const ease =
 
-    t * t *
+    t *
 
-    (3 - 2 * t);
+    t *
 
+    (
 
+        3 -
 
-    // Spirit approaches from above
+        2 *
+
+        t
+
+    );
+
 
 
     const targetY =
@@ -1295,15 +1405,14 @@ function updateSpiritAnimation() {
 
     (
 
-        targetY - 24
+        targetY -
+
+        24
 
     ) *
 
     ease;
 
-
-
-    // Gentle orbit
 
 
     const orbitRadius =
@@ -1314,9 +1423,16 @@ function updateSpiritAnimation() {
 
         5 *
 
-        (1 - ease)
+        (
+
+            1 -
+
+            ease
+
+        )
 
     );
+
 
 
     spiritGroup.position.set(
@@ -1331,9 +1447,7 @@ function updateSpiritAnimation() {
 
         orbitRadius,
 
-
         y,
-
 
         player.z +
 
@@ -1347,9 +1461,6 @@ function updateSpiritAnimation() {
 
     );
 
-
-
-    // Camera follows spirit
 
 
     const cameraHeight =
@@ -1386,10 +1497,11 @@ function updateSpiritAnimation() {
 
 
 
-    // Final possession
+    if (
 
+        t >= 1
 
-    if (t >= 1) {
+    ) {
 
 
         introAnimation = false;
@@ -1431,9 +1543,6 @@ function updateSpiritAnimation() {
 
 
 
-        // Flash
-
-
         const flash =
 
         document
@@ -1443,6 +1552,7 @@ function updateSpiritAnimation() {
             "spiritFlash"
 
         );
+
 
 
         flash.animate(
@@ -1530,6 +1640,7 @@ function startLevel(level) {
     4;
 
 
+
     if (
 
         mazeSize % 2 === 0
@@ -1578,6 +1689,8 @@ function startLevel(level) {
     player.y = 2;
 
     player.velocityY = 0;
+
+    player.grounded = true;
 
 
 
@@ -1648,84 +1761,163 @@ function startLevel(level) {
 // =====================================================
 
 
-function isWalkable(x, z) {
+function circleIntersectsWall(
+
+    x,
+
+    z,
+
+    wall
+
+) {
 
 
-    const gx =
+    const closestX =
 
-    Math.floor(
+    Math.max(
 
-        x / cellSize +
+        wall.minX,
 
-        mazeSize / 2
+        Math.min(
+
+            x,
+
+            wall.maxX
+
+        )
 
     );
 
 
-    const gz =
 
-    Math.floor(
+    const closestZ =
 
-        z / cellSize +
+    Math.max(
 
-        mazeSize / 2
+        wall.minZ,
+
+        Math.min(
+
+            z,
+
+            wall.maxZ
+
+        )
 
     );
 
 
 
-    if (
+    const dx =
 
-        gx < 0 ||
+    x -
 
-        gz < 0 ||
-
-        gx >= mazeSize ||
-
-        gz >= mazeSize
-
-    ) {
-
-
-        return false;
-
-    }
+    closestX;
 
 
 
-    if (
+    const dz =
 
-        maze[gz][gx] === 1
+    z -
 
-    ) {
-
-
-        return false;
-
-    }
+    closestZ;
 
 
 
-    return true;
+    return (
+
+        dx * dx +
+
+        dz * dz
+
+    ) <
+
+    (
+
+        playerRadius *
+
+        playerRadius
+
+    );
 
 }
 
 
 
-// Smooth collision system
+function collidesWithWall(
+
+    x,
+
+    z
+
+) {
 
 
-function tryMove(dx, dz) {
+    for (
+
+        const wall
+
+        of wallColliders
+
+    ) {
+
+
+        if (
+
+            circleIntersectsWall(
+
+                x,
+
+                z,
+
+                wall
+
+            )
+
+        ) {
+
+
+            return true;
+
+        }
+
+    }
+
+
+
+    return false;
+
+}
+
+
+
+// =====================================================
+// SAFE MOVEMENT
+// =====================================================
+
+
+function tryMove(
+
+    dx,
+
+    dz
+
+) {
 
 
     const nextX =
 
-    player.x + dx;
+    player.x +
+
+    dx;
+
 
 
     const nextZ =
 
-    player.z + dz;
+    player.z +
+
+    dz;
 
 
 
@@ -1734,7 +1926,7 @@ function tryMove(dx, dz) {
 
     if (
 
-        isWalkable(
+        !collidesWithWall(
 
             nextX,
 
@@ -1750,9 +1942,11 @@ function tryMove(dx, dz) {
         nextX;
 
 
+
         player.z =
 
         nextZ;
+
 
 
         return;
@@ -1761,12 +1955,12 @@ function tryMove(dx, dz) {
 
 
 
-    // Slide along X
+    // Slide X
 
 
     if (
 
-        isWalkable(
+        !collidesWithWall(
 
             nextX,
 
@@ -1785,12 +1979,12 @@ function tryMove(dx, dz) {
 
 
 
-    // Slide along Z
+    // Slide Z
 
 
     if (
 
-        isWalkable(
+        !collidesWithWall(
 
             player.x,
 
@@ -1822,99 +2016,107 @@ renderer
 
 .addEventListener(
 
-"click",
+    "click",
 
-() => {
-
-
-    if (
-
-        playing
-
-    ) {
+    () => {
 
 
-        renderer
+        if (
 
-        .domElement
+            playing
 
-        .requestPointerLock();
+        ) {
+
+
+            renderer
+
+            .domElement
+
+            .requestPointerLock();
+
+        }
 
     }
 
-});
+);
 
 
 
 document.addEventListener(
 
-"mousemove",
+    "mousemove",
 
-e => {
-
-
-    if (
-
-        document
-
-        .pointerLockElement !==
-
-        renderer.domElement
-
-    ) {
+    e => {
 
 
-        return;
+        if (
+
+            document
+
+            .pointerLockElement !==
+
+            renderer.domElement
+
+        ) {
+
+
+            return;
+
+        }
+
+
+
+        yaw -=
+
+        e.movementX *
+
+        0.0025;
+
+
+
+        pitch -=
+
+        e.movementY *
+
+        0.0025;
+
+
+
+        pitch =
+
+        Math.max(
+
+            -1.45,
+
+            Math.min(
+
+                1.45,
+
+                pitch
+
+            )
+
+        );
 
     }
 
-
-
-    yaw -=
-
-    e.movementX *
-
-    .0025;
-
-
-
-    pitch -=
-
-    e.movementY *
-
-    .0025;
-
-
-
-    pitch =
-
-    Math.max(
-
-        -1.45,
-
-        Math.min(
-
-            1.45,
-
-            pitch
-
-        )
-
-    );
-
-});
+);
 
 
 
 // =====================================================
-// MOVEMENT
+// PLAYER MOVEMENT
 // =====================================================
 
 
 function movePlayer() {
 
 
-    if (!playing)
+    if (
+
+        !playing
+
+    )
 
         return;
 
@@ -1922,29 +2124,47 @@ function movePlayer() {
 
     const speed =
 
-    .11;
+    0.11;
 
 
 
     let forwardX =
 
-    -Math.sin(yaw);
+    -Math.sin(
+
+        yaw
+
+    );
+
 
 
     let forwardZ =
 
-    -Math.cos(yaw);
+    -Math.cos(
+
+        yaw
+
+    );
 
 
 
     let rightX =
 
-    Math.cos(yaw);
+    Math.cos(
+
+        yaw
+
+    );
+
 
 
     let rightZ =
 
-    -Math.sin(yaw);
+    -Math.sin(
+
+        yaw
+
+    );
 
 
 
@@ -1954,45 +2174,81 @@ function movePlayer() {
 
 
 
-    if (keys.KeyW) {
+    if (
+
+        keys.KeyW
+
+    ) {
 
 
-        dx += forwardX;
+        dx +=
 
-        dz += forwardZ;
-
-    }
+        forwardX;
 
 
+        dz +=
 
-    if (keys.KeyS) {
-
-
-        dx -= forwardX;
-
-        dz -= forwardZ;
+        forwardZ;
 
     }
 
 
 
-    if (keys.KeyA) {
+    if (
+
+        keys.KeyS
+
+    ) {
 
 
-        dx -= rightX;
+        dx -=
 
-        dz -= rightZ;
+        forwardX;
+
+
+        dz -=
+
+        forwardZ;
 
     }
 
 
 
-    if (keys.KeyD) {
+    if (
+
+        keys.KeyA
+
+    ) {
 
 
-        dx += rightX;
+        dx -=
 
-        dz += rightZ;
+        rightX;
+
+
+        dz -=
+
+        rightZ;
+
+    }
+
+
+
+    if (
+
+        keys.KeyD
+
+    ) {
+
+
+        dx +=
+
+        rightX;
+
+
+        dz +=
+
+        rightZ;
 
     }
 
@@ -2017,17 +2273,27 @@ function movePlayer() {
     ) {
 
 
-        dx /= length;
+        dx /=
 
-        dz /= length;
+        length;
+
+
+
+        dz /=
+
+        length;
 
 
 
         tryMove(
 
-            dx * speed,
+            dx *
 
-            dz * speed
+            speed,
+
+            dz *
+
+            speed
 
         );
 
@@ -2035,7 +2301,9 @@ function movePlayer() {
 
 
 
-    // Jump
+    // =================================================
+    // JUMP
+    // =================================================
 
 
     if (
@@ -2049,7 +2317,8 @@ function movePlayer() {
 
         player.velocityY =
 
-        .22;
+        0.16;
+
 
 
         player.grounded =
@@ -2062,7 +2331,7 @@ function movePlayer() {
 
     player.velocityY -=
 
-    .012;
+    0.012;
 
 
 
@@ -2093,6 +2362,11 @@ function movePlayer() {
 
 
 
+    // =================================================
+    // CAMERA
+    // =================================================
+
+
     camera.position.set(
 
         player.x,
@@ -2116,6 +2390,7 @@ function movePlayer() {
     yaw;
 
 
+
     camera.rotation.x =
 
     pitch;
@@ -2125,14 +2400,18 @@ function movePlayer() {
 
 
 // =====================================================
-// EXIT
+// EXIT CHECK
 // =====================================================
 
 
 function checkExit() {
 
 
-    if (!playing)
+    if (
+
+        !playing
+
+    )
 
         return;
 
@@ -2170,7 +2449,7 @@ function checkExit() {
 
 
 // =====================================================
-// COMPLETE
+// LEVEL COMPLETE
 // =====================================================
 
 
@@ -2178,6 +2457,19 @@ function completeLevel() {
 
 
     playing = false;
+
+
+
+    if (
+
+        document.pointerLockElement
+
+    ) {
+
+
+        document.exitPointerLock();
+
+    }
 
 
 
@@ -2213,7 +2505,11 @@ function completeLevel() {
 
         time <
 
-        Number(oldBest)
+        Number(
+
+            oldBest
+
+        )
 
     ) {
 
@@ -2306,7 +2602,7 @@ function completeLevel() {
 
 
 // =====================================================
-// MENU
+// MENU UPDATE
 // =====================================================
 
 
@@ -2360,7 +2656,9 @@ function updateMenu() {
 
             .textContent =
 
-            "LEVEL " + i;
+            "LEVEL " +
+
+            i;
 
         }
 
@@ -2375,7 +2673,7 @@ updateMenu();
 
 
 // =====================================================
-// BUTTONS
+// LEVEL BUTTONS
 // =====================================================
 
 
@@ -2389,14 +2687,20 @@ document
 
 .addEventListener(
 
-"click",
+    "click",
 
-() => {
+    () => {
 
 
-    startLevel(1);
+        startLevel(
 
-});
+            1
+
+        );
+
+    }
+
+);
 
 
 
@@ -2410,23 +2714,29 @@ document
 
 .addEventListener(
 
-"click",
+    "click",
 
-() => {
-
-
-    if (
-
-        unlockedLevel >= 2
-
-    ) {
+    () => {
 
 
-        startLevel(2);
+        if (
+
+            unlockedLevel >= 2
+
+        ) {
+
+
+            startLevel(
+
+                2
+
+            );
+
+        }
 
     }
 
-});
+);
 
 
 
@@ -2440,23 +2750,29 @@ document
 
 .addEventListener(
 
-"click",
+    "click",
 
-() => {
-
-
-    if (
-
-        unlockedLevel >= 3
-
-    ) {
+    () => {
 
 
-        startLevel(3);
+        if (
+
+            unlockedLevel >= 3
+
+        ) {
+
+
+            startLevel(
+
+                3
+
+            );
+
+        }
 
     }
 
-});
+);
 
 
 
@@ -2475,41 +2791,43 @@ document
 
 .addEventListener(
 
-"click",
+    "click",
 
-() => {
-
-
-    document
-
-    .getElementById(
-
-        "message"
-
-    )
-
-    .style.display =
-
-    "none";
+    () => {
 
 
+        document
 
-    if (
+        .getElementById(
 
-        currentLevel < 3
+            "message"
 
-    ) {
+        )
+
+        .style.display =
+
+        "none";
 
 
-        startLevel(
 
-            currentLevel + 1
+        if (
 
-        );
+            currentLevel < 3
+
+        ) {
+
+
+            startLevel(
+
+                currentLevel + 1
+
+            );
+
+        }
 
     }
 
-});
+);
 
 
 
@@ -2550,7 +2868,11 @@ function updateTimer() {
 
         .textContent =
 
-        time.toFixed(1);
+        time.toFixed(
+
+            1
+
+        );
 
     }
 
@@ -2559,7 +2881,7 @@ function updateTimer() {
 
 
 // =====================================================
-// ANIMATION LOOP
+// MAIN LOOP
 // =====================================================
 
 
@@ -2575,9 +2897,12 @@ function animate() {
 
     updateSpiritAnimation();
 
+
     movePlayer();
 
+
     checkExit();
+
 
     updateTimer();
 
@@ -2606,32 +2931,34 @@ animate();
 
 window.addEventListener(
 
-"resize",
+    "resize",
 
-() => {
-
-
-    camera.aspect =
-
-    window.innerWidth /
-
-    window.innerHeight;
+    () => {
 
 
+        camera.aspect =
 
-    camera.updateProjectionMatrix();
+        window.innerWidth /
+
+        window.innerHeight;
 
 
 
-    renderer.setSize(
+        camera.updateProjectionMatrix();
 
-        window.innerWidth,
 
-        window.innerHeight
 
-    );
+        renderer.setSize(
 
-});
+            window.innerWidth,
+
+            window.innerHeight
+
+        );
+
+    }
+
+);
 
 </script>
 
