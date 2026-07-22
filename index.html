@@ -1,4 +1,4 @@
-```html
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,6 +29,8 @@
 
             overflow: hidden;
 
+            background: #87CEEB;
+
         }
 
         #game {
@@ -45,7 +47,7 @@
             top: 20px;
             left: 20px;
 
-            padding: 12px 18px;
+            padding: 14px 18px;
 
             background:
                 rgba(0, 0, 0, 0.7);
@@ -57,9 +59,32 @@
             font-family: Arial,
             sans-serif;
 
+            line-height: 1.7;
+
             z-index: 10;
 
-            line-height: 1.6;
+        }
+
+        #crosshair {
+
+            position: fixed;
+
+            left: 50%;
+            top: 50%;
+
+            transform:
+                translate(-50%, -50%);
+
+            color: white;
+
+            font-size: 22px;
+
+            pointer-events: none;
+
+            z-index: 20;
+
+            text-shadow:
+                0 0 5px black;
 
         }
 
@@ -77,11 +102,30 @@
 
     <br>
 
-    🖱️ Drag = Rotate Camera
+    🖱️ Click = Control Camera
 
     <br>
 
-    🔍 Scroll = Zoom
+    W A S D = Move
+
+    <br>
+
+    Space = Up
+
+    <br>
+
+    Shift = Down
+
+    <br>
+
+    ESC = Release Mouse
+
+</div>
+
+
+<div id="crosshair">
+
+    +
 
 </div>
 
@@ -128,7 +172,7 @@ const camera =
 
 new THREE.PerspectiveCamera(
 
-    60,
+    75,
 
     window.innerWidth /
 
@@ -141,44 +185,15 @@ new THREE.PerspectiveCamera(
 );
 
 
-
-// Camera target
-
-
-const target =
-
-new THREE.Vector3(
+camera.position.set(
 
     0,
 
-    0,
+    5,
 
-    0
+    20
 
 );
-
-
-
-// Camera distance
-
-
-let distance = 30;
-
-
-// Horizontal angle
-
-
-let angle =
-
-Math.PI / 4;
-
-
-// Vertical angle
-
-
-let verticalAngle =
-
-Math.PI / 4;
 
 
 
@@ -279,8 +294,6 @@ new THREE.AmbientLight(
 scene.add(
 
     ambient
-
-
 
 );
 
@@ -654,6 +667,9 @@ function createTree(
 
 
 
+// Trees
+
+
 createTree(
 
     -5,
@@ -692,130 +708,78 @@ createTree(
 
 
 // ==========================================
-// CAMERA UPDATE
+// PLAYER
 // ==========================================
 
 
-function updateCamera() {
+const player = {
 
+    speed: 0.15,
 
-    const x =
+    velocityY: 0,
 
-    target.x +
+    gravity: 0.01
 
-    distance *
-
-    Math.sin(angle) *
-
-    Math.cos(
-
-        verticalAngle
-
-    );
-
-
-    const y =
-
-    target.y +
-
-    distance *
-
-    Math.sin(
-
-        verticalAngle
-
-    );
-
-
-    const z =
-
-    target.z +
-
-    distance *
-
-    Math.cos(angle) *
-
-    Math.cos(
-
-        verticalAngle
-
-    );
-
-
-    camera.position.set(
-
-        x,
-
-        y,
-
-        z
-
-    );
-
-
-    camera.lookAt(
-
-        target
-
-    );
-
-}
-
-
-updateCamera();
+};
 
 
 
 // ==========================================
-// MOUSE CONTROL
+// KEYBOARD
 // ==========================================
 
 
-let isDragging = false;
+const keys = {};
 
 
-let lastMouseX = 0;
+
+window.addEventListener(
+
+    "keydown",
+
+    (event) => {
+
+        keys[event.code] = true;
+
+    }
+
+);
 
 
-let lastMouseY = 0;
+
+window.addEventListener(
+
+    "keyup",
+
+    (event) => {
+
+        keys[event.code] = false;
+
+    }
+
+);
+
+
+
+// ==========================================
+// MOUSE LOOK
+// ==========================================
+
+
+let yaw = 0;
+
+let pitch = 0;
 
 
 
 renderer.domElement.addEventListener(
 
-    "mousedown",
-
-    (event) => {
-
-
-        isDragging = true;
-
-
-        lastMouseX =
-
-        event.clientX;
-
-
-        lastMouseY =
-
-        event.clientY;
-
-
-    }
-
-);
-
-
-
-window.addEventListener(
-
-    "mouseup",
+    "click",
 
     () => {
 
-
-        isDragging = false;
-
+        renderer.domElement
+            .requestPointerLock();
 
     }
 
@@ -823,72 +787,60 @@ window.addEventListener(
 
 
 
-window.addEventListener(
+document.addEventListener(
 
     "mousemove",
 
     (event) => {
 
 
-        if (!isDragging) return;
+        if (
+
+            document.pointerLockElement !==
+
+            renderer.domElement
+
+        ) {
+
+            return;
+
+        }
 
 
-        const deltaX =
+        const sensitivity =
 
-        event.clientX -
-
-        lastMouseX;
+        0.002;
 
 
-        const deltaY =
+        yaw -=
 
-        event.clientY -
+        event.movementX *
 
-        lastMouseY;
-
-
-        angle -=
-
-        deltaX *
-
-        0.01;
+        sensitivity;
 
 
-        verticalAngle +=
+        pitch -=
 
-        deltaY *
+        event.movementY *
 
-        0.01;
+        sensitivity;
 
 
-        verticalAngle =
+        pitch =
 
         Math.max(
 
-            0.15,
+            -Math.PI / 2,
 
             Math.min(
 
-                1.45,
+                Math.PI / 2,
 
-                verticalAngle
+                pitch
 
             )
 
         );
-
-
-        lastMouseX =
-
-        event.clientX;
-
-
-        lastMouseY =
-
-        event.clientY;
-
-
-        updateCamera();
 
     }
 
@@ -897,55 +849,219 @@ window.addEventListener(
 
 
 // ==========================================
-// ZOOM
+// MOVEMENT
 // ==========================================
 
 
-renderer.domElement.addEventListener(
-
-    "wheel",
-
-    (event) => {
+function movePlayer() {
 
 
-        event.preventDefault();
+    const direction =
+
+    new THREE.Vector3();
 
 
-        distance +=
+    const forward =
 
-        event.deltaY *
-
-        0.03;
+    new THREE.Vector3();
 
 
-        distance =
+    const right =
 
-        Math.max(
+    new THREE.Vector3();
 
-            8,
 
-            Math.min(
 
-                100,
+    camera.getWorldDirection(
 
-                distance
+        forward
 
-            )
+    );
+
+
+    forward.y = 0;
+
+
+    forward.normalize();
+
+
+
+    right.crossVectors(
+
+        forward,
+
+        camera.up
+
+    ).normalize();
+
+
+
+    if (
+
+        keys["KeyW"]
+
+    ) {
+
+        direction.add(
+
+            forward
 
         );
 
+    }
 
-        updateCamera();
 
-    },
 
-    {
+    if (
 
-        passive: false
+        keys["KeyS"]
+
+    ) {
+
+        direction.sub(
+
+            forward
+
+        );
 
     }
 
-);
+
+
+    if (
+
+        keys["KeyA"]
+
+    ) {
+
+        direction.sub(
+
+            right
+
+        );
+
+    }
+
+
+
+    if (
+
+        keys["KeyD"]
+
+    ) {
+
+        direction.add(
+
+            right
+
+        );
+
+    }
+
+
+
+    if (
+
+        direction.length() > 0
+
+    ) {
+
+        direction.normalize();
+
+
+        camera.position.x +=
+
+        direction.x *
+
+        player.speed;
+
+
+        camera.position.z +=
+
+        direction.z *
+
+        player.speed;
+
+    }
+
+
+
+    // UP
+
+
+    if (
+
+        keys["Space"]
+
+    ) {
+
+        camera.position.y +=
+
+        player.speed;
+
+    }
+
+
+
+    // DOWN
+
+
+    if (
+
+        keys["ShiftLeft"] ||
+
+        keys["ShiftRight"]
+
+    ) {
+
+        camera.position.y -=
+
+        player.speed;
+
+    }
+
+
+
+    // Minimum height
+
+
+    if (
+
+        camera.position.y < 1
+
+    ) {
+
+        camera.position.y = 1;
+
+    }
+
+}
+
+
+
+// ==========================================
+// CAMERA ROTATION
+// ==========================================
+
+
+function updateCameraRotation() {
+
+
+    camera.rotation.order =
+
+    "YXZ";
+
+
+    camera.rotation.y =
+
+    yaw;
+
+
+    camera.rotation.x =
+
+    pitch;
+
+}
 
 
 
@@ -962,6 +1078,12 @@ function animate() {
         animate
 
     );
+
+
+    movePlayer();
+
+
+    updateCameraRotation();
 
 
     renderer.render(
@@ -1008,7 +1130,6 @@ window.addEventListener(
             window.innerHeight
 
         );
-
 
     }
 
