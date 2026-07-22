@@ -25,6 +25,7 @@ body {
     margin: 0;
 
     width: 100%;
+
     height: 100%;
 
     overflow: hidden;
@@ -42,6 +43,11 @@ body {
     inset: 0;
 
 }
+
+
+/* =========================
+   MAIN MENU
+========================= */
 
 #menu {
 
@@ -108,7 +114,8 @@ body {
 
     border-radius: 18px;
 
-    border: 1px solid
+    border:
+        1px solid
         rgba(120, 255, 170, 0.4);
 
     background:
@@ -144,6 +151,11 @@ body {
 
 }
 
+
+/* =========================
+   HUD
+========================= */
+
 #hud {
 
     position: fixed;
@@ -166,6 +178,11 @@ body {
     border-radius: 10px;
 
 }
+
+
+/* =========================
+   PAUSE BUTTON
+========================= */
 
 #pauseButton {
 
@@ -201,6 +218,11 @@ body {
 
 }
 
+
+/* =========================
+   START HINT
+========================= */
+
 #startHint {
 
     position: fixed;
@@ -226,6 +248,11 @@ body {
     display: none;
 
 }
+
+
+/* =========================
+   PAUSE MENU
+========================= */
 
 #pauseMenu {
 
@@ -310,6 +337,11 @@ body {
 
 }
 
+
+/* =========================
+   COMPLETE MESSAGE
+========================= */
+
 #message {
 
     position: fixed;
@@ -356,22 +388,33 @@ body {
 
 }
 
-#spiritFlash {
+
+/* =========================
+   LIGHTNING FLASH
+========================= */
+
+#lightningFlash {
 
     position: fixed;
 
     inset: 0;
 
-    z-index: 25;
+    z-index: 30;
 
     pointer-events: none;
 
     background:
+
         radial-gradient(
+
             circle,
-            rgba(160, 255, 210, 0.9),
-            rgba(80, 255, 160, 0.25),
-            transparent 70%
+
+            rgba(255,255,255,1),
+
+            rgba(170,240,255,0.7),
+
+            transparent 75%
+
         );
 
     opacity: 0;
@@ -388,6 +431,8 @@ body {
 
 <div id="game"></div>
 
+
+<!-- MAIN MENU -->
 
 <div id="menu">
 
@@ -431,6 +476,8 @@ body {
 </div>
 
 
+<!-- HUD -->
+
 <div id="hud">
 
     LEVEL:
@@ -450,6 +497,8 @@ body {
 </div>
 
 
+<!-- PAUSE -->
+
 <button id="pauseButton">
 
     PAUSE
@@ -463,6 +512,8 @@ body {
 
 </div>
 
+
+<!-- PAUSE MENU -->
 
 <div id="pauseMenu">
 
@@ -493,6 +544,8 @@ body {
 </div>
 
 
+<!-- COMPLETE -->
+
 <div id="message">
 
     <h2>
@@ -510,8 +563,7 @@ body {
 </div>
 
 
-<div id="spiritFlash"></div>
-
+<div id="lightningFlash"></div>
 
 
 <script type="module">
@@ -520,7 +572,6 @@ body {
 import * as THREE from
 
 "https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.module.js";
-
 
 
 // =====================================================
@@ -555,7 +606,6 @@ new THREE.Fog(
 );
 
 
-
 // =====================================================
 // CAMERA
 // =====================================================
@@ -576,7 +626,6 @@ window.innerHeight,
 300
 
 );
-
 
 
 // =====================================================
@@ -614,13 +663,22 @@ Math.min(
     1.25
 
 )
-
 );
 
 
 renderer.outputColorSpace =
 
 THREE.SRGBColorSpace;
+
+
+renderer.shadowMap.enabled =
+
+true;
+
+
+renderer.shadowMap.type =
+
+THREE.PCFSoftShadowMap;
 
 
 document
@@ -633,14 +691,13 @@ document
 
 .appendChild(
 
-renderer.domElement
+    renderer.domElement
 
 );
 
 
-
 // =====================================================
-// LIGHT
+// LIGHTING
 // =====================================================
 
 
@@ -650,7 +707,7 @@ new THREE.DirectionalLight(
 
 0xffffff,
 
-1.8
+1.6
 
 );
 
@@ -666,12 +723,26 @@ sun.position.set(
 );
 
 
+sun.castShadow =
+
+true;
+
+
+sun.shadow.mapSize.width =
+
+1024;
+
+
+sun.shadow.mapSize.height =
+
+1024;
+
+
 scene.add(
 
 sun
 
 );
-
 
 
 const ambient =
@@ -694,7 +765,6 @@ ambient
 );
 
 
-
 // =====================================================
 // MATERIALS
 // =====================================================
@@ -704,33 +774,42 @@ const grassMaterial =
 
 new THREE.MeshStandardMaterial({
 
-    color: 0x245f2f,
+    color: 0x315f2d,
 
-    roughness: 1
+    roughness: 0.95,
 
-});
-
-
-const leafMaterial =
-
-new THREE.MeshStandardMaterial({
-
-    color: 0x367d38,
-
-    roughness: 1
+    metalness: 0
 
 });
 
 
-const darkLeafMaterial =
+const foliageMaterials = [
 
-new THREE.MeshStandardMaterial({
+    new THREE.MeshStandardMaterial({
 
-    color: 0x1c4d27,
+        color: 0x3f7a38,
 
-    roughness: 1
+        roughness: 1
 
-});
+    }),
+
+    new THREE.MeshStandardMaterial({
+
+        color: 0x2d642f,
+
+        roughness: 1
+
+    }),
+
+    new THREE.MeshStandardMaterial({
+
+        color: 0x4d873d,
+
+        roughness: 1
+
+    })
+
+];
 
 
 const groundMaterial =
@@ -742,7 +821,6 @@ new THREE.MeshStandardMaterial({
     roughness: 1
 
 });
-
 
 
 const portalMaterial =
@@ -762,9 +840,8 @@ new THREE.MeshStandardMaterial({
 });
 
 
-
 // =====================================================
-// VARIABLES
+// GAME VARIABLES
 // =====================================================
 
 
@@ -790,35 +867,16 @@ let paused = false;
 
 let introAnimation = false;
 
-let spiritTime = 0;
+let lightningActive = false;
+
+let lightningTime = 0;
 
 let wallColliders = [];
-
 
 
 const playerRadius = 0.42;
 
 const wallHeight = 6;
-
-
-
-let unlockedLevel =
-
-Number(
-
-    localStorage.getItem(
-
-        "spiritMazeLevel"
-
-    ) || 1
-
-);
-
-
-
-// =====================================================
-// PLAYER
-// =====================================================
 
 
 const player = {
@@ -836,15 +894,25 @@ const player = {
 };
 
 
-
 let yaw = 0;
 
 let pitch = 0;
 
 
-
 const keys = {};
 
+
+let unlockedLevel =
+
+Number(
+
+    localStorage.getItem(
+
+        "spiritMazeLevel"
+
+    ) || 1
+
+);
 
 
 // =====================================================
@@ -860,7 +928,6 @@ window.addEventListener(
 
 
         keys[e.code] = true;
-
 
 
         if (
@@ -890,7 +957,6 @@ window.addEventListener(
 );
 
 
-
 window.addEventListener(
 
     "keyup",
@@ -905,7 +971,6 @@ window.addEventListener(
 );
 
 
-
 // =====================================================
 // MAZE GENERATOR
 // =====================================================
@@ -915,7 +980,6 @@ function generateMaze(size) {
 
 
     const grid = [];
-
 
 
     for (
@@ -930,7 +994,6 @@ function generateMaze(size) {
 
 
         grid[z] = [];
-
 
 
         for (
@@ -951,39 +1014,34 @@ function generateMaze(size) {
     }
 
 
-
     function carve(x, z) {
 
 
         grid[z][x] = 0;
 
 
-
         const directions = [
-
 
             [2, 0],
 
-
             [-2, 0],
-
 
             [0, 2],
 
-
             [0, -2]
-
 
         ];
 
 
-
         directions.sort(
 
-            () => Math.random() - 0.5
+            () =>
+
+                Math.random() -
+
+                0.5
 
         );
-
 
 
         for (
@@ -997,14 +1055,12 @@ function generateMaze(size) {
 
             const nx =
 
-            x + dx;
-
+                x + dx;
 
 
             const nz =
 
-            z + dz;
-
+                z + dz;
 
 
             if (
@@ -1033,7 +1089,6 @@ function generateMaze(size) {
                 ] = 0;
 
 
-
                 carve(
 
                     nx,
@@ -1049,7 +1104,6 @@ function generateMaze(size) {
     }
 
 
-
     carve(
 
         1,
@@ -1059,15 +1113,13 @@ function generateMaze(size) {
     );
 
 
-
     return grid;
 
 }
 
 
-
 // =====================================================
-// CREATE NATURAL HEDGE
+// NATURAL HEDGE
 // =====================================================
 
 
@@ -1082,16 +1134,12 @@ function createHedge(
 
     const group =
 
-    new THREE.Group();
+        new THREE.Group();
 
 
+    // Main hedge body
 
-    // Main body
-
-
-    const body =
-
-    new THREE.Mesh(
+    const bodyGeometry =
 
         new THREE.BoxGeometry(
 
@@ -1101,18 +1149,33 @@ function createHedge(
 
             cellSize
 
-        ),
+        );
 
-        grassMaterial
 
-    );
+    const body =
 
+        new THREE.Mesh(
+
+            bodyGeometry,
+
+            grassMaterial
+
+        );
 
 
     body.position.y =
 
-    wallHeight / 2;
+        wallHeight / 2;
 
+
+    body.castShadow =
+
+        false;
+
+
+    body.receiveShadow =
+
+        true;
 
 
     group.add(
@@ -1122,77 +1185,95 @@ function createHedge(
     );
 
 
+    // Lightweight foliage
 
-    // Natural leafy chunks
+    const foliageGeometry =
+
+        new THREE.IcosahedronGeometry(
+
+            1,
+
+            1
+
+        );
 
 
-    const count = 10;
-
+    const foliageCount = 5;
 
 
     for (
 
         let i = 0;
 
-        i < count;
+        i < foliageCount;
 
         i++
 
     ) {
 
 
-        const size =
+        const foliage =
 
-        0.55 +
+            new THREE.Mesh(
 
-        Math.random() *
+                foliageGeometry,
 
-        0.65;
+                foliageMaterials[
 
+                    i %
 
+                    foliageMaterials.length
 
-        const leaf =
+                ]
 
-        new THREE.Mesh(
-
-            new THREE.IcosahedronGeometry(
-
-                size,
-
-                1
-
-            ),
-
-            Math.random() > 0.5
-
-                ? leafMaterial
-
-                : darkLeafMaterial
-
-        );
+            );
 
 
+        foliage.scale.set(
 
-        leaf.position.set(
-
-            (
-
-                Math.random() -
-
-                0.5
-
-            ) *
-
-            3.8,
-
-
-
-            2.8 +
+            1.1 +
 
             Math.random() *
 
-            3.2,
+            0.9,
 
+
+            0.7 +
+
+            Math.random() *
+
+            0.8,
+
+
+            1.1 +
+
+            Math.random() *
+
+            0.9
+
+        );
+
+
+        foliage.position.set(
+
+            (
+
+                Math.random() -
+
+                0.5
+
+            ) *
+
+            3.4,
+
+
+            wallHeight -
+
+            0.3 +
+
+            Math.random() *
+
+            0.8,
 
 
             (
@@ -1203,32 +1284,47 @@ function createHedge(
 
             ) *
 
-            3.8
+            3.4
 
         );
 
 
+        foliage.rotation.set(
 
-        leaf.rotation.set(
+            Math.random() *
 
-            Math.random(),
+            0.5,
 
-            Math.random(),
 
-            Math.random()
+            Math.random() *
+
+            Math.PI,
+
+
+            Math.random() *
+
+            0.5
 
         );
 
+
+        foliage.castShadow =
+
+            false;
+
+
+        foliage.receiveShadow =
+
+            true;
 
 
         group.add(
 
-            leaf
+            foliage
 
         );
 
     }
-
 
 
     group.position.set(
@@ -1242,11 +1338,9 @@ function createHedge(
     );
 
 
-
     return group;
 
 }
-
 
 
 // =====================================================
@@ -1273,11 +1367,9 @@ function buildMaze() {
     }
 
 
-
     mazeGroup =
 
-    new THREE.Group();
-
+        new THREE.Group();
 
 
     scene.add(
@@ -1287,54 +1379,52 @@ function buildMaze() {
     );
 
 
-
     wallColliders = [];
-
 
 
     maze =
 
-    generateMaze(
+        generateMaze(
 
-        mazeSize
+            mazeSize
 
-    );
-
+        );
 
 
     const total =
 
-    mazeSize *
+        mazeSize *
 
-    cellSize;
-
+        cellSize;
 
 
     // Ground
 
-
     const ground =
 
-    new THREE.Mesh(
+        new THREE.Mesh(
 
-        new THREE.PlaneGeometry(
+            new THREE.PlaneGeometry(
 
-            total,
+                total,
 
-            total
+                total
 
-        ),
+            ),
 
-        groundMaterial
+            groundMaterial
 
-    );
-
+        );
 
 
     ground.rotation.x =
 
-    -Math.PI / 2;
+        -Math.PI / 2;
 
+
+    ground.receiveShadow =
+
+        true;
 
 
     mazeGroup.add(
@@ -1344,9 +1434,7 @@ function buildMaze() {
     );
 
 
-
     // Walls
-
 
     for (
 
@@ -1379,30 +1467,28 @@ function buildMaze() {
 
                 const wallX =
 
-                (
+                    (
 
-                    x -
+                        x -
 
-                    mazeSize / 2
+                        mazeSize / 2
 
-                ) *
+                    ) *
 
-                cellSize;
-
+                    cellSize;
 
 
                 const wallZ =
 
-                (
+                    (
 
-                    z -
+                        z -
 
-                    mazeSize / 2
+                        mazeSize / 2
 
-                ) *
+                    ) *
 
-                cellSize;
-
+                    cellSize;
 
 
                 mazeGroup.add(
@@ -1418,38 +1504,34 @@ function buildMaze() {
                 );
 
 
-
                 wallColliders.push({
 
                     minX:
 
-                    wallX -
+                        wallX -
 
-                    cellSize / 2,
-
+                        cellSize / 2,
 
 
                     maxX:
 
-                    wallX +
+                        wallX +
 
-                    cellSize / 2,
-
+                        cellSize / 2,
 
 
                     minZ:
 
-                    wallZ -
+                        wallZ -
 
-                    cellSize / 2,
-
+                        cellSize / 2,
 
 
                     maxZ:
 
-                    wallZ +
+                        wallZ +
 
-                    cellSize / 2
+                        cellSize / 2
 
                 });
 
@@ -1460,15 +1542,13 @@ function buildMaze() {
     }
 
 
-
     createExit();
 
 }
 
 
-
 // =====================================================
-// CREATE EXIT PORTAL
+// EXIT
 // =====================================================
 
 
@@ -1491,11 +1571,9 @@ function createExit() {
     }
 
 
-
     exitGroup =
 
-    new THREE.Group();
-
+        new THREE.Group();
 
 
     exitPosition = {
@@ -1503,63 +1581,65 @@ function createExit() {
 
         x:
 
-        (
+            (
 
-            mazeSize - 2 -
+                mazeSize -
 
-            mazeSize / 2
+                2 -
 
-        ) *
+                mazeSize / 2
 
-        cellSize,
+            ) *
 
+            cellSize,
 
 
         z:
 
-        (
+            (
 
-            mazeSize - 2 -
+                mazeSize -
 
-            mazeSize / 2
+                2 -
 
-        ) *
+                mazeSize / 2
 
-        cellSize
+            ) *
+
+            cellSize
 
     };
 
 
-
-    // Portal
-
-
     const portal =
 
-    new THREE.Mesh(
+        new THREE.Mesh(
 
-        new THREE.TorusGeometry(
+            new THREE.TorusGeometry(
 
-            2.1,
+                2.1,
 
-            0.35,
+                0.35,
 
-            16,
+                16,
 
-            32
+                32
 
-        ),
+            ),
 
-        portalMaterial
+            portalMaterial
 
-    );
-
+        );
 
 
     portal.position.y =
 
-    2.3;
+        2.3;
 
+
+    portal.castShadow =
+
+        false;
 
 
     exitGroup.add(
@@ -1569,28 +1649,22 @@ function createExit() {
     );
 
 
-
-    // Inner light
-
-
     const light =
 
-    new THREE.PointLight(
+        new THREE.PointLight(
 
-        0x50ffbd,
+            0x50ffbd,
 
-        8,
+            8,
 
-        20
+            20
 
-    );
-
+        );
 
 
     light.position.y =
 
-    2.5;
-
+        2.5;
 
 
     exitGroup.add(
@@ -1598,10 +1672,6 @@ function createExit() {
         light
 
     );
-
-
-
-    // Floating particles
 
 
     for (
@@ -1617,28 +1687,27 @@ function createExit() {
 
         const particle =
 
-        new THREE.Mesh(
+            new THREE.Mesh(
 
-            new THREE.SphereGeometry(
+                new THREE.SphereGeometry(
 
-                0.08,
+                    0.08,
 
-                8,
+                    8,
 
-                8
+                    8
 
-            ),
+                ),
 
-            new THREE.MeshBasicMaterial({
+                new THREE.MeshBasicMaterial({
 
-                color:
+                    color:
 
-                0x9affd5
+                        0x9affd5
 
-            })
+                })
 
-        );
-
+            );
 
 
         particle.position.set(
@@ -1654,11 +1723,9 @@ function createExit() {
             4,
 
 
-
             Math.random() *
 
             4,
-
 
 
             (
@@ -1674,7 +1741,6 @@ function createExit() {
         );
 
 
-
         exitGroup.add(
 
             particle
@@ -1682,7 +1748,6 @@ function createExit() {
         );
 
     }
-
 
 
     exitGroup.position.set(
@@ -1696,7 +1761,6 @@ function createExit() {
     );
 
 
-
     mazeGroup.add(
 
         exitGroup
@@ -1706,280 +1770,276 @@ function createExit() {
 }
 
 
-
 // =====================================================
-// SPIRIT
+// LIGHTNING
 // =====================================================
 
 
-const spiritGroup =
+const lightningGroup =
 
-new THREE.Group();
-
+    new THREE.Group();
 
 
 scene.add(
 
-    spiritGroup
+    lightningGroup
 
 );
 
 
+lightningGroup.visible =
 
-const spiritMaterial =
+    false;
 
-new THREE.MeshStandardMaterial({
 
-    color: 0xcaffea,
+const lightningLight =
 
-    emissive: 0x55ffcc,
+    new THREE.PointLight(
 
-    emissiveIntensity: 1.8,
+        0xffffff,
 
-    transparent: true,
+        0,
 
-    opacity: 0.75
-
-});
-
-
-
-const spiritBody =
-
-new THREE.Mesh(
-
-    new THREE.SphereGeometry(
-
-        0.8,
-
-        20,
-
-        16
-
-    ),
-
-    spiritMaterial
-
-);
-
-
-
-spiritBody.scale.set(
-
-    0.7,
-
-    1.3,
-
-    0.7
-
-);
-
-
-
-spiritGroup.add(
-
-    spiritBody
-
-);
-
-
-
-// Spirit tail
-
-
-const tail =
-
-new THREE.Mesh(
-
-    new THREE.ConeGeometry(
-
-        0.75,
-
-        1.8,
-
-        12
-
-    ),
-
-    spiritMaterial
-
-);
-
-
-
-tail.position.y =
-
--1.25;
-
-
-
-tail.rotation.x =
-
-Math.PI;
-
-
-
-spiritGroup.add(
-
-    tail
-
-);
-
-
-
-// Eyes
-
-
-const eyeMaterial =
-
-new THREE.MeshBasicMaterial({
-
-    color: 0x06251b
-
-});
-
-
-
-for (
-
-    const x of [-0.22, 0.22]
-
-) {
-
-
-    const eye =
-
-    new THREE.Mesh(
-
-        new THREE.SphereGeometry(
-
-            0.09,
-
-            8,
-
-            8
-
-        ),
-
-        eyeMaterial
+        35
 
     );
 
 
+lightningGroup.add(
 
-    eye.position.set(
+    lightningLight
 
-        x,
+);
 
-        0.2,
 
-        -0.62
+function createLightningBolt() {
+
+
+    const points = [];
+
+
+    const startY = 28;
+
+
+    const endY = 1;
+
+
+    let x = 0;
+
+
+    let z = 0;
+
+
+    points.push(
+
+        new THREE.Vector3(
+
+            x,
+
+            startY,
+
+            z
+
+        )
 
     );
 
 
+    const segments = 12;
 
-    spiritGroup.add(
 
-        eye
+    for (
+
+        let i = 1;
+
+        i < segments;
+
+        i++
+
+    ) {
+
+
+        const t =
+
+            i /
+
+            segments;
+
+
+        x +=
+
+            (
+
+                Math.random() -
+
+                0.5
+
+            ) *
+
+            2.5;
+
+
+        z +=
+
+            (
+
+                Math.random() -
+
+                0.5
+
+            ) *
+
+            2.5;
+
+
+        points.push(
+
+            new THREE.Vector3(
+
+                x,
+
+                startY +
+
+                (
+
+                    endY -
+
+                    startY
+
+                ) *
+
+                t,
+
+                z
+
+            )
+
+        );
+
+    }
+
+
+    points.push(
+
+        new THREE.Vector3(
+
+            x,
+
+            endY,
+
+            z
+
+        )
+
+    );
+
+
+    const geometry =
+
+        new THREE.BufferGeometry()
+
+        .setFromPoints(
+
+            points
+
+        );
+
+
+    const material =
+
+        new THREE.LineBasicMaterial({
+
+            color:
+
+                0xffffff,
+
+            transparent:
+
+                true,
+
+            opacity:
+
+                1
+
+        });
+
+
+    return new THREE.Line(
+
+        geometry,
+
+        material
 
     );
 
 }
 
 
-
-// Glow
-
-
-const spiritGlow =
-
-new THREE.PointLight(
-
-0x5dffae,
-
-5,
-
-15
-
-);
-
-
-
-spiritGroup.add(
-
-    spiritGlow
-
-);
-
-
-
-spiritGroup.visible =
-
-false;
-
-
-
-// =====================================================
-// SPIRIT INTRO
-// =====================================================
-
-
-function startSpiritAnimation() {
+function startLightningAnimation() {
 
 
     introAnimation =
 
-    true;
-
+        true;
 
 
     playing =
 
-    false;
+        false;
 
 
+    lightningActive =
 
-    paused =
-
-    false;
-
+        true;
 
 
-    spiritTime =
+    lightningTime =
 
-    0;
-
-
-
-    spiritGroup.visible =
-
-    true;
+        0;
 
 
+    lightningGroup.visible =
 
-    spiritGroup.position.set(
+        true;
+
+
+    lightningGroup.position.set(
 
         player.x,
 
-        24,
+        0,
 
         player.z
 
     );
 
+
+    const bolt =
+
+        createLightningBolt();
+
+
+    lightningGroup.add(
+
+        bolt
+
+    );
+
+
+    lightningLight.intensity =
+
+        0;
 
 
     camera.position.set(
 
         player.x,
 
-        28,
+        27,
 
         player.z
 
     );
-
 
 
     camera.lookAt(
@@ -1995,276 +2055,163 @@ function startSpiritAnimation() {
 }
 
 
-
-function updateSpiritAnimation() {
+function updateLightningAnimation() {
 
 
     if (
 
-        !introAnimation
-
-    )
-
-        return;
-
-
-
-    spiritTime +=
-
-    0.016;
-
-
-
-    const t =
-
-    Math.min(
-
-        spiritTime / 6,
-
-        1
-
-    );
-
-
-
-    const ease =
-
-    t *
-
-    t *
-
-    (
-
-        3 -
-
-        2 *
-
-        t
-
-    );
-
-
-
-    const y =
-
-    24 +
-
-    (
-
-        2.3 -
-
-        24
-
-    ) *
-
-    ease;
-
-
-
-    spiritGroup.position.set(
-
-        player.x +
-
-        Math.sin(
-
-            spiritTime * 2
-
-        ) *
-
-        (
-
-            5 *
-
-            (
-
-                1 -
-
-                ease
-
-            )
-
-        ),
-
-
-
-        y,
-
-
-
-        player.z +
-
-        Math.cos(
-
-            spiritTime * 2
-
-        ) *
-
-        (
-
-            5 *
-
-            (
-
-                1 -
-
-                ease
-
-            )
-
-        )
-
-    );
-
-
-
-    spiritGroup.rotation.y +=
-
-    0.01;
-
-
-
-    camera.position.set(
-
-        player.x,
-
-        28 -
-
-        24 *
-
-        ease,
-
-        player.z
-
-    );
-
-
-
-    camera.lookAt(
-
-        player.x,
-
-        1,
-
-        player.z
-
-    );
-
-
-
-    if (
-
-        t >= 1
+        !lightningActive
 
     ) {
 
 
+        return;
+
+    }
+
+
+    lightningTime +=
+
+        0.016;
+
+
+    if (
+
+        lightningTime < 1.5
+
+    ) {
+
+
+        lightningLight.intensity =
+
+            0;
+
+    }
+
+
+    else if (
+
+        lightningTime < 1.7
+
+    ) {
+
+
+        lightningLight.intensity =
+
+            18;
+
+
+        flashLightning();
+
+    }
+
+
+    else if (
+
+        lightningTime < 2.2
+
+    ) {
+
+
+        lightningLight.intensity =
+
+            4;
+
+    }
+
+
+    else {
+
+
+        lightningLight.intensity =
+
+            0;
+
+
+        lightningGroup.visible =
+
+            false;
+
+
+        lightningActive =
+
+            false;
+
+
         introAnimation =
 
-        false;
+            false;
 
 
+        playing =
 
-        spiritGroup.visible =
-
-        false;
-
+            true;
 
 
-        camera.position.set(
+        startTime =
 
-            player.x,
-
-            player.y,
-
-            player.z
-
-        );
-
-
-
-        camera.rotation.set(
-
-            0,
-
-            0,
-
-            0
-
-        );
-
-
-
-        const flash =
-
-        document
-
-        .getElementById(
-
-            "spiritFlash"
-
-        );
-
-
-
-        flash.animate(
-
-            [
-
-                {
-
-                    opacity: 0
-
-                },
-
-                {
-
-                    opacity: 1
-
-                },
-
-                {
-
-                    opacity: 0
-
-                }
-
-            ],
-
-            {
-
-                duration: 700
-
-            }
-
-        );
-
-
-
-        setTimeout(
-
-            () => {
-
-
-                playing =
-
-                true;
-
-
-
-                startTime =
-
-                performance.now();
-
-            },
-
-            500
-
-        );
+            performance.now();
 
     }
 
 }
 
+
+function flashLightning() {
+
+
+    const flash =
+
+        document
+
+        .getElementById(
+
+            "lightningFlash"
+
+        );
+
+
+    flash.animate(
+
+        [
+
+            {
+
+                opacity:
+
+                    0
+
+            },
+
+            {
+
+                opacity:
+
+                    1
+
+            },
+
+            {
+
+                opacity:
+
+                    0
+
+            }
+
+        ],
+
+        {
+
+            duration:
+
+                350
+
+        }
+
+    );
+
+}
 
 
 // =====================================================
@@ -2272,32 +2219,40 @@ function updateSpiritAnimation() {
 // =====================================================
 
 
-function startLevel(level) {
+function startLevel(
+
+    level
+
+) {
 
 
     currentLevel =
 
-    level;
-
+        level;
 
 
     mazeSize =
 
-    11 +
+        11 +
 
-    (
+        (
 
-        level - 1
+            level -
 
-    ) *
+            1
 
-    4;
+        ) *
 
+        4;
 
 
     if (
 
-        mazeSize % 2 === 0
+        mazeSize %
+
+        2 ===
+
+        0
 
     ) {
 
@@ -2307,55 +2262,58 @@ function startLevel(level) {
     }
 
 
-
     buildMaze();
-
 
 
     player.x =
 
-    (
+        (
 
-        1 -
+            1 -
 
-        mazeSize / 2
+            mazeSize / 2
 
-    ) *
+        ) *
 
-    cellSize;
-
+        cellSize;
 
 
     player.z =
 
-    (
+        (
 
-        1 -
+            1 -
 
-        mazeSize / 2
+            mazeSize / 2
 
-    ) *
+        ) *
 
-    cellSize;
-
+        cellSize;
 
 
     player.y =
 
-    2;
-
+        2;
 
 
     player.velocityY =
 
-    0;
-
+        0;
 
 
     player.grounded =
 
-    true;
+        true;
 
+
+    yaw =
+
+        0;
+
+
+    pitch =
+
+        0;
 
 
     document
@@ -2368,8 +2326,7 @@ function startLevel(level) {
 
     .style.display =
 
-    "none";
-
+        "none";
 
 
     document
@@ -2382,8 +2339,7 @@ function startLevel(level) {
 
     .style.display =
 
-    "block";
-
+        "block";
 
 
     document
@@ -2396,8 +2352,7 @@ function startLevel(level) {
 
     .style.display =
 
-    "block";
-
+        "block";
 
 
     document
@@ -2410,8 +2365,7 @@ function startLevel(level) {
 
     .style.display =
 
-    "block";
-
+        "block";
 
 
     document
@@ -2424,14 +2378,14 @@ function startLevel(level) {
 
     .textContent =
 
-    level;
+        level;
 
 
+    // Start with lightning
 
-    startSpiritAnimation();
+    startLightningAnimation();
 
 }
-
 
 
 // =====================================================
@@ -2452,54 +2406,50 @@ function circleIntersectsWall(
 
     const closestX =
 
-    Math.max(
+        Math.max(
 
-        wall.minX,
+            wall.minX,
 
-        Math.min(
+            Math.min(
 
-            x,
+                x,
 
-            wall.maxX
+                wall.maxX
 
-        )
+            )
 
-    );
-
+        );
 
 
     const closestZ =
 
-    Math.max(
+        Math.max(
 
-        wall.minZ,
+            wall.minZ,
 
-        Math.min(
+            Math.min(
 
-            z,
+                z,
 
-            wall.maxZ
+                wall.maxZ
 
-        )
+            )
 
-    );
-
+        );
 
 
     const dx =
 
-    x -
+        x -
 
-    closestX;
-
+        closestX;
 
 
     const dz =
 
-    z -
+        z -
 
-    closestZ;
-
+        closestZ;
 
 
     return (
@@ -2519,7 +2469,6 @@ function circleIntersectsWall(
     );
 
 }
-
 
 
 function collidesWithWall(
@@ -2562,11 +2511,9 @@ function collidesWithWall(
     }
 
 
-
     return false;
 
 }
-
 
 
 // =====================================================
@@ -2585,18 +2532,16 @@ function tryMove(
 
     const nextX =
 
-    player.x +
+        player.x +
 
-    dx;
-
+        dx;
 
 
     const nextZ =
 
-    player.z +
+        player.z +
 
-    dz;
-
+        dz;
 
 
     if (
@@ -2614,20 +2559,17 @@ function tryMove(
 
         player.x =
 
-        nextX;
-
+            nextX;
 
 
         player.z =
 
-        nextZ;
-
+            nextZ;
 
 
         return;
 
     }
-
 
 
     if (
@@ -2645,10 +2587,9 @@ function tryMove(
 
         player.x =
 
-        nextX;
+            nextX;
 
     }
-
 
 
     if (
@@ -2666,12 +2607,11 @@ function tryMove(
 
         player.z =
 
-        nextZ;
+            nextZ;
 
     }
 
 }
-
 
 
 // =====================================================
@@ -2708,7 +2648,6 @@ renderer.domElement.addEventListener(
 );
 
 
-
 document.addEventListener(
 
     "mousemove",
@@ -2730,47 +2669,43 @@ document.addEventListener(
         }
 
 
-
         yaw -=
 
-        e.movementX *
+            e.movementX *
 
-        0.0025;
-
+            0.0025;
 
 
         pitch -=
 
-        e.movementY *
+            e.movementY *
 
-        0.0025;
-
+            0.0025;
 
 
         pitch =
 
-        Math.max(
+            Math.max(
 
-            -1.45,
+                -1.45,
 
-            Math.min(
+                Math.min(
 
-                1.45,
+                    1.45,
 
-                pitch
+                    pitch
 
-            )
+                )
 
-        );
+            );
 
     }
 
 );
 
 
-
 // =====================================================
-// PLAYER
+// PLAYER MOVEMENT
 // =====================================================
 
 
@@ -2783,16 +2718,17 @@ function movePlayer() {
 
         paused
 
-    )
+    ) {
+
 
         return;
 
+    }
 
 
     const speed =
 
-    0.11;
-
+        0.11;
 
 
     let dx = 0;
@@ -2800,45 +2736,40 @@ function movePlayer() {
     let dz = 0;
 
 
-
     const forwardX =
 
-    -Math.sin(
+        -Math.sin(
 
-        yaw
+            yaw
 
-    );
-
+        );
 
 
     const forwardZ =
 
-    -Math.cos(
+        -Math.cos(
 
-        yaw
+            yaw
 
-    );
-
+        );
 
 
     const rightX =
 
-    Math.cos(
+        Math.cos(
 
-        yaw
+            yaw
 
-    );
-
+        );
 
 
     const rightZ =
 
-    -Math.sin(
+        -Math.sin(
 
-        yaw
+            yaw
 
-    );
-
+        );
 
 
     if (
@@ -2850,16 +2781,14 @@ function movePlayer() {
 
         dx +=
 
-        forwardX;
-
+            forwardX;
 
 
         dz +=
 
-        forwardZ;
+            forwardZ;
 
     }
-
 
 
     if (
@@ -2871,16 +2800,14 @@ function movePlayer() {
 
         dx -=
 
-        forwardX;
-
+            forwardX;
 
 
         dz -=
 
-        forwardZ;
+            forwardZ;
 
     }
-
 
 
     if (
@@ -2892,16 +2819,14 @@ function movePlayer() {
 
         dx -=
 
-        rightX;
-
+            rightX;
 
 
         dz -=
 
-        rightZ;
+            rightZ;
 
     }
-
 
 
     if (
@@ -2913,28 +2838,25 @@ function movePlayer() {
 
         dx +=
 
-        rightX;
-
+            rightX;
 
 
         dz +=
 
-        rightZ;
+            rightZ;
 
     }
 
 
-
     const length =
 
-    Math.hypot(
+        Math.hypot(
 
-        dx,
+            dx,
 
-        dz
+            dz
 
-    );
-
+        );
 
 
     if (
@@ -2946,14 +2868,12 @@ function movePlayer() {
 
         dx /=
 
-        length;
-
+            length;
 
 
         dz /=
 
-        length;
-
+            length;
 
 
         tryMove(
@@ -2962,6 +2882,7 @@ function movePlayer() {
 
             speed,
 
+
             dz *
 
             speed
@@ -2969,7 +2890,6 @@ function movePlayer() {
         );
 
     }
-
 
 
     if (
@@ -2983,28 +2903,24 @@ function movePlayer() {
 
         player.velocityY =
 
-        0.16;
-
+            0.16;
 
 
         player.grounded =
 
-        false;
+            false;
 
     }
 
 
-
     player.velocityY -=
 
-    0.012;
-
+        0.012;
 
 
     player.y +=
 
-    player.velocityY;
-
+        player.velocityY;
 
 
     if (
@@ -3016,22 +2932,19 @@ function movePlayer() {
 
         player.y =
 
-        2;
-
+            2;
 
 
         player.velocityY =
 
-        0;
-
+            0;
 
 
         player.grounded =
 
-        true;
+            true;
 
     }
-
 
 
     camera.position.set(
@@ -3045,29 +2958,25 @@ function movePlayer() {
     );
 
 
-
     camera.rotation.order =
 
-    "YXZ";
-
+        "YXZ";
 
 
     camera.rotation.y =
 
-    yaw;
-
+        yaw;
 
 
     camera.rotation.x =
 
-    pitch;
+        pitch;
 
 }
 
 
-
 // =====================================================
-// EXIT
+// EXIT CHECK
 // =====================================================
 
 
@@ -3080,26 +2989,28 @@ function checkExit() {
 
         paused
 
-    )
+    ) {
+
 
         return;
 
+    }
 
 
     const distance =
 
-    Math.hypot(
+        Math.hypot(
 
-        player.x -
+            player.x -
 
-        exitPosition.x,
+            exitPosition.x,
 
-        player.z -
 
-        exitPosition.z
+            player.z -
 
-    );
+            exitPosition.z
 
+        );
 
 
     if (
@@ -3116,9 +3027,8 @@ function checkExit() {
 }
 
 
-
 // =====================================================
-// COMPLETE
+// LEVEL COMPLETE
 // =====================================================
 
 
@@ -3127,8 +3037,7 @@ function completeLevel() {
 
     playing =
 
-    false;
-
+        false;
 
 
     if (
@@ -3143,17 +3052,17 @@ function completeLevel() {
     }
 
 
-
     const time =
 
-    (
+        (
 
-        performance.now() -
+            performance.now() -
 
-        startTime
+            startTime
 
-    ) / 1000;
+        ) /
 
+        1000;
 
 
     if (
@@ -3167,14 +3076,15 @@ function completeLevel() {
 
         unlockedLevel =
 
-        Math.min(
+            Math.min(
 
-            3,
+                3,
 
-            currentLevel + 1
+                currentLevel +
 
-        );
+                1
 
+            );
 
 
         localStorage.setItem(
@@ -3188,7 +3098,6 @@ function completeLevel() {
     }
 
 
-
     document
 
     .getElementById(
@@ -3199,16 +3108,15 @@ function completeLevel() {
 
     .textContent =
 
-    "Your time: " +
+        "Your time: " +
 
-    time.toFixed(
+        time.toFixed(
 
-        2
+            2
 
-    ) +
+        ) +
 
-    " seconds";
-
+        " seconds";
 
 
     document
@@ -3221,8 +3129,7 @@ function completeLevel() {
 
     .style.display =
 
-    "block";
-
+        "block";
 
 
     document
@@ -3235,14 +3142,12 @@ function completeLevel() {
 
     .style.display =
 
-    "none";
-
+        "none";
 
 
     updateMenu();
 
 }
-
 
 
 // =====================================================
@@ -3257,16 +3162,17 @@ function togglePause() {
 
         !playing
 
-    )
+    ) {
+
 
         return;
 
+    }
 
 
     paused =
 
-    !paused;
-
+        !paused;
 
 
     document
@@ -3279,40 +3185,31 @@ function togglePause() {
 
     .style.display =
 
-    paused
+        paused
 
-        ? "flex"
+            ? "flex"
 
-        : "none";
-
+            : "none";
 
 
     if (
 
-        paused
+        paused &&
+
+        document.pointerLockElement
 
     ) {
 
 
-        if (
-
-            document.pointerLockElement
-
-        ) {
-
-
-            document.exitPointerLock();
-
-        }
+        document.exitPointerLock();
 
     }
 
 }
 
 
-
 // =====================================================
-// RESUME
+// PAUSE BUTTONS
 // =====================================================
 
 
@@ -3336,12 +3233,6 @@ document
     }
 
 );
-
-
-
-// =====================================================
-// RESTART
-// =====================================================
 
 
 document
@@ -3369,8 +3260,7 @@ document
 
         .style.display =
 
-        "none";
-
+            "none";
 
 
         startLevel(
@@ -3382,12 +3272,6 @@ document
     }
 
 );
-
-
-
-// =====================================================
-// MAIN MENU
-// =====================================================
 
 
 document
@@ -3407,14 +3291,12 @@ document
 
         playing =
 
-        false;
-
+            false;
 
 
         paused =
 
-        false;
-
+            false;
 
 
         if (
@@ -3429,7 +3311,6 @@ document
         }
 
 
-
         document
 
         .getElementById(
@@ -3440,8 +3321,7 @@ document
 
         .style.display =
 
-        "none";
-
+            "none";
 
 
         document
@@ -3454,8 +3334,7 @@ document
 
         .style.display =
 
-        "none";
-
+            "none";
 
 
         document
@@ -3468,8 +3347,7 @@ document
 
         .style.display =
 
-        "none";
-
+            "none";
 
 
         document
@@ -3482,17 +3360,11 @@ document
 
         .style.display =
 
-        "flex";
+            "flex";
 
     }
 
 );
-
-
-
-// =====================================================
-// PAUSE BUTTON
-// =====================================================
 
 
 document
@@ -3510,7 +3382,6 @@ document
     togglePause
 
 );
-
 
 
 // =====================================================
@@ -3532,14 +3403,13 @@ document
 
     () =>
 
-    startLevel(
+        startLevel(
 
-        1
+            1
 
-    )
+        )
 
 );
-
 
 
 document
@@ -3559,9 +3429,11 @@ document
 
         if (
 
-            unlockedLevel >= 2
+            unlockedLevel >=
 
-        )
+            2
+
+        ) {
 
 
             startLevel(
@@ -3570,10 +3442,11 @@ document
 
             );
 
+        }
+
     }
 
 );
-
 
 
 document
@@ -3593,9 +3466,11 @@ document
 
         if (
 
-            unlockedLevel >= 3
+            unlockedLevel >=
 
-        )
+            3
+
+        ) {
 
 
             startLevel(
@@ -3604,10 +3479,11 @@ document
 
             );
 
+        }
+
     }
 
 );
-
 
 
 // =====================================================
@@ -3640,20 +3516,23 @@ document
 
         .style.display =
 
-        "none";
-
+            "none";
 
 
         if (
 
-            currentLevel < 3
+            currentLevel <
+
+            3
 
         ) {
 
 
             startLevel(
 
-                currentLevel + 1
+                currentLevel +
+
+                1
 
             );
 
@@ -3662,7 +3541,6 @@ document
     }
 
 );
-
 
 
 // =====================================================
@@ -3686,14 +3564,15 @@ function updateMenu() {
 
         const button =
 
-        document
+            document
 
-        .getElementById(
+            .getElementById(
 
-            "level" + i
+                "level" +
 
-        );
+                i
 
+            );
 
 
         if (
@@ -3716,14 +3595,13 @@ function updateMenu() {
             );
 
 
-
             button
 
             .textContent =
 
-            "LEVEL " +
+                "LEVEL " +
 
-            i;
+                i;
 
         }
 
@@ -3732,9 +3610,7 @@ function updateMenu() {
 }
 
 
-
 updateMenu();
-
 
 
 // =====================================================
@@ -3756,14 +3632,15 @@ function updateTimer() {
 
         const time =
 
-        (
+            (
 
-            performance.now() -
+                performance.now() -
 
-            startTime
+                startTime
 
-        ) / 1000;
+            ) /
 
+            1000;
 
 
         document
@@ -3776,20 +3653,19 @@ function updateTimer() {
 
         .textContent =
 
-        time.toFixed(
+            time.toFixed(
 
-            1
+                1
 
-        );
+            );
 
     }
 
 }
 
 
-
 // =====================================================
-// ANIMATION
+// ANIMATION LOOP
 // =====================================================
 
 
@@ -3803,21 +3679,16 @@ function animate() {
     );
 
 
-
-    updateSpiritAnimation();
-
+    updateLightningAnimation();
 
 
     movePlayer();
 
 
-
     checkExit();
 
 
-
     updateTimer();
-
 
 
     if (
@@ -3829,10 +3700,9 @@ function animate() {
 
         exitGroup.rotation.y +=
 
-        0.002;
+            0.002;
 
     }
-
 
 
     renderer.render(
@@ -3846,9 +3716,7 @@ function animate() {
 }
 
 
-
 animate();
-
 
 
 // =====================================================
@@ -3865,14 +3733,12 @@ window.addEventListener(
 
         camera.aspect =
 
-        window.innerWidth /
+            window.innerWidth /
 
-        window.innerHeight;
-
+            window.innerHeight;
 
 
         camera.updateProjectionMatrix();
-
 
 
         renderer.setSize(
