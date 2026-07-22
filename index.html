@@ -1,7 +1,9 @@
 ```html
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -21,96 +23,761 @@
 
         html,
         body {
+
             width: 100%;
             height: 100%;
+
             overflow: hidden;
-            background: #000;
+
+            background: #87CEEB;
+
         }
 
         #game {
+
             width: 100%;
             height: 100%;
+
+        }
+
+        #info {
+
+            position: fixed;
+
+            top: 20px;
+            left: 20px;
+
+            padding: 12px 18px;
+
+            background: rgba(
+                0,
+                0,
+                0,
+                0.6
+            );
+
+            color: white;
+
+            border-radius: 10px;
+
+            font-family: Arial,
+            sans-serif;
+
+            font-size: 14px;
+
+            z-index: 10;
+
         }
 
     </style>
 
 </head>
 
+
 <body>
 
-    <div id="game"></div>
+
+<div id="info">
+
+    🌍 AI World Simulator
+
+    <br>
+
+    🖱️ Drag = Rotate
+
+    <br>
+
+    🔍 Scroll = Zoom
+
+</div>
 
 
-    <!-- Three.js -->
-
-    <script type="module">
-
-        import * as THREE
-        from
-        "https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.module.js";
+<div id="game"></div>
 
 
-        // ==========================================
-        // SCENE
-        // ==========================================
 
-        const scene =
-            new THREE.Scene();
+<script type="module">
 
 
-        scene.background =
-            new THREE.Color(
-                0x87CEEB
-            );
+import * as THREE
+
+from
+
+"https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.module.js";
 
 
-        // ==========================================
-        // CAMERA
-        // ==========================================
+import {
 
-        const camera =
-            new THREE.PerspectiveCamera(
+    OrbitControls
 
-                60,
+}
 
-                window.innerWidth /
-                window.innerHeight,
+from
 
-                0.1,
-
-                1000
-
-            );
+"https://cdn.jsdelivr.net/npm/three@0.179.1/examples/jsm/controls/OrbitControls.js";
 
 
-        camera.position.set(
 
-            10,
-            10,
-            10
-
-        );
+// ==========================================
+// SCENE
+// ==========================================
 
 
-        camera.lookAt(
+const scene =
 
-            0,
-            0,
-            0
-
-        );
+new THREE.Scene();
 
 
-        // ==========================================
-        // RENDERER
-        // ==========================================
+scene.background =
 
-        const renderer =
-            new THREE.WebGLRenderer({
+new THREE.Color(
 
-                antialias: true
+    0x87CEEB
 
-            });
+);
+
+
+
+// ==========================================
+// CAMERA
+// ==========================================
+
+
+const camera =
+
+new THREE.PerspectiveCamera(
+
+    60,
+
+    window.innerWidth /
+
+    window.innerHeight,
+
+    0.1,
+
+    1000
+
+);
+
+
+camera.position.set(
+
+    15,
+
+    15,
+
+    15
+
+);
+
+
+
+// ==========================================
+// RENDERER
+// ==========================================
+
+
+const renderer =
+
+new THREE.WebGLRenderer({
+
+    antialias: true
+
+});
+
+
+renderer.setSize(
+
+    window.innerWidth,
+
+    window.innerHeight
+
+);
+
+
+renderer.setPixelRatio(
+
+    Math.min(
+
+        window.devicePixelRatio,
+
+        2
+
+    )
+
+);
+
+
+document
+
+.getElementById("game")
+
+.appendChild(
+
+    renderer.domElement
+
+);
+
+
+
+// ==========================================
+// CONTROLS
+// ==========================================
+
+
+const controls =
+
+new OrbitControls(
+
+    camera,
+
+    renderer.domElement
+
+);
+
+
+controls.enableDamping = true;
+
+
+controls.dampingFactor = 0.05;
+
+
+controls.minDistance = 5;
+
+
+controls.maxDistance = 80;
+
+
+controls.maxPolarAngle =
+
+Math.PI / 2.1;
+
+
+
+// ==========================================
+// LIGHT
+// ==========================================
+
+
+const sun =
+
+new THREE.DirectionalLight(
+
+    0xffffff,
+
+    2
+
+);
+
+
+sun.position.set(
+
+    20,
+
+    30,
+
+    20
+
+);
+
+
+scene.add(
+
+    sun
+
+);
+
+
+
+const ambient =
+
+new THREE.AmbientLight(
+
+    0xffffff,
+
+    0.6
+
+);
+
+
+scene.add(
+
+    ambient
+
+);
+
+
+
+// ==========================================
+// GROUND
+// ==========================================
+
+
+const groundGeometry =
+
+new THREE.PlaneGeometry(
+
+    200,
+
+    200
+
+);
+
+
+const groundMaterial =
+
+new THREE.MeshStandardMaterial({
+
+    color: 0x4caf50
+
+});
+
+
+const ground =
+
+new THREE.Mesh(
+
+    groundGeometry,
+
+    groundMaterial
+
+);
+
+
+ground.rotation.x =
+
+-Math.PI / 2;
+
+
+scene.add(
+
+    ground
+
+);
+
+
+
+// ==========================================
+// ROAD
+// ==========================================
+
+
+const roadGeometry =
+
+new THREE.PlaneGeometry(
+
+    12,
+
+    200
+
+);
+
+
+const roadMaterial =
+
+new THREE.MeshStandardMaterial({
+
+    color: 0x333333
+
+});
+
+
+const road =
+
+new THREE.Mesh(
+
+    roadGeometry,
+
+    roadMaterial
+
+);
+
+
+road.rotation.x =
+
+-Math.PI / 2;
+
+
+road.position.y =
+
+0.01;
+
+
+scene.add(
+
+    road
+
+
+
+);
+
+
+
+// ==========================================
+// BUILDING FUNCTION
+// ==========================================
+
+
+function createBuilding(
+
+    x,
+
+    z,
+
+    width,
+
+    height,
+
+    depth,
+
+    color
+
+) {
+
+
+    const geometry =
+
+    new THREE.BoxGeometry(
+
+        width,
+
+        height,
+
+        depth
+
+    );
+
+
+    const material =
+
+    new THREE.MeshStandardMaterial({
+
+        color: color
+
+    });
+
+
+    const building =
+
+    new THREE.Mesh(
+
+        geometry,
+
+        material
+
+    );
+
+
+    building.position.set(
+
+        x,
+
+        height / 2,
+
+        z
+
+    );
+
+
+    scene.add(
+
+        building
+
+    );
+
+}
+
+
+
+// ==========================================
+// BUILDINGS
+// ==========================================
+
+
+createBuilding(
+
+    -10,
+
+    -10,
+
+    6,
+
+    12,
+
+    6,
+
+    0x888888
+
+);
+
+
+createBuilding(
+
+    10,
+
+    -15,
+
+    8,
+
+    8,
+
+    8,
+
+    0x777777
+
+);
+
+
+createBuilding(
+
+    -12,
+
+    15,
+
+    5,
+
+    6,
+
+    5,
+
+    0x999999
+
+);
+
+
+createBuilding(
+
+    12,
+
+    12,
+
+    7,
+
+    15,
+
+    7,
+
+    0x666666
+
+);
+
+
+
+// ==========================================
+// TREES
+// ==========================================
+
+
+function createTree(
+
+    x,
+
+    z
+
+) {
+
+
+    const trunkGeometry =
+
+    new THREE.CylinderGeometry(
+
+        0.5,
+
+        0.5,
+
+        3
+
+    );
+
+
+    const trunkMaterial =
+
+    new THREE.MeshStandardMaterial({
+
+        color: 0x8B4513
+
+    });
+
+
+    const trunk =
+
+    new THREE.Mesh(
+
+        trunkGeometry,
+
+        trunkMaterial
+
+    );
+
+
+    trunk.position.set(
+
+        x,
+
+        1.5,
+
+        z
+
+    );
+
+
+    scene.add(
+
+        trunk
+
+    );
+
+
+
+    const leavesGeometry =
+
+    new THREE.SphereGeometry(
+
+        2.5,
+
+        16,
+
+        16
+
+    );
+
+
+    const leavesMaterial =
+
+    new THREE.MeshStandardMaterial({
+
+        color: 0x228B22
+
+    });
+
+
+    const leaves =
+
+    new THREE.Mesh(
+
+        leavesGeometry,
+
+        leavesMaterial
+
+    );
+
+
+    leaves.position.set(
+
+        x,
+
+        4,
+
+        z
+
+    );
+
+
+    scene.add(
+
+        leaves
+
+    );
+
+}
+
+
+
+// ==========================================
+// TREES
+// ==========================================
+
+
+createTree(
+
+    -5,
+
+    -5
+
+);
+
+
+createTree(
+
+    6,
+
+    -5
+
+);
+
+
+createTree(
+
+    -6,
+
+    7
+
+);
+
+
+createTree(
+
+    7,
+
+    7
+
+);
+
+
+
+// ==========================================
+// ANIMATION
+// ==========================================
+
+
+function animate() {
+
+
+    requestAnimationFrame(
+
+        animate
+
+    );
+
+
+    controls.update();
+
+
+    renderer.render(
+
+        scene,
+
+        camera
+
+    );
+
+}
+
+
+animate();
+
+
+
+// ==========================================
+// RESIZE
+// ==========================================
+
+
+window.addEventListener(
+
+    "resize",
+
+    () => {
+
+
+        camera.aspect =
+
+        window.innerWidth /
+
+        window.innerHeight;
+
+
+        camera.updateProjectionMatrix();
 
 
         renderer.setSize(
@@ -122,224 +789,13 @@
         );
 
 
-        renderer.setPixelRatio(
+    }
 
-            Math.min(
+);
 
-                window.devicePixelRatio,
 
-                2
+</script>
 
-            )
-
-        );
-
-
-        document
-            .getElementById("game")
-            .appendChild(
-
-                renderer.domElement
-
-            );
-
-
-        // ==========================================
-        // LIGHT
-        // ==========================================
-
-        const light =
-            new THREE.DirectionalLight(
-
-                0xffffff,
-
-                2
-
-            );
-
-
-        light.position.set(
-
-            10,
-            20,
-            10
-
-        );
-
-
-        scene.add(
-
-            light
-
-        );
-
-
-        const ambient =
-            new THREE.AmbientLight(
-
-                0xffffff,
-
-                0.5
-
-            );
-
-
-        scene.add(
-
-            ambient
-
-        );
-
-
-        // ==========================================
-        // GROUND
-        // ==========================================
-
-        const groundGeometry =
-            new THREE.PlaneGeometry(
-
-                100,
-                100
-
-            );
-
-
-        const groundMaterial =
-            new THREE.MeshStandardMaterial({
-
-                color: 0x4caf50
-
-            });
-
-
-        const ground =
-            new THREE.Mesh(
-
-                groundGeometry,
-
-                groundMaterial
-
-            );
-
-
-        ground.rotation.x =
-            -Math.PI / 2;
-
-
-        scene.add(
-
-            ground
-
-        );
-
-
-        // ==========================================
-        // BUILDING
-        // ==========================================
-
-        const buildingGeometry =
-            new THREE.BoxGeometry(
-
-                3,
-                5,
-                3
-
-            );
-
-
-        const buildingMaterial =
-            new THREE.MeshStandardMaterial({
-
-                color: 0x888888
-
-            });
-
-
-        const building =
-            new THREE.Mesh(
-
-                buildingGeometry,
-
-                buildingMaterial
-
-            );
-
-
-        building.position.set(
-
-            0,
-            2.5,
-            0
-
-        );
-
-
-        scene.add(
-
-            building
-
-        );
-
-
-        // ==========================================
-        // ANIMATION
-        // ==========================================
-
-        function animate() {
-
-            requestAnimationFrame(
-
-                animate
-
-            );
-
-
-            renderer.render(
-
-                scene,
-
-                camera
-
-            );
-
-        }
-
-
-        animate();
-
-
-        // ==========================================
-        // RESIZE
-        // ==========================================
-
-        window.addEventListener(
-
-            "resize",
-
-            () => {
-
-                camera.aspect =
-
-                    window.innerWidth /
-                    window.innerHeight;
-
-
-                camera.updateProjectionMatrix();
-
-
-                renderer.setSize(
-
-                    window.innerWidth,
-
-                    window.innerHeight
-
-                );
-
-            }
-
-        );
-
-    </script>
 
 </body>
 
