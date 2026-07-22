@@ -1,4 +1,4 @@
-```html
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,10 +6,12 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+>
 
-<title>High Quality 3D City</title>
+<title>Modern 3D Architecture</title>
 
 <style>
 
@@ -27,7 +29,7 @@ body {
 
     overflow: hidden;
 
-    background: #87CEEB;
+    background: #87ceeb;
 
 }
 
@@ -45,20 +47,23 @@ body {
     top: 15px;
     left: 15px;
 
-    z-index: 10;
+    z-index: 20;
 
-    padding: 15px 20px;
-
-    background:
-    rgba(10,10,15,0.78);
+    padding: 14px 18px;
 
     color: white;
 
-    border-radius: 12px;
+    font-family: Arial,
+    sans-serif;
 
-    font-family: Arial;
+    font-size: 14px;
 
     line-height: 1.7;
+
+    background:
+    rgba(5, 8, 15, 0.78);
+
+    border-radius: 12px;
 
     backdrop-filter:
     blur(8px);
@@ -72,18 +77,18 @@ body {
     top: 15px;
     right: 15px;
 
-    z-index: 10;
+    z-index: 20;
 
-    padding: 10px 15px;
+    padding: 9px 14px;
 
-    background:
-    rgba(0,0,0,0.65);
-
-    color: #00ff99;
-
-    border-radius: 10px;
+    color: #8cffc1;
 
     font-family: monospace;
+
+    background:
+    rgba(0, 0, 0, 0.65);
+
+    border-radius: 9px;
 
 }
 
@@ -91,15 +96,17 @@ body {
 
     position: fixed;
 
-    top: 50%;
     left: 50%;
+    top: 50%;
 
     transform:
-    translate(-50%,-50%);
+    translate(-50%, -50%);
+
+    z-index: 20;
 
     color: white;
 
-    font-size: 22px;
+    font-size: 20px;
 
     pointer-events: none;
 
@@ -118,11 +125,11 @@ body {
 
 <div id="info">
 
-🏙️ High Quality City Demo
+🏢 Modern Architecture Demo
 
 <br>
 
-🖱️ Click = Camera
+🖱️ Click = Look Around
 
 <br>
 
@@ -138,7 +145,7 @@ Shift = Down
 
 <br>
 
-ESC = Release
+ESC = Release Mouse
 
 </div>
 
@@ -184,7 +191,7 @@ scene.background =
 
 new THREE.Color(
 
-0x87CEEB
+0x8acdf0
 
 );
 
@@ -193,11 +200,11 @@ scene.fog =
 
 new THREE.Fog(
 
-0x87CEEB,
+0x8acdf0,
 
-60,
+70,
 
-180
+220
 
 );
 
@@ -212,7 +219,7 @@ const camera =
 
 new THREE.PerspectiveCamera(
 
-70,
+72,
 
 window.innerWidth /
 
@@ -231,7 +238,7 @@ camera.position.set(
 
 5,
 
-35
+38
 
 );
 
@@ -269,7 +276,7 @@ Math.min(
 
 window.devicePixelRatio,
 
-1.75
+1.8
 
 )
 
@@ -296,7 +303,7 @@ THREE.ACESFilmicToneMapping;
 
 renderer.toneMappingExposure =
 
-1.1;
+1.15;
 
 
 document
@@ -322,18 +329,18 @@ new THREE.DirectionalLight(
 
 0xffffff,
 
-2.2
+2.4
 
 );
 
 
 sun.position.set(
 
-40,
+35,
 
-60,
+55,
 
-30
+25
 
 );
 
@@ -341,13 +348,14 @@ sun.position.set(
 sun.castShadow = true;
 
 
-sun.shadow.mapSize.set(
+sun.shadow.mapSize.width =
 
-1024,
+1536;
 
-1024
 
-);
+sun.shadow.mapSize.height =
+
+1536;
 
 
 sun.shadow.camera.left = -80;
@@ -366,20 +374,20 @@ scene.add(sun);
 
 
 
-const hemisphere =
+const skyLight =
 
 new THREE.HemisphereLight(
 
-0x9ed8ff,
+0x9edfff,
 
-0x3d4d32,
+0x35452f,
 
-1.1
+1.15
 
 );
 
 
-scene.add(hemisphere);
+scene.add(skyLight);
 
 
 
@@ -388,104 +396,135 @@ scene.add(hemisphere);
 // =====================================================
 
 
-const concrete =
+const wallMaterial =
 
 new THREE.MeshStandardMaterial({
 
-color: 0xb8b8b8,
+color: 0xbfc2c5,
 
 roughness: 0.72,
 
-metalness: 0.05
+metalness: 0.03
 
 });
 
 
-const darkConcrete =
+const darkWall =
 
 new THREE.MeshStandardMaterial({
 
-color: 0x444444,
+color: 0x30343a,
 
-roughness: 0.8
-
-});
-
-
-const glass =
-
-new THREE.MeshPhysicalMaterial({
-
-color: 0x4fa8c7,
-
-roughness: 0.08,
-
-metalness: 0.15,
-
-transmission: 0.15,
-
-transparent: true,
-
-opacity: 0.85
+roughness: 0.7
 
 });
 
 
-const metal =
+const stoneMaterial =
 
 new THREE.MeshStandardMaterial({
 
-color: 0x252525,
+color: 0x777b7e,
 
-roughness: 0.28,
-
-metalness: 0.85
+roughness: 0.88
 
 });
 
 
-const wood =
+const metalMaterial =
 
 new THREE.MeshStandardMaterial({
 
-color: 0x5a321d,
+color: 0x25282c,
 
-roughness: 0.65
-
-});
-
-
-const stone =
-
-new THREE.MeshStandardMaterial({
-
-color: 0x777777,
-
-roughness: 0.9
-
-});
-
-
-const gold =
-
-new THREE.MeshStandardMaterial({
-
-color: 0xcaa83b,
-
-roughness: 0.22,
+roughness: 0.25,
 
 metalness: 0.9
 
 });
 
 
+const woodMaterial =
+
+new THREE.MeshStandardMaterial({
+
+color: 0x56331f,
+
+roughness: 0.7
+
+});
+
+
 
 // =====================================================
-// HELPER
+// GLASS
 // =====================================================
 
 
-function addBox(
+const glassMaterial =
+
+new THREE.MeshPhysicalMaterial({
+
+color: 0x6dbdd7,
+
+roughness: 0.07,
+
+metalness: 0.1,
+
+transmission: 0.28,
+
+transparent: true,
+
+opacity: 0.72,
+
+side: THREE.DoubleSide
+
+});
+
+
+
+// =====================================================
+// INTERIOR GLASS
+// =====================================================
+
+
+const interiorGlass =
+
+new THREE.MeshStandardMaterial({
+
+color: 0x111820,
+
+roughness: 0.2
+
+});
+
+
+
+// =====================================================
+// WARM INTERIOR LIGHT
+// =====================================================
+
+
+const warmMaterial =
+
+new THREE.MeshStandardMaterial({
+
+color: 0xffc86b,
+
+emissive: 0xff9d32,
+
+emissiveIntensity: 1.5
+
+});
+
+
+
+// =====================================================
+// HELPERS
+// =====================================================
+
+
+function box(
 
 w,
 
@@ -556,17 +595,17 @@ return mesh;
 // =====================================================
 
 
-addBox(
+box(
 
-200,
+220,
 
 0.2,
 
-200,
+220,
 
 new THREE.MeshStandardMaterial({
 
-color: 0x4e9149,
+color: 0x4d9148,
 
 roughness: 1
 
@@ -587,17 +626,17 @@ roughness: 1
 // =====================================================
 
 
-addBox(
+box(
 
-16,
+18,
 
 0.15,
 
-180,
+220,
 
 new THREE.MeshStandardMaterial({
 
-color: 0x252525,
+color: 0x242629,
 
 roughness: 0.9
 
@@ -614,21 +653,21 @@ roughness: 0.9
 
 
 // =====================================================
-// SIDEWALKS
+// SIDEWALK
 // =====================================================
 
 
-addBox(
+box(
 
-3,
+4,
 
 0.3,
 
-180,
+220,
 
-stone,
+stoneMaterial,
 
--9.5,
+-11,
 
 0.15,
 
@@ -637,17 +676,17 @@ stone,
 );
 
 
-addBox(
+box(
 
-3,
+4,
 
 0.3,
 
-180,
+220,
 
-stone,
+stoneMaterial,
 
-9.5,
+11,
 
 0.15,
 
@@ -662,35 +701,35 @@ stone,
 // =====================================================
 
 
-const roadMarkMaterial =
+const markingMaterial =
 
 new THREE.MeshStandardMaterial({
 
-color: 0xffffff
+color: 0xf5f5f5
 
 });
 
 
 for (
 
-let z = -85;
+let z = -100;
 
-z < 90;
+z < 110;
 
 z += 10
 
 ) {
 
 
-addBox(
+box(
 
-0.35,
+0.3,
 
 0.04,
 
 5,
 
-roadMarkMaterial,
+markingMaterial,
 
 0,
 
@@ -705,7 +744,7 @@ z
 
 
 // =====================================================
-// BUILDING
+// BUILDING GROUP
 // =====================================================
 
 
@@ -718,18 +757,20 @@ scene.add(building);
 
 
 
-// Main body
+// =====================================================
+// MAIN BUILDING
+// =====================================================
 
 
-addBox(
+box(
 
-26,
+27,
 
 20,
 
 20,
 
-concrete,
+wallMaterial,
 
 0,
 
@@ -743,79 +784,397 @@ building
 
 
 
-// Dark vertical architectural strips
+// =====================================================
+// ANGLED ARCHITECTURAL SIDES
+// =====================================================
 
 
-for (
-
-let x = -12;
-
-x <= 12;
-
-x += 6
-
-) {
+// Left angled wing
 
 
-addBox(
+const leftWing =
 
-0.35,
+new THREE.Mesh(
 
-19,
+new THREE.CylinderGeometry(
 
-0.4,
+5,
 
-darkConcrete,
+7,
 
-x,
+20,
 
-10,
+4,
 
--10.2,
+1
 
-building
+),
+
+darkWall
 
 );
 
-}
+
+leftWing.scale.z = 0.45;
+
+
+leftWing.rotation.y =
+
+Math.PI / 4;
+
+
+leftWing.position.set(
+
+-14,
+
+10,
+
+0
+
+);
+
+
+leftWing.castShadow = true;
+
+
+building.add(leftWing);
 
 
 
-// Horizontal floors
+// Right angled wing
+
+
+const rightWing =
+
+leftWing.clone();
+
+
+rightWing.position.x =
+
+14;
+
+
+building.add(rightWing);
+
+
+
+// =====================================================
+// FRONT FACADE LAYERS
+// =====================================================
 
 
 for (
 
 let y = 2;
 
-y <= 20;
+y <= 18;
 
 y += 4
 
 ) {
 
 
-addBox(
+box(
 
-26.5,
+28,
 
 0.25,
 
-0.35,
+0.5,
 
-darkConcrete,
+darkWall,
 
 0,
 
 y,
 
--10.2,
+-10.25,
 
 building
 
 );
 
 }
+
+
+
+// Vertical facade elements
+
+
+for (
+
+let x = -13;
+
+x <= 13;
+
+x += 6.5
+
+) {
+
+
+box(
+
+0.35,
+
+19,
+
+0.5,
+
+metalMaterial,
+
+x,
+
+10,
+
+-10.45,
+
+building
+
+);
+
+}
+
+
+
+// =====================================================
+// INTERIOR ROOMS
+// =====================================================
+
+
+function createInteriorRoom(
+
+x,
+
+y
+
+) {
+
+
+const room =
+
+new THREE.Group();
+
+
+
+// Dark back wall
+
+
+box(
+
+5.4,
+
+3.2,
+
+0.25,
+
+interiorGlass,
+
+x,
+
+y,
+
+-9.4,
+
+room
+
+);
+
+
+
+// Floor
+
+
+box(
+
+5.4,
+
+0.12,
+
+3.8,
+
+woodMaterial,
+
+x,
+
+y - 1.55,
+
+-8.7,
+
+room
+
+);
+
+
+
+// Ceiling
+
+
+box(
+
+5.4,
+
+0.1,
+
+3.8,
+
+darkWall,
+
+x,
+
+y + 1.55,
+
+-8.7,
+
+room
+
+);
+
+
+
+// Sofa
+
+
+box(
+
+2.3,
+
+0.65,
+
+0.8,
+
+woodMaterial,
+
+x,
+
+y - 0.75,
+
+-8.5,
+
+room
+
+);
+
+
+
+// Table
+
+
+const table =
+
+new THREE.Mesh(
+
+new THREE.CylinderGeometry(
+
+0.45,
+
+0.45,
+
+0.08,
+
+16
+
+),
+
+stoneMaterial
+
+);
+
+
+table.position.set(
+
+x,
+
+y - 0.35,
+
+-8.5
+
+);
+
+
+room.add(table);
+
+
+
+// Warm lamp
+
+
+const lamp =
+
+new THREE.Mesh(
+
+new THREE.SphereGeometry(
+
+0.22,
+
+12,
+
+12
+
+),
+
+warmMaterial
+
+);
+
+
+lamp.position.set(
+
+x,
+
+y + 0.9,
+
+-8.6
+
+);
+
+
+room.add(lamp);
+
+
+
+building.add(room);
+
+}
+
+
+
+// Create visible rooms
+
+
+createInteriorRoom(-7, 3.8);
+
+
+createInteriorRoom(0, 3.8);
+
+
+createInteriorRoom(7, 3.8);
+
+
+createInteriorRoom(-7, 7.8);
+
+
+createInteriorRoom(0, 7.8);
+
+
+createInteriorRoom(7, 7.8);
+
+
+createInteriorRoom(-7, 11.8);
+
+
+createInteriorRoom(0, 11.8);
+
+
+createInteriorRoom(7, 11.8);
+
+
+createInteriorRoom(-7, 15.8);
+
+
+createInteriorRoom(0, 15.8);
+
+
+createInteriorRoom(7, 15.8);
 
 
 
@@ -828,9 +1187,7 @@ function createWindow(
 
 x,
 
-y,
-
-z
+y
 
 ) {
 
@@ -841,139 +1198,155 @@ new THREE.Group();
 
 
 
-const glassPanel =
+// Glass
+
+
+const glass =
 
 new THREE.Mesh(
 
 new THREE.BoxGeometry(
 
-3.7,
+5.3,
 
-2.7,
+3.2,
 
 0.12
 
 ),
 
-glass
+glassMaterial
 
 );
 
 
-group.add(
+group.add(glass);
 
-glassPanel
+
+
+// Frame left
+
+
+box(
+
+0.13,
+
+3.4,
+
+0.22,
+
+metalMaterial,
+
+x - 2.7,
+
+y,
+
+-10.5,
+
+group
+
+);
+
+
+
+// Frame right
+
+
+box(
+
+0.13,
+
+3.4,
+
+0.22,
+
+metalMaterial,
+
+x + 2.7,
+
+y,
+
+-10.5,
+
+group
 
 );
 
 
 
-// Frames
+// Top
 
 
-const framePositions = [
+box(
 
-[-1.9, 0, 0],
+5.5,
 
-[1.9, 0, 0],
+0.13,
 
-[0, 1.4, 0],
+0.22,
 
-[0, -1.4, 0],
+metalMaterial,
 
-[0, 0, 0]
+x,
 
-];
+y + 1.65,
 
+-10.5,
 
-
-framePositions.forEach(
-
-(p, index) => {
-
-
-let geometry;
-
-
-
-if (
-
-index < 2
-
-) {
-
-
-geometry =
-
-new THREE.BoxGeometry(
-
-0.12,
-
-2.8,
-
-0.25
+group
 
 );
 
 
-}
 
-else {
-
-
-geometry =
-
-new THREE.BoxGeometry(
-
-3.8,
-
-0.12,
-
-0.25
-
-);
-
-}
+// Bottom
 
 
+box(
 
-const frame =
+5.5,
 
-new THREE.Mesh(
+0.13,
 
-geometry,
+0.22,
 
-metal
+metalMaterial,
+
+x,
+
+y - 1.65,
+
+-10.5,
+
+group
 
 );
 
 
-frame.position.set(
 
-p[0],
-
-p[1],
-
-p[2]
-
-);
+// Center divider
 
 
-group.add(frame);
+box(
 
-});
+0.1,
 
+3.1,
 
+0.22,
 
-group.position.set(
+metalMaterial,
 
 x,
 
 y,
 
-z
+-10.52,
+
+group
 
 );
+
 
 
 building.add(group);
@@ -982,14 +1355,14 @@ building.add(group);
 
 
 
-// Windows on front
+// Window rows
 
 
 for (
 
 let floor = 0;
 
-floor < 5;
+floor < 4;
 
 floor++
 
@@ -1011,9 +1384,7 @@ createWindow(
 
 column * 7,
 
-3.8 + floor * 4,
-
--10.25
+3.8 + floor * 4
 
 );
 
@@ -1024,7 +1395,7 @@ column * 7,
 
 
 // =====================================================
-// BALCONIES
+// ANGLED BALCONIES
 // =====================================================
 
 
@@ -1043,21 +1414,49 @@ new THREE.Group();
 
 
 
-addBox(
+// Balcony floor
 
-6,
+
+box(
+
+5.8,
 
 0.3,
 
-3,
+3.2,
 
-stone,
+stoneMaterial,
 
 x,
 
 y,
 
--11.5,
+-12,
+
+balcony
+
+);
+
+
+
+// Back support
+
+
+box(
+
+5.5,
+
+0.3,
+
+0.3,
+
+darkWall,
+
+x,
+
+y,
+
+-10.5,
 
 balcony
 
@@ -1085,9 +1484,9 @@ new THREE.Mesh(
 
 new THREE.CylinderGeometry(
 
-0.06,
+0.055,
 
-0.06,
+0.055,
 
 1.3,
 
@@ -1095,18 +1494,18 @@ new THREE.CylinderGeometry(
 
 ),
 
-metal
+metalMaterial
 
 );
 
 
 post.position.set(
 
-x + i * 1.25,
+x + i * 1.2,
 
 y + 0.75,
 
--10.1
+-13.3
 
 );
 
@@ -1117,28 +1516,75 @@ balcony.add(post);
 
 
 
-// Top rail
+// Front rail
 
 
-addBox(
+box(
 
-5.5,
-
-0.12,
+5.3,
 
 0.12,
 
-metal,
+0.12,
+
+metalMaterial,
 
 x,
 
 y + 1.4,
 
--10.1,
+-13.3,
 
 balcony
 
 );
+
+
+
+// Side rails
+
+
+box(
+
+0.12,
+
+1.3,
+
+2.7,
+
+metalMaterial,
+
+x - 2.65,
+
+y + 0.7,
+
+-12,
+
+balcony
+
+);
+
+
+box(
+
+0.12,
+
+1.3,
+
+2.7,
+
+metalMaterial,
+
+x + 2.65,
+
+y + 0.7,
+
+-12,
+
+balcony
+
+);
+
 
 
 building.add(balcony);
@@ -1147,22 +1593,13 @@ building.add(balcony);
 
 
 
-createBalcony(
-
--7,
-
-7
-
-);
+// Correctly projecting outward
 
 
-createBalcony(
+createBalcony(-7, 7.8);
 
-7,
 
-15
-
-);
+createBalcony(7, 15.8);
 
 
 
@@ -1171,124 +1608,114 @@ createBalcony(
 // =====================================================
 
 
-addBox(
+box(
 
-8,
+9,
 
 7,
 
-0.5,
+0.6,
 
-darkConcrete,
+darkWall,
 
 0,
 
 3.5,
 
--10.5
+-10.8
 
 );
 
 
 
-addBox(
+// Entrance glass
 
-3.3,
 
-5,
+box(
+
+3.5,
+
+5.2,
 
 0.15,
 
-glass,
+glassMaterial,
 
--1.8,
+-1.9,
 
-2.5,
+2.6,
 
--10.85
+-11.15
 
 );
 
 
-addBox(
+box(
 
-3.3,
+3.5,
 
-5,
+5.2,
 
 0.15,
 
-glass,
+glassMaterial,
 
-1.8,
+1.9,
 
-2.5,
+2.6,
 
--10.85
-
-);
-
-
-
-// Door handles
-
-
-const handleGeometry =
-
-new THREE.SphereGeometry(
-
-0.12,
-
-12,
-
-12
+-11.15
 
 );
 
 
-const handleMaterial =
 
-gold;
-
+// Entrance canopy
 
 
-const handleA =
+const canopy =
 
 new THREE.Mesh(
 
-handleGeometry,
+new THREE.CylinderGeometry(
 
-handleMaterial
+4.5,
+
+3.5,
+
+0.5,
+
+4
+
+),
+
+metalMaterial
 
 );
 
 
-handleA.position.set(
+canopy.rotation.y =
 
--0.45,
+Math.PI / 4;
 
-2.5,
 
--11
+canopy.scale.z =
+
+0.35;
+
+
+canopy.position.set(
+
+0,
+
+7.3,
+
+-12
 
 );
 
 
-scene.add(handleA);
-
-
-
-const handleB =
-
-handleA.clone();
-
-
-handleB.position.x =
-
-0.45;
-
-
-scene.add(handleB);
+building.add(canopy);
 
 
 
@@ -1297,14 +1724,10 @@ scene.add(handleB);
 // =====================================================
 
 
-function createColumn(
-
-x
-
-) {
+function column(x) {
 
 
-const column =
+const c =
 
 new THREE.Mesh(
 
@@ -1312,43 +1735,43 @@ new THREE.CylinderGeometry(
 
 0.65,
 
-0.75,
+0.8,
 
 7,
 
-20
+16
 
 ),
 
-stone
+stoneMaterial
 
 );
 
 
-column.position.set(
+c.position.set(
 
 x,
 
 3.5,
 
--11.1
+-11.5
 
 );
 
 
-column.castShadow = true;
+c.castShadow = true;
 
 
-scene.add(column);
+scene.add(c);
 
 }
 
 
 
-createColumn(-4.5);
+column(-4.7);
 
 
-createColumn(4.5);
+column(4.7);
 
 
 
@@ -1368,21 +1791,23 @@ i++
 ) {
 
 
-addBox(
+box(
 
-12 - i,
+12 - i * 0.6,
 
 0.35,
 
 1,
 
-stone,
+stoneMaterial,
 
 0,
 
 0.2 + i * 0.35,
 
--12 - i
+-12 - i,
+
+building
 
 );
 
@@ -1395,28 +1820,77 @@ stone,
 // =====================================================
 
 
-addBox(
+box(
 
-27,
+28,
 
 0.8,
 
 21,
 
-darkConcrete,
+darkWall,
 
 0,
 
-20.4,
+20.5,
+
+0,
+
+building
+
+);
+
+
+
+// Angled roof decoration
+
+
+const roofShape =
+
+new THREE.Mesh(
+
+new THREE.ConeGeometry(
+
+15,
+
+4,
+
+4
+
+),
+
+darkWall
+
+);
+
+
+roofShape.scale.z =
+
+0.7;
+
+
+roofShape.position.set(
+
+0,
+
+23,
 
 0
 
 );
 
 
+roofShape.rotation.y =
+
+Math.PI / 4;
+
+
+building.add(roofShape);
+
+
 
 // =====================================================
-// ROOFTOP DETAILS
+// ROOFTOP EQUIPMENT
 // =====================================================
 
 
@@ -1437,17 +1911,17 @@ new THREE.Mesh(
 
 new THREE.CylinderGeometry(
 
-1.3,
+1.25,
 
-1.3,
+1.25,
 
-2.8,
+2.5,
 
 20
 
 ),
 
-metal
+metalMaterial
 
 );
 
@@ -1466,51 +1940,9 @@ x,
 tank.castShadow = true;
 
 
-scene.add(tank);
+building.add(tank);
 
 }
-
-
-
-// Small rooftop room
-
-
-addBox(
-
-7,
-
-3,
-
-5,
-
-darkConcrete,
-
-0,
-
-22,
-
--5
-
-);
-
-
-addBox(
-
-6,
-
-2,
-
-0.15,
-
-glass,
-
-0,
-
-22,
-
--7.6
-
-);
 
 
 
@@ -1536,6 +1968,9 @@ new THREE.Group();
 
 
 
+// Trunk
+
+
 const trunk =
 
 new THREE.Mesh(
@@ -1544,7 +1979,7 @@ new THREE.CylinderGeometry(
 
 0.35,
 
-0.55,
+0.5,
 
 3,
 
@@ -1552,7 +1987,7 @@ new THREE.CylinderGeometry(
 
 ),
 
-wood
+woodMaterial
 
 );
 
@@ -1566,11 +2001,14 @@ tree.add(trunk);
 
 
 
+// Foliage
+
+
 const leafMaterial =
 
 new THREE.MeshStandardMaterial({
 
-color: 0x237a32,
+color: 0x287d35,
 
 roughness: 0.9
 
@@ -1582,7 +2020,7 @@ for (
 
 let i = 0;
 
-i < 5;
+i < 6;
 
 i++
 
@@ -1593,13 +2031,11 @@ const leaf =
 
 new THREE.Mesh(
 
-new THREE.SphereGeometry(
+new THREE.IcosahedronGeometry(
 
-1.4,
+1.3,
 
-12,
-
-12
+1
 
 ),
 
@@ -1610,11 +2046,11 @@ leafMaterial
 
 leaf.position.set(
 
-Math.sin(i) * 0.8,
+Math.sin(i * 2.1),
 
-3.2 + i * 0.35,
+3.1 + (i % 3) * 0.5,
 
-Math.cos(i) * 0.8
+Math.cos(i * 2.1)
 
 );
 
@@ -1649,16 +2085,16 @@ scene.add(tree);
 
 
 
-createTree(-13, -10, 1.2);
+createTree(-16, -10, 1.3);
 
 
-createTree(13, -10, 1.2);
+createTree(16, -10, 1.3);
 
 
-createTree(-14, 10, 1);
+createTree(-16, 10, 1.1);
 
 
-createTree(14, 10, 1);
+createTree(16, 10, 1.1);
 
 
 
@@ -1667,7 +2103,7 @@ createTree(14, 10, 1);
 // =====================================================
 
 
-function createStreetLight(
+function streetLight(
 
 x,
 
@@ -1682,9 +2118,9 @@ new THREE.Mesh(
 
 new THREE.CylinderGeometry(
 
-0.12,
+0.1,
 
-0.15,
+0.14,
 
 6,
 
@@ -1692,7 +2128,7 @@ new THREE.CylinderGeometry(
 
 ),
 
-metal
+metalMaterial
 
 );
 
@@ -1708,24 +2144,7 @@ z
 );
 
 
-pole.castShadow = true;
-
-
 scene.add(pole);
-
-
-
-const lampMaterial =
-
-new THREE.MeshStandardMaterial({
-
-color: 0xffffbb,
-
-emissive: 0xffff55,
-
-emissiveIntensity: 1
-
-});
 
 
 
@@ -1743,7 +2162,7 @@ new THREE.SphereGeometry(
 
 ),
 
-lampMaterial
+warmMaterial
 
 );
 
@@ -1752,7 +2171,7 @@ lamp.position.set(
 
 x,
 
-6.1,
+6.2,
 
 z
 
@@ -1765,16 +2184,24 @@ scene.add(lamp);
 
 
 
-createStreetLight(-7.5, -20);
+streetLight(-8,
+
+-22);
 
 
-createStreetLight(7.5, -20);
+streetLight(8,
+
+-22);
 
 
-createStreetLight(-7.5, 20);
+streetLight(-8,
+
+22);
 
 
-createStreetLight(7.5, 20);
+streetLight(8,
+
+22);
 
 
 
@@ -1786,24 +2213,26 @@ createStreetLight(7.5, 20);
 const keys = {};
 
 
+
 window.addEventListener(
 
 "keydown",
 
-event => {
+e => {
 
-keys[event.code] = true;
+keys[e.code] = true;
 
 });
+
 
 
 window.addEventListener(
 
 "keyup",
 
-event => {
+e => {
 
-keys[event.code] = false;
+keys[e.code] = false;
 
 });
 
@@ -1814,8 +2243,14 @@ let yaw = 0;
 let pitch = 0;
 
 
+
 const speed = 0.18;
 
+
+
+// =====================================================
+// MOUSE LOOK
+// =====================================================
 
 
 renderer.domElement.addEventListener(
@@ -1847,15 +2282,18 @@ renderer.domElement
 
 
 
+// Faster mouse movement
+
+
 yaw -=
 
-event.movementX * 0.002;
+event.movementX * 0.004;
 
 
 
 pitch -=
 
-event.movementY * 0.002;
+event.movementY * 0.004;
 
 
 
@@ -1880,7 +2318,7 @@ pitch
 
 
 // =====================================================
-// MOVEMENT FUNCTION
+// PLAYER MOVEMENT
 // =====================================================
 
 
@@ -1975,7 +2413,6 @@ direction.length() > 0
 
 
 direction.normalize();
-
 
 
 camera.position.addScaledVector(
