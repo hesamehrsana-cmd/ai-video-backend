@@ -1,82 +1,225 @@
 ```html
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa" dir="rtl">
 
 <head>
-
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<title>Modern Architecture Prototype</title>
+<title>Spirit Maze</title>
 
 <style>
 
-html,
-body {
+*{
+    box-sizing:border-box;
+}
 
-    margin: 0;
+html,body{
 
-    width: 100%;
-    height: 100%;
+    margin:0;
+    width:100%;
+    height:100%;
 
-    overflow: hidden;
+    overflow:hidden;
 
-    background: #91cce8;
+    font-family:
+    Arial,
+    sans-serif;
+
+    background:#07120b;
 
 }
 
-#game {
+#game{
 
-    width: 100%;
-    height: 100%;
+    position:fixed;
+
+    inset:0;
 
 }
 
-#help {
+#menu{
 
-    position: fixed;
+    position:fixed;
 
-    top: 15px;
-    left: 15px;
+    inset:0;
 
-    z-index: 10;
+    z-index:10;
 
-    color: white;
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:white;
 
     background:
-    rgba(0,0,0,.65);
 
-    padding: 12px 16px;
-
-    border-radius: 10px;
-
-    font-family: Arial;
-
-    line-height: 1.6;
+    radial-gradient(
+        circle at center,
+        rgba(20,70,40,.45),
+        rgba(3,10,6,.97)
+    );
 
 }
 
-#fps {
+#menu h1{
 
-    position: fixed;
+    font-size:58px;
 
-    right: 15px;
-    top: 15px;
+    margin:0 0 10px;
 
-    z-index: 10;
+    letter-spacing:4px;
 
-    color: #9dffbd;
+    text-shadow:
+    0 0 20px #54ff9b;
+
+}
+
+#menu p{
+
+    color:#b9d8c5;
+
+    margin-bottom:35px;
+
+}
+
+.levels{
+
+    display:flex;
+
+    gap:18px;
+
+}
+
+.level{
+
+    width:130px;
+
+    height:130px;
+
+    border-radius:18px;
+
+    border:1px solid
+    rgba(120,255,170,.4);
 
     background:
-    rgba(0,0,0,.65);
+    rgba(20,50,32,.75);
 
-    padding: 8px 12px;
+    color:white;
 
-    border-radius: 8px;
+    cursor:pointer;
 
-    font-family: monospace;
+    font-size:20px;
+
+    transition:.2s;
+
+}
+
+.level:hover{
+
+    transform:
+    translateY(-7px);
+
+    box-shadow:
+    0 0 25px
+    rgba(80,255,150,.5);
+
+}
+
+.level.locked{
+
+    opacity:.35;
+
+    cursor:not-allowed;
+
+}
+
+#hud{
+
+    position:fixed;
+
+    top:15px;
+
+    left:15px;
+
+    z-index:5;
+
+    display:none;
+
+    color:white;
+
+    background:
+    rgba(0,0,0,.55);
+
+    padding:12px 16px;
+
+    border-radius:10px;
+
+    direction:ltr;
+
+}
+
+#message{
+
+    position:fixed;
+
+    top:50%;
+
+    left:50%;
+
+    transform:
+    translate(-50%,-50%);
+
+    z-index:20;
+
+    color:white;
+
+    text-align:center;
+
+    display:none;
+
+    background:
+    rgba(0,0,0,.85);
+
+    padding:30px 45px;
+
+    border-radius:18px;
+
+}
+
+#message h2{
+
+    color:#74ffad;
+
+}
+
+#startHint{
+
+    position:fixed;
+
+    bottom:25px;
+
+    left:50%;
+
+    transform:
+    translateX(-50%);
+
+    z-index:5;
+
+    color:white;
+
+    background:
+    rgba(0,0,0,.55);
+
+    padding:10px 20px;
+
+    border-radius:20px;
+
+    display:none;
 
 }
 
@@ -88,29 +231,102 @@ body {
 <body>
 
 
-<div id="help">
-
-Click = Look Around<br>
-
-W A S D = Move<br>
-
-Space = Up<br>
-
-Shift = Down<br>
-
-ESC = Release Mouse
-
-</div>
-
-
-<div id="fps">
-
-FPS: --
-
-</div>
-
-
 <div id="game"></div>
+
+
+<div id="menu">
+
+    <h1>SPIRIT MAZE</h1>
+
+    <p>
+        Enter the maze. Find the exit. Escape.
+    </p>
+
+    <div class="levels">
+
+        <button
+        class="level"
+        id="level1">
+
+        LEVEL 1
+
+        <br>
+
+        <small>BEGINNER</small>
+
+        </button>
+
+
+        <button
+        class="level locked"
+        id="level2">
+
+        🔒
+
+        <br>
+
+        LEVEL 2
+
+        </button>
+
+
+        <button
+        class="level locked"
+        id="level3">
+
+        🔒
+
+        <br>
+
+        LEVEL 3
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<div id="hud">
+
+    LEVEL:
+    <span id="levelNumber">
+    1
+    </span>
+
+    &nbsp; | &nbsp;
+
+    TIME:
+    <span id="timer">
+    0.0
+    </span>
+
+</div>
+
+
+<div id="startHint">
+
+    Click to enter the maze
+
+</div>
+
+
+<div id="message">
+
+    <h2>
+    LEVEL COMPLETE
+    </h2>
+
+    <p id="resultText"></p>
+
+    <button
+    id="nextButton">
+
+    NEXT LEVEL
+
+    </button>
+
+</div>
 
 
 
@@ -137,7 +353,7 @@ scene.background =
 
 new THREE.Color(
 
-0x91cce8
+0x78b9d5
 
 );
 
@@ -146,11 +362,11 @@ scene.fog =
 
 new THREE.Fog(
 
-0x91cce8,
+0x78b9d5,
 
-90,
+35,
 
-250
+110
 
 );
 
@@ -165,14 +381,14 @@ const camera =
 
 new THREE.PerspectiveCamera(
 
-65,
+70,
 
 window.innerWidth /
 window.innerHeight,
 
 0.1,
 
-500
+300
 
 );
 
@@ -183,7 +399,7 @@ camera.position.set(
 
 5,
 
-42
+0
 
 );
 
@@ -198,7 +414,7 @@ const renderer =
 
 new THREE.WebGLRenderer({
 
-antialias: true,
+antialias:true,
 
 powerPreference:
 "high-performance"
@@ -221,7 +437,7 @@ Math.min(
 
 window.devicePixelRatio,
 
-1.35
+1.25
 
 )
 
@@ -231,17 +447,6 @@ window.devicePixelRatio,
 renderer.outputColorSpace =
 
 THREE.SRGBColorSpace;
-
-
-renderer.toneMapping =
-
-THREE.ACESFilmicToneMapping;
-
-
-renderer.toneMappingExposure =
-
-1.1;
-
 
 
 document
@@ -267,18 +472,18 @@ new THREE.DirectionalLight(
 
 0xffffff,
 
-2
+1.8
 
 );
 
 
 sun.position.set(
 
-30,
+20,
 
-50,
+40,
 
-25
+20
 
 );
 
@@ -291,11 +496,11 @@ const ambient =
 
 new THREE.HemisphereLight(
 
-0xbde4ff,
+0x9ddfff,
 
-0x44513c,
+0x233a27,
 
-1.4
+1.3
 
 );
 
@@ -309,1280 +514,121 @@ scene.add(ambient);
 // =====================================================
 
 
-const concrete =
+const grassMaterial =
 
 new THREE.MeshStandardMaterial({
 
-color: 0xc7c8c6,
+color:0x286b35,
 
-roughness: 0.82
+roughness:1
 
 });
 
 
-const darkConcrete =
+const groundMaterial =
 
 new THREE.MeshStandardMaterial({
 
-color: 0x272a2d,
+color:0x4f8747,
 
-roughness: 0.7
+roughness:1
 
 });
 
 
-const glass =
+const pathMaterial =
 
-new THREE.MeshPhysicalMaterial({
+new THREE.MeshStandardMaterial({
 
-color: 0x79bad0,
+color:0x756d50,
 
-roughness: 0.12,
-
-metalness: 0.12,
-
-transmission: 0.18,
-
-transparent: true,
-
-opacity: 0.7,
-
-side: THREE.DoubleSide
+roughness:1
 
 });
 
 
-const blackMetal =
+const exitMaterial =
 
 new THREE.MeshStandardMaterial({
 
-color: 0x17191b,
+color:0x62ffad,
 
-roughness: 0.25,
+emissive:0x23ff82,
 
-metalness: 0.9
-
-});
-
-
-const wood =
-
-new THREE.MeshStandardMaterial({
-
-color: 0x654027,
-
-roughness: 0.7
-
-});
-
-
-const interior =
-
-new THREE.MeshStandardMaterial({
-
-color: 0x1c2228,
-
-roughness: 0.6
-
-});
-
-
-const warmLight =
-
-new THREE.MeshStandardMaterial({
-
-color: 0xffbd62,
-
-emissive: 0xff7b1a,
-
-emissiveIntensity: 1.8
+emissiveIntensity:2
 
 });
 
 
 
 // =====================================================
-// BOX HELPER
+// GAME VARIABLES
 // =====================================================
 
 
-function createBox(
+let currentLevel = 1;
 
-w,
+let mazeSize = 11;
 
-h,
+let cellSize = 4;
 
-d,
+let maze = [];
 
-material,
+let mazeGroup = null;
 
-x,
+let exitPosition = null;
 
-y,
+let startTime = 0;
 
-z,
+let playing = false;
 
-parent
+let spiritMode = false;
 
-) {
+let unlockedLevel =
 
+Number(
 
-const mesh =
+localStorage.getItem(
 
-new THREE.Mesh(
+"spiritMazeLevel"
 
-new THREE.BoxGeometry(
-
-w,
-
-h,
-
-d
-
-),
-
-material
-
-);
-
-
-mesh.position.set(
-
-x,
-
-y,
-
-z
-
-);
-
-
-(parent || scene).add(mesh);
-
-
-return mesh;
-
-}
-
-
-
-// =====================================================
-// GROUND
-// =====================================================
-
-
-createBox(
-
-200,
-
-0.2,
-
-200,
-
-new THREE.MeshStandardMaterial({
-
-color: 0x527d4a,
-
-roughness: 1
-
-}),
-
-0,
-
--0.1,
-
-0
+) || 1
 
 );
 
 
 
 // =====================================================
-// BUILDING
+// PLAYER
 // =====================================================
 
 
-const building =
+const player = {
 
-new THREE.Group();
+    x:0,
 
+    z:0,
 
-scene.add(building);
+    y:2,
 
+    velocityY:0,
 
+    grounded:true
 
-// Main tower
-
-
-createBox(
-
-25,
-
-22,
-
-18,
-
-concrete,
-
-0,
-
-11,
-
-0,
-
-building
-
-);
-
-
-
-// Dark side volumes
-
-
-createBox(
-
-4,
-
-22,
-
-18,
-
-darkConcrete,
-
--12,
-
-11,
-
-0,
-
-building
-);
-
-
-createBox(
-
-4,
-
-22,
-
-18,
-
-darkConcrete,
-
-12,
-
-11,
-
-0,
-
-building
-);
+};
 
 
 
 // =====================================================
-// FRONT GLASS ATRIUM
-// =====================================================
-
-
-createBox(
-
-15,
-
-20,
-
-0.35,
-
-glass,
-
-0,
-
-11,
-
--9.2,
-
-building
-);
-
-
-
-// =====================================================
-// FLOOR SLABS
-// =====================================================
-
-
-for (
-
-let y = 2;
-
-y <= 20;
-
-y += 4
-
-) {
-
-
-createBox(
-
-25.5,
-
-0.25,
-
-0.5,
-
-blackMetal,
-
-0,
-
-y,
-
--9.5,
-
-building
-
-);
-
-}
-
-
-
-// =====================================================
-// VERTICAL ARCHITECTURAL FINS
-// =====================================================
-
-
-for (
-
-let x = -10;
-
-x <= 10;
-
-x += 5
-
-) {
-
-
-createBox(
-
-0.3,
-
-21,
-
-0.55,
-
-blackMetal,
-
-x,
-
-11,
-
--9.65,
-
-building
-
-);
-
-}
-
-
-
-// =====================================================
-// WINDOWS
-// =====================================================
-
-
-function createWindow(
-
-x,
-
-y
-
-) {
-
-
-const group =
-
-new THREE.Group();
-
-
-
-// Deep window recess
-
-
-createBox(
-
-4.3,
-
-3.0,
-
-0.7,
-
-interior,
-
-x,
-
-y,
-
--9.15,
-
-group
-);
-
-
-
-// Glass surface
-
-
-createBox(
-
-3.8,
-
-2.6,
-
-0.08,
-
-glass,
-
-x,
-
-y,
-
--9.55,
-
-group
-);
-
-
-
-// Frame
-
-
-createBox(
-
-0.1,
-
-2.8,
-
-0.2,
-
-blackMetal,
-
-x - 2,
-
-y,
-
--9.65,
-
-group
-);
-
-
-createBox(
-
-0.1,
-
-2.8,
-
-0.2,
-
-blackMetal,
-
-x + 2,
-
-y,
-
--9.65,
-
-group
-);
-
-
-createBox(
-
-4,
-
-0.1,
-
-0.2,
-
-blackMetal,
-
-x,
-
-y + 1.35,
-
--9.65,
-
-group
-);
-
-
-createBox(
-
-4,
-
-0.1,
-
-0.2,
-
-blackMetal,
-
-x,
-
-y - 1.35,
-
--9.65,
-
-group
-);
-
-
-
-// Interior floor
-
-
-createBox(
-
-3.5,
-
-0.1,
-
-2.8,
-
-wood,
-
-x,
-
-y - 1.3,
-
--8.4,
-
-group
-);
-
-
-
-// Sofa
-
-
-createBox(
-
-2,
-
-0.55,
-
-0.7,
-
-wood,
-
-x,
-
-y - 0.65,
-
--8.3,
-
-group
-);
-
-
-
-// Interior lamp
-
-
-const lamp =
-
-new THREE.Mesh(
-
-new THREE.SphereGeometry(
-
-0.22,
-
-10,
-
-10
-
-),
-
-warmLight
-
-);
-
-
-lamp.position.set(
-
-x,
-
-y + 0.8,
-
--8.7
-
-);
-
-
-group.add(lamp);
-
-
-
-building.add(group);
-
-}
-
-
-
-// Create window rows
-
-
-for (
-
-let floor = 0;
-
-floor < 5;
-
-floor++
-
-) {
-
-
-for (
-
-let col = -1;
-
-col <= 1;
-
-col++
-
-) {
-
-
-createWindow(
-
-col * 6.8,
-
-3.8 + floor * 4
-
-);
-
-}
-
-}
-
-
-
-// =====================================================
-// BALCONIES
-// =====================================================
-
-
-function createBalcony(
-
-x,
-
-y,
-
-rotation
-
-) {
-
-
-const balcony =
-
-new THREE.Group();
-
-
-balcony.position.set(
-
-x,
-
-y,
-
--10.5
-
-);
-
-
-balcony.rotation.y =
-
-rotation;
-
-
-
-// Floor
-
-
-createBox(
-
-5.5,
-
-0.25,
-
-3,
-
-concrete,
-
-0,
-
-0,
-
--1.2,
-
-balcony
-);
-
-
-
-// Side wall
-
-
-createBox(
-
-0.2,
-
-1.2,
-
-2.7,
-
-blackMetal,
-
--2.6,
-
-0.65,
-
--1.2,
-
-balcony
-);
-
-
-createBox(
-
-0.2,
-
-1.2,
-
-2.7,
-
-blackMetal,
-
-2.6,
-
-0.65,
-
--1.2,
-
-balcony
-);
-
-
-
-// Front glass railing
-
-
-createBox(
-
-5,
-
-1.15,
-
-0.08,
-
-glass,
-
-0,
-
-0.65,
-
--2.5,
-
-balcony
-);
-
-
-
-// Top rail
-
-
-createBox(
-
-5.2,
-
-0.1,
-
-0.12,
-
-blackMetal,
-
-0,
-
-1.3,
-
--2.5,
-
-balcony
-);
-
-
-
-building.add(balcony);
-
-}
-
-
-
-// Asymmetric balconies
-
-
-createBalcony(
-
--6.5,
-
-7.8,
-
--0.12
-
-);
-
-
-createBalcony(
-
-6.5,
-
-15.8,
-
-0.12
-
-);
-
-
-
-// =====================================================
-// MAIN ENTRANCE
-// =====================================================
-
-
-// Entrance frame
-
-
-createBox(
-
-8,
-
-6.5,
-
-0.5,
-
-darkConcrete,
-
-0,
-
-3.25,
-
--10,
-
-building
-);
-
-
-
-// Glass doors
-
-
-createBox(
-
-3.2,
-
-5,
-
-0.1,
-
-glass,
-
--1.7,
-
-2.5,
-
--10.35,
-
-building
-);
-
-
-createBox(
-
-3.2,
-
-5,
-
-0.1,
-
-glass,
-
-1.7,
-
-2.5,
-
--10.35,
-
-building
-);
-
-
-
-// Entrance canopy
-
-
-const canopy =
-
-new THREE.Mesh(
-
-new THREE.BoxGeometry(
-
-9,
-
-0.35,
-
-4
-
-),
-
-blackMetal
-
-);
-
-
-canopy.position.set(
-
-0,
-
-7,
-
--11.5
-
-);
-
-
-canopy.rotation.x =
-
--0.12;
-
-
-building.add(canopy);
-
-
-
-// =====================================================
-// ANGLED CORNERS
-// =====================================================
-
-
-const cornerGeometry =
-
-new THREE.BufferGeometry();
-
-
-const vertices = new Float32Array([
-
-0,0,0,
-
-3,0,0,
-
-0,20,0,
-
-3,20,0,
-
-0,0,3,
-
-3,0,3,
-
-0,20,3,
-
-3,20,3
-
-]);
-
-
-cornerGeometry.setAttribute(
-
-"position",
-
-new THREE.BufferAttribute(
-
-vertices,
-
-3
-
-)
-
-);
-
-
-
-// =====================================================
-// ROOF
-// =====================================================
-
-
-createBox(
-
-26,
-
-0.8,
-
-19,
-
-darkConcrete,
-
-0,
-
-22.4,
-
-0,
-
-building
-);
-
-
-
-// Rooftop glass room
-
-
-createBox(
-
-7,
-
-3,
-
-5,
-
-glass,
-
-0,
-
-24,
-
--2,
-
-building
-);
-
-
-
-// Rooftop frame
-
-
-createBox(
-
-7.5,
-
-0.2,
-
-0.2,
-
-blackMetal,
-
-0,
-
-25.5,
-
--4.5,
-
-building
-);
-
-
-
-// =====================================================
-// MODERN ROOF FIN
-// =====================================================
-
-
-const roofFin =
-
-new THREE.Mesh(
-
-new THREE.BoxGeometry(
-
-12,
-
-0.35,
-
-2
-
-),
-
-blackMetal
-
-);
-
-
-roofFin.position.set(
-
-0,
-
-26,
-
-0
-
-);
-
-
-roofFin.rotation.z =
-
--0.08;
-
-
-building.add(roofFin);
-
-
-
-// =====================================================
-// LANDSCAPE
-// =====================================================
-
-
-function createTree(
-
-x,
-
-z
-
-) {
-
-
-const group =
-
-new THREE.Group();
-
-
-
-const trunk =
-
-new THREE.Mesh(
-
-new THREE.CylinderGeometry(
-
-0.35,
-
-0.5,
-
-3,
-
-8
-
-),
-
-wood
-
-);
-
-
-trunk.position.y =
-
-1.5;
-
-
-group.add(trunk);
-
-
-
-const crown =
-
-new THREE.Mesh(
-
-new THREE.IcosahedronGeometry(
-
-2.2,
-
-1
-
-),
-
-new THREE.MeshStandardMaterial({
-
-color: 0x347a38,
-
-roughness: 1
-
-})
-
-);
-
-
-crown.position.y =
-
-4;
-
-
-group.add(crown);
-
-
-
-group.position.set(
-
-x,
-
-0,
-
-z
-
-);
-
-
-scene.add(group);
-
-}
-
-
-
-createTree(-17,-12);
-
-
-createTree(17,-12);
-
-
-createTree(-17,12);
-
-
-createTree(17,12);
-
-
-
-// =====================================================
-// ROAD
-// =====================================================
-
-
-createBox(
-
-16,
-
-0.1,
-
-150,
-
-new THREE.MeshStandardMaterial({
-
-color: 0x292929,
-
-roughness: 0.9
-
-}),
-
-0,
-
-0,
-
-0
-
-);
-
-
-
-// =====================================================
-// CAMERA MOVEMENT
+// CONTROLS
 // =====================================================
 
 
 const keys = {};
+
+let yaw = 0;
+
+let pitch = 0;
 
 
 
@@ -1592,7 +638,7 @@ window.addEventListener(
 
 e => {
 
-keys[e.code] = true;
+    keys[e.code] = true;
 
 });
 
@@ -1603,29 +649,645 @@ window.addEventListener(
 
 e => {
 
-keys[e.code] = false;
+    keys[e.code] = false;
 
 });
 
 
 
-let yaw = 0;
+// =====================================================
+// MAZE GENERATION
+// =====================================================
 
-let pitch = 0;
+
+function generateMaze(size){
+
+    const grid = [];
+
+    for(let z=0;z<size;z++){
+
+        grid[z]=[];
+
+        for(let x=0;x<size;x++){
+
+            grid[z][x]=1;
+
+        }
+
+    }
+
+
+    function carve(x,z){
+
+        grid[z][x]=0;
+
+
+        const directions=[
+
+            [2,0],
+
+            [-2,0],
+
+            [0,2],
+
+            [0,-2]
+
+        ];
+
+
+        directions.sort(
+
+            () => Math.random()-.5
+
+        );
+
+
+        for(
+
+            const [dx,dz]
+
+            of directions
+
+        ){
+
+            const nx=x+dx;
+
+            const nz=z+dz;
+
+
+            if(
+
+                nx>0 &&
+
+                nx<size-1 &&
+
+                nz>0 &&
+
+                nz<size-1 &&
+
+                grid[nz][nx]===1
+
+            ){
+
+                grid[
+
+                    z+dz/2
+
+                ][
+
+                    x+dx/2
+
+                ]=0;
+
+
+                carve(nx,nz);
+
+            }
+
+        }
+
+    }
+
+
+    carve(1,1);
+
+
+    return grid;
+
+}
 
 
 
-const movementSpeed = 0.14;
+// =====================================================
+// BUILD MAZE
+// =====================================================
 
+
+function buildMaze(){
+
+    if(mazeGroup){
+
+        scene.remove(
+
+            mazeGroup
+
+        );
+
+    }
+
+
+    mazeGroup =
+
+    new THREE.Group();
+
+
+    scene.add(
+
+        mazeGroup
+
+    );
+
+
+    maze =
+
+    generateMaze(
+
+        mazeSize
+
+    );
+
+
+    const total =
+
+    mazeSize * cellSize;
+
+
+    // Ground
+
+
+    const ground =
+
+    new THREE.Mesh(
+
+        new THREE.PlaneGeometry(
+
+            total,
+
+            total
+
+        ),
+
+        groundMaterial
+
+    );
+
+
+    ground.rotation.x=
+
+    -Math.PI/2;
+
+
+    mazeGroup.add(
+
+        ground
+
+    );
+
+
+    // Walls
+
+
+    for(
+
+        let z=0;
+
+        z<mazeSize;
+
+        z++
+
+    ){
+
+        for(
+
+            let x=0;
+
+            x<mazeSize;
+
+            x++
+
+        ){
+
+            if(
+
+                maze[z][x]===1
+
+            ){
+
+                const wall =
+
+                new THREE.Mesh(
+
+                    new THREE.BoxGeometry(
+
+                        cellSize,
+
+                        4,
+
+                        cellSize
+
+                    ),
+
+                    grassMaterial
+
+                );
+
+
+                wall.position.set(
+
+                    (
+
+                        x -
+
+                        mazeSize/2
+
+                    ) *
+
+                    cellSize,
+
+                    2,
+
+                    (
+
+                        z -
+
+                        mazeSize/2
+
+                    ) *
+
+                    cellSize
+
+                );
+
+
+                mazeGroup.add(
+
+                    wall
+
+                );
+
+            }
+
+        }
+
+    }
+
+
+    // Exit
+
+
+    exitPosition={
+
+        x:
+
+        (
+
+            mazeSize-2 -
+
+            mazeSize/2
+
+        )*
+
+        cellSize,
+
+        z:
+
+        (
+
+            mazeSize-2 -
+
+            mazeSize/2
+
+        )*
+
+        cellSize
+
+    };
+
+
+    const exit =
+
+    new THREE.Mesh(
+
+        new THREE.CylinderGeometry(
+
+            1.2,
+
+            1.2,
+
+            .2,
+
+            24
+
+        ),
+
+        exitMaterial
+
+    );
+
+
+    exit.position.set(
+
+        exitPosition.x,
+
+        .15,
+
+        exitPosition.z
+
+    );
+
+
+    mazeGroup.add(
+
+        exit
+
+    );
+
+}
+
+
+
+// =====================================================
+// SPIRIT
+// =====================================================
+
+
+const spirit =
+
+new THREE.Mesh(
+
+    new THREE.SphereGeometry(
+
+        .6,
+
+        16,
+
+        16
+
+    ),
+
+    new THREE.MeshBasicMaterial({
+
+        color:0x8affc2,
+
+        transparent:true,
+
+        opacity:.8
+
+    })
+
+);
+
+
+scene.add(
+
+    spirit
+
+);
+
+
+spirit.visible=false;
+
+
+
+// =====================================================
+// START LEVEL
+// =====================================================
+
+
+function startLevel(level){
+
+    currentLevel=
+
+    level;
+
+
+    mazeSize=
+
+    11 +
+
+    (
+
+        level-1
+
+    )*
+
+    4;
+
+
+    if(
+
+        mazeSize%2===0
+
+    ){
+
+        mazeSize++;
+
+    }
+
+
+    buildMaze();
+
+
+    player.x=
+
+    (
+
+        1 -
+
+        mazeSize/2
+
+    )*
+
+    cellSize;
+
+
+    player.z=
+
+    (
+
+        1 -
+
+        mazeSize/2
+
+    )*
+
+    cellSize;
+
+
+    player.y=2;
+
+
+    camera.position.set(
+
+        player.x,
+
+        25,
+
+        player.z
+
+    );
+
+
+    yaw=0;
+
+    pitch=
+
+    -Math.PI/2;
+
+
+    spiritMode=true;
+
+    playing=false;
+
+
+    spirit.visible=true;
+
+
+    spirit.position.set(
+
+        player.x,
+
+        25,
+
+        player.z
+
+    );
+
+
+    document
+
+    .getElementById(
+
+        "menu"
+
+    )
+
+    .style.display=
+
+    "none";
+
+
+    document
+
+    .getElementById(
+
+        "hud"
+
+    )
+
+    .style.display=
+
+    "block";
+
+
+    document
+
+    .getElementById(
+
+        "startHint"
+
+    )
+
+    .style.display=
+
+    "block";
+
+
+    document
+
+    .getElementById(
+
+        "levelNumber"
+
+    )
+
+    .textContent=
+
+    level;
+
+}
+
+
+
+// =====================================================
+// SPIRIT DESCENT
+// =====================================================
+
+
+function updateSpirit(){
+
+    if(
+
+        !spiritMode
+
+    ) return;
+
+
+    spirit.position.y-=
+
+    .15;
+
+
+    camera.position.y=
+
+    spirit.position.y;
+
+
+    if(
+
+        spirit.position.y<=
+
+        player.y
+
+    ){
+
+        spiritMode=false;
+
+        spirit.visible=false;
+
+        playing=true;
+
+        startTime=
+
+        performance.now();
+
+        camera.position.y=
+
+        player.y;
+
+
+        document
+
+        .getElementById(
+
+            "startHint"
+
+        )
+
+        .style.display=
+
+        "none";
+
+    }
+
+}
+
+
+
+// =====================================================
+// POINTER LOCK
+// =====================================================
 
 
 renderer.domElement.addEventListener(
 
 "click",
 
-() => {
+()=>{
 
-renderer.domElement.requestPointerLock();
+    if(
+
+        playing
+
+    ){
+
+        renderer
+
+        .domElement
+
+        .requestPointerLock();
+
+    }
 
 });
 
@@ -1635,278 +1297,742 @@ document.addEventListener(
 
 "mousemove",
 
-e => {
+e=>{
+
+    if(
+
+        document
+
+        .pointerLockElement!==
+
+        renderer.domElement
+
+    ) return;
 
 
-if (
+    yaw-=
 
-document.pointerLockElement !==
+    e.movementX*
 
-renderer.domElement
-
-) return;
+    .003;
 
 
+    pitch-=
 
-yaw -=
+    e.movementY*
 
-e.movementX * 0.003;
-
-
-
-pitch -=
-
-e.movementY * 0.003;
+    .003;
 
 
+    pitch=
 
-pitch =
+    Math.max(
 
-Math.max(
+        -1.4,
 
--M1.4,
+        Math.min(
 
-Math.min(
+            1.4,
 
-1.4,
+            pitch
 
-pitch
+        )
 
-)
-
-);
+    );
 
 });
 
 
 
 // =====================================================
-// MOVEMENT
+// COLLISION
 // =====================================================
 
 
-function move() {
+function canMove(
 
+    x,
 
-const forward =
+    z
 
-new THREE.Vector3();
+){
 
+    const gx=
 
-const right =
+    Math.floor(
 
-new THREE.Vector3();
+        x/cellSize +
 
+        mazeSize/2
 
-const dir =
+    );
 
-new THREE.Vector3();
 
+    const gz=
 
+    Math.floor(
 
-camera.getWorldDirection(
+        z/cellSize +
 
-forward
+        mazeSize/2
 
-);
+    );
 
 
-forward.y = 0;
+    if(
 
+        gx<0 ||
 
-forward.normalize();
+        gz<0 ||
 
+        gx>=mazeSize ||
 
+        gz>=mazeSize
 
-right.crossVectors(
+    ){
 
-forward,
+        return false;
 
-camera.up
+    }
 
-);
 
-
-right.normalize();
-
-
-
-if (
-
-keys.KeyW
-
-)
-
-dir.add(forward);
-
-
-if (
-
-keys.KeyS
-
-)
-
-dir.sub(forward);
-
-
-if (
-
-keys.KeyA
-
-)
-
-dir.sub(right);
-
-
-if (
-
-keys.KeyD
-
-)
-
-dir.add(right);
-
-
-
-if (
-
-dir.lengthSq() > 0
-
-) {
-
-
-dir.normalize();
-
-
-camera.position.addScaledVector(
-
-dir,
-
-movementSpeed
-
-);
-
-}
-
-
-
-if (
-
-keys.Space
-
-)
-
-camera.position.y +=
-
-movementSpeed;
-
-
-
-if (
-
-keys.ShiftLeft ||
-
-keys.ShiftRight
-
-)
-
-camera.position.y -=
-
-movementSpeed;
-
-
-
-camera.position.y =
-
-Math.max(
-
-1,
-
-camera.position.y
-
-);
+    return maze[gz][gx]===0;
 
 }
 
 
 
 // =====================================================
-// CAMERA
+// PLAYER MOVEMENT
 // =====================================================
 
 
-function updateCamera() {
+function movePlayer(){
+
+    if(
+
+        !playing
+
+    ) return;
 
 
-camera.rotation.order =
+    const speed=
 
-"YXZ";
-
-
-camera.rotation.y =
-
-yaw;
+    .12;
 
 
-camera.rotation.x =
+    const forward=
 
-pitch;
+    new THREE.Vector3(
+
+        -Math.sin(yaw),
+
+        0,
+
+        -Math.cos(yaw)
+
+    );
+
+
+    const right=
+
+    new THREE.Vector3(
+
+        Math.cos(yaw),
+
+        0,
+
+        -Math.sin(yaw)
+
+    );
+
+
+    let dx=0;
+
+    let dz=0;
+
+
+    if(keys.KeyW){
+
+        dx+=forward.x;
+
+        dz+=forward.z;
+
+    }
+
+
+    if(keys.KeyS){
+
+        dx-=forward.x;
+
+        dz-=forward.z;
+
+    }
+
+
+    if(keys.KeyA){
+
+        dx-=right.x;
+
+        dz-=right.z;
+
+    }
+
+
+    if(keys.KeyD){
+
+        dx+=right.x;
+
+        dz+=right.z;
+
+    }
+
+
+    const length=
+
+    Math.hypot(
+
+        dx,
+
+        dz
+
+    );
+
+
+    if(length>0){
+
+        dx/=length;
+
+        dz/=length;
+
+
+        const nx=
+
+        player.x+
+
+        dx*
+
+        speed;
+
+
+        const nz=
+
+        player.z+
+
+        dz*
+
+        speed;
+
+
+        if(
+
+            canMove(
+
+                nx,
+
+                player.z
+
+            )
+
+        ){
+
+            player.x=nx;
+
+        }
+
+
+        if(
+
+            canMove(
+
+                player.x,
+
+                nz
+
+            )
+
+        ){
+
+            player.z=nz;
+
+        }
+
+    }
+
+
+    // Jump
+
+
+    if(
+
+        keys.Space &&
+
+        player.grounded
+
+    ){
+
+        player.velocityY=
+
+        .22;
+
+        player.grounded=
+
+        false;
+
+    }
+
+
+    player.velocityY-=
+
+    .012;
+
+
+    player.y+=
+
+    player.velocityY;
+
+
+    if(
+
+        player.y<=2
+
+    ){
+
+        player.y=2;
+
+        player.velocityY=0;
+
+        player.grounded=true;
+
+    }
+
+
+    camera.position.set(
+
+        player.x,
+
+        player.y,
+
+        player.z
+
+    );
+
+
+    camera.rotation.order=
+
+    "YXZ";
+
+
+    camera.rotation.y=
+
+    yaw;
+
+
+    camera.rotation.x=
+
+    pitch;
 
 }
 
 
 
 // =====================================================
-// FPS
+// EXIT CHECK
 // =====================================================
 
 
-let frames = 0;
+function checkExit(){
 
-let lastFPS =
+    if(
 
-performance.now();
+        !playing
 
-
-
-function updateFPS() {
+    ) return;
 
 
-frames++;
+    const distance=
+
+    Math.hypot(
+
+        player.x-
+
+        exitPosition.x,
+
+        player.z-
+
+        exitPosition.z
+
+    );
+
+
+    if(
+
+        distance<1.5
+
+    ){
+
+        completeLevel();
+
+    }
+
+}
 
 
 
-const now =
+// =====================================================
+// COMPLETE
+// =====================================================
 
-performance.now();
+
+function completeLevel(){
+
+    playing=false;
+
+
+    const time=
+
+    (
+
+        performance.now()-
+
+        startTime
+
+    )/
+
+    1000;
+
+
+    const oldBest=
+
+    localStorage.getItem(
+
+        "level"+
+
+        currentLevel+
+
+        "Best"
+
+    );
+
+
+    if(
+
+        !oldBest ||
+
+        time<Number(oldBest)
+
+    ){
+
+        localStorage.setItem(
+
+            "level"+
+
+            currentLevel+
+
+            "Best",
+
+            time
+
+        );
+
+    }
+
+
+    if(
+
+        currentLevel>=
+
+        unlockedLevel
+
+    ){
+
+        unlockedLevel=
+
+        Math.min(
+
+            3,
+
+            currentLevel+1
+
+        );
+
+
+        localStorage.setItem(
+
+            "spiritMazeLevel",
+
+            unlockedLevel
+
+        );
+
+    }
+
+
+    document
+
+    .getElementById(
+
+        "resultText"
+
+    )
+
+    .textContent=
+
+    "Your time: "+
+
+    time.toFixed(2)+
+
+    " seconds";
+
+
+    document
+
+    .getElementById(
+
+        "message"
+
+    )
+
+    .style.display=
+
+    "block";
+
+}
 
 
 
-if (
-
-now - lastFPS > 1000
-
-) {
+// =====================================================
+// LEVEL BUTTONS
+// =====================================================
 
 
 document
 
-.getElementById("fps")
+.getElementById(
 
-.textContent =
+    "level1"
 
-"FPS: " +
+)
 
-frames;
+.addEventListener(
+
+"click",
+
+()=>{
+
+    startLevel(1);
+
+});
 
 
 
-frames = 0;
+document
+
+.getElementById(
+
+    "level2"
+
+)
+
+.addEventListener(
+
+"click",
+
+()=>{
+
+    if(
+
+        unlockedLevel>=2
+
+    ){
+
+        startLevel(2);
+
+    }
+
+});
 
 
-lastFPS = now;
+
+document
+
+.getElementById(
+
+    "level3"
+
+)
+
+.addEventListener(
+
+"click",
+
+()=>{
+
+    if(
+
+        unlockedLevel>=3
+
+    ){
+
+        startLevel(3);
+
+    }
+
+});
+
+
+
+// =====================================================
+// NEXT
+// =====================================================
+
+
+document
+
+.getElementById(
+
+    "nextButton"
+
+)
+
+.addEventListener(
+
+"click",
+
+()=>{
+
+    document
+
+    .getElementById(
+
+        "message"
+
+    )
+
+    .style.display=
+
+    "none";
+
+
+    if(
+
+        currentLevel<3
+
+    ){
+
+        startLevel(
+
+            currentLevel+1
+
+        );
+
+    }
+
+});
+
+
+
+// =====================================================
+// UPDATE LEVEL LOCKS
+// =====================================================
+
+
+function updateMenu(){
+
+    for(
+
+        let i=1;
+
+        i<=3;
+
+        i++
+
+    ){
+
+        const button=
+
+        document
+
+        .getElementById(
+
+            "level"+i
+
+        );
+
+
+        if(
+
+            i<=unlockedLevel
+
+        ){
+
+            button
+
+            .classList
+
+            .remove(
+
+                "locked"
+
+            );
+
+
+            button
+
+            .textContent=
+
+            "LEVEL "+i;
+
+        }
+
+    }
 
 }
+
+
+updateMenu();
+
+
+
+// =====================================================
+// TIMER
+// =====================================================
+
+
+function updateTimer(){
+
+    if(
+
+        playing
+
+    ){
+
+        const time=
+
+        (
+
+            performance.now()-
+
+            startTime
+
+        )/
+
+        1000;
+
+
+        document
+
+        .getElementById(
+
+            "timer"
+
+        )
+
+        .textContent=
+
+        time.toFixed(1);
+
+    }
 
 }
 
@@ -1917,33 +2043,31 @@ lastFPS = now;
 // =====================================================
 
 
-function animate() {
+function animate(){
+
+    requestAnimationFrame(
+
+        animate
+
+    );
 
 
-requestAnimationFrame(
+    updateSpirit();
 
-animate
+    movePlayer();
 
-);
+    checkExit();
 
-
-move();
-
-
-updateCamera();
+    updateTimer();
 
 
-updateFPS();
+    renderer.render(
 
+        scene,
 
+        camera
 
-renderer.render(
-
-scene,
-
-camera
-
-);
+    );
 
 }
 
@@ -1961,31 +2085,27 @@ window.addEventListener(
 
 "resize",
 
-() => {
+()=>{
+
+    camera.aspect=
+
+    window.innerWidth/
+
+    window.innerHeight;
 
 
-camera.aspect =
-
-window.innerWidth /
-
-window.innerHeight;
+    camera.updateProjectionMatrix();
 
 
-camera.updateProjectionMatrix();
+    renderer.setSize(
 
+        window.innerWidth,
 
+        window.innerHeight
 
-renderer.setSize(
-
-window.innerWidth,
-
-window.innerHeight
-
-);
+    );
 
 });
-
-
 
 </script>
 
