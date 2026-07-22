@@ -1,332 +1,1024 @@
-
+```html
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
     <title>AI World Simulator</title>
 
     <style>
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        html, body {
+        html,
+        body {
+
             width: 100%;
             height: 100%;
+
             overflow: hidden;
+
         }
 
         #game {
+
             width: 100%;
             height: 100%;
+
         }
 
         #info {
+
             position: fixed;
+
             top: 20px;
             left: 20px;
+
             padding: 12px 18px;
-            background: rgba(0, 0, 0, 0.7);
+
+            background:
+                rgba(0, 0, 0, 0.7);
+
             color: white;
+
             border-radius: 10px;
-            font-family: Arial, sans-serif;
+
+            font-family: Arial,
+            sans-serif;
+
             z-index: 10;
+
+            line-height: 1.6;
+
         }
+
     </style>
+
 </head>
+
 
 <body>
 
+
 <div id="info">
-    🌍 AI World Simulator<br>
-    🖱️ Drag = Rotate<br>
+
+    🌍 AI World Simulator
+
+    <br>
+
+    🖱️ Drag = Rotate Camera
+
+    <br>
+
     🔍 Scroll = Zoom
+
 </div>
+
 
 <div id="game"></div>
 
+
+
 <script type="module">
 
-    import * as THREE from
-    "https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.module.js";
 
-    // Scene
-    const scene = new THREE.Scene();
+import * as THREE from
 
-    scene.background = new THREE.Color(0x87CEEB);
+"https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.module.js";
 
 
-    // Camera
-    const camera = new THREE.PerspectiveCamera(
-        60,
-        window.innerWidth / window.innerHeight,
-        0.1,
-        1000
+
+// ==========================================
+// SCENE
+// ==========================================
+
+
+const scene =
+
+new THREE.Scene();
+
+
+scene.background =
+
+new THREE.Color(
+
+    0x87CEEB
+
+);
+
+
+
+// ==========================================
+// CAMERA
+// ==========================================
+
+
+const camera =
+
+new THREE.PerspectiveCamera(
+
+    60,
+
+    window.innerWidth /
+
+    window.innerHeight,
+
+    0.1,
+
+    1000
+
+);
+
+
+
+// Camera target
+
+
+const target =
+
+new THREE.Vector3(
+
+    0,
+
+    0,
+
+    0
+
+);
+
+
+
+// Camera distance
+
+
+let distance = 30;
+
+
+// Horizontal angle
+
+
+let angle =
+
+Math.PI / 4;
+
+
+// Vertical angle
+
+
+let verticalAngle =
+
+Math.PI / 4;
+
+
+
+// ==========================================
+// RENDERER
+// ==========================================
+
+
+const renderer =
+
+new THREE.WebGLRenderer({
+
+    antialias: true
+
+});
+
+
+renderer.setSize(
+
+    window.innerWidth,
+
+    window.innerHeight
+
+);
+
+
+renderer.setPixelRatio(
+
+    Math.min(
+
+        window.devicePixelRatio,
+
+        2
+
+    )
+
+);
+
+
+document
+
+.getElementById("game")
+
+.appendChild(
+
+    renderer.domElement
+
+);
+
+
+
+// ==========================================
+// LIGHT
+// ==========================================
+
+
+const sun =
+
+new THREE.DirectionalLight(
+
+    0xffffff,
+
+    2
+
+);
+
+
+sun.position.set(
+
+    20,
+
+    30,
+
+    20
+
+);
+
+
+scene.add(
+
+    sun
+
+);
+
+
+
+const ambient =
+
+new THREE.AmbientLight(
+
+    0xffffff,
+
+    0.7
+
+);
+
+
+scene.add(
+
+    ambient
+
+
+
+);
+
+
+
+// ==========================================
+// GROUND
+// ==========================================
+
+
+const groundGeometry =
+
+new THREE.PlaneGeometry(
+
+    200,
+
+    200
+
+);
+
+
+const groundMaterial =
+
+new THREE.MeshStandardMaterial({
+
+    color: 0x4caf50
+
+});
+
+
+const ground =
+
+new THREE.Mesh(
+
+    groundGeometry,
+
+    groundMaterial
+
+);
+
+
+ground.rotation.x =
+
+-Math.PI / 2;
+
+
+scene.add(
+
+    ground
+
+);
+
+
+
+// ==========================================
+// ROAD
+// ==========================================
+
+
+const roadGeometry =
+
+new THREE.PlaneGeometry(
+
+    12,
+
+    200
+
+);
+
+
+const roadMaterial =
+
+new THREE.MeshStandardMaterial({
+
+    color: 0x333333
+
+});
+
+
+const road =
+
+new THREE.Mesh(
+
+    roadGeometry,
+
+    roadMaterial
+
+);
+
+
+road.rotation.x =
+
+-Math.PI / 2;
+
+
+road.position.y =
+
+0.02;
+
+
+scene.add(
+
+    road
+
+);
+
+
+
+// ==========================================
+// BUILDINGS
+// ==========================================
+
+
+function createBuilding(
+
+    x,
+
+    z,
+
+    width,
+
+    height,
+
+    depth,
+
+    color
+
+) {
+
+
+    const geometry =
+
+    new THREE.BoxGeometry(
+
+        width,
+
+        height,
+
+        depth
+
     );
 
-    camera.position.set(15, 12, 15);
 
+    const material =
 
-    // Renderer
-    const renderer = new THREE.WebGLRenderer({
-        antialias: true
+    new THREE.MeshStandardMaterial({
+
+        color: color
+
     });
 
-    renderer.setSize(
-        window.innerWidth,
-        window.innerHeight
+
+    const building =
+
+    new THREE.Mesh(
+
+        geometry,
+
+        material
+
     );
 
-    renderer.setPixelRatio(
-        Math.min(window.devicePixelRatio, 2)
-    );
 
-    document
-        .getElementById("game")
-        .appendChild(renderer.domElement);
+    building.position.set(
 
-
-    // Light
-    const sun = new THREE.DirectionalLight(
-        0xffffff,
-        2
-    );
-
-    sun.position.set(20, 30, 20);
-
-    scene.add(sun);
-
-
-    const ambient = new THREE.AmbientLight(
-        0xffffff,
-        0.7
-    );
-
-    scene.add(ambient);
-
-
-    // Ground
-    const groundGeometry =
-        new THREE.PlaneGeometry(200, 200);
-
-    const groundMaterial =
-        new THREE.MeshStandardMaterial({
-            color: 0x4caf50
-        });
-
-    const ground =
-        new THREE.Mesh(
-            groundGeometry,
-            groundMaterial
-        );
-
-    ground.rotation.x =
-        -Math.PI / 2;
-
-    scene.add(ground);
-
-
-    // Road
-    const roadGeometry =
-        new THREE.PlaneGeometry(12, 200);
-
-    const roadMaterial =
-        new THREE.MeshStandardMaterial({
-            color: 0x333333
-        });
-
-    const road =
-        new THREE.Mesh(
-            roadGeometry,
-            roadMaterial
-        );
-
-    road.rotation.x =
-        -Math.PI / 2;
-
-    road.position.y = 0.02;
-
-    scene.add(road);
-
-
-    // Building function
-    function createBuilding(
         x,
-        z,
-        width,
-        height,
-        depth,
-        color
-    ) {
 
-        const geometry =
-            new THREE.BoxGeometry(
-                width,
-                height,
-                depth
-            );
+        height / 2,
 
-        const material =
-            new THREE.MeshStandardMaterial({
-                color: color
-            });
+        z
 
-        const building =
-            new THREE.Mesh(
-                geometry,
-                material
-            );
+    );
 
-        building.position.set(
-            x,
-            height / 2,
-            z
-        );
 
-        scene.add(building);
+    scene.add(
+
+        building
+
+    );
+
+}
+
+
+
+createBuilding(
+
+    -10,
+
+    -10,
+
+    6,
+
+    12,
+
+    6,
+
+    0x888888
+
+);
+
+
+createBuilding(
+
+    10,
+
+    -15,
+
+    8,
+
+    8,
+
+    8,
+
+    0x777777
+
+);
+
+
+createBuilding(
+
+    -12,
+
+    15,
+
+    5,
+
+    6,
+
+    5,
+
+    0x999999
+
+);
+
+
+createBuilding(
+
+    12,
+
+    12,
+
+    7,
+
+    15,
+
+    7,
+
+    0x666666
+
+);
+
+
+
+// ==========================================
+// TREES
+// ==========================================
+
+
+function createTree(
+
+    x,
+
+    z
+
+) {
+
+
+    const trunkGeometry =
+
+    new THREE.CylinderGeometry(
+
+        0.5,
+
+        0.5,
+
+        3
+
+    );
+
+
+    const trunkMaterial =
+
+    new THREE.MeshStandardMaterial({
+
+        color: 0x8B4513
+
+    });
+
+
+    const trunk =
+
+    new THREE.Mesh(
+
+        trunkGeometry,
+
+        trunkMaterial
+
+    );
+
+
+    trunk.position.set(
+
+        x,
+
+        1.5,
+
+        z
+
+    );
+
+
+    scene.add(
+
+        trunk
+
+    );
+
+
+
+    const leavesGeometry =
+
+    new THREE.SphereGeometry(
+
+        2.5,
+
+        16,
+
+        16
+
+    );
+
+
+    const leavesMaterial =
+
+    new THREE.MeshStandardMaterial({
+
+        color: 0x228B22
+
+    });
+
+
+    const leaves =
+
+    new THREE.Mesh(
+
+        leavesGeometry,
+
+        leavesMaterial
+
+    );
+
+
+    leaves.position.set(
+
+        x,
+
+        4,
+
+        z
+
+    );
+
+
+    scene.add(
+
+        leaves
+
+    );
+
+}
+
+
+
+createTree(
+
+    -5,
+
+    -5
+
+);
+
+
+createTree(
+
+    6,
+
+    -5
+
+);
+
+
+createTree(
+
+    -6,
+
+    7
+
+);
+
+
+createTree(
+
+    7,
+
+    7
+
+);
+
+
+
+// ==========================================
+// CAMERA UPDATE
+// ==========================================
+
+
+function updateCamera() {
+
+
+    const x =
+
+    target.x +
+
+    distance *
+
+    Math.sin(angle) *
+
+    Math.cos(
+
+        verticalAngle
+
+    );
+
+
+    const y =
+
+    target.y +
+
+    distance *
+
+    Math.sin(
+
+        verticalAngle
+
+    );
+
+
+    const z =
+
+    target.z +
+
+    distance *
+
+    Math.cos(angle) *
+
+    Math.cos(
+
+        verticalAngle
+
+    );
+
+
+    camera.position.set(
+
+        x,
+
+        y,
+
+        z
+
+    );
+
+
+    camera.lookAt(
+
+        target
+
+    );
+
+}
+
+
+updateCamera();
+
+
+
+// ==========================================
+// MOUSE CONTROL
+// ==========================================
+
+
+let isDragging = false;
+
+
+let lastMouseX = 0;
+
+
+let lastMouseY = 0;
+
+
+
+renderer.domElement.addEventListener(
+
+    "mousedown",
+
+    (event) => {
+
+
+        isDragging = true;
+
+
+        lastMouseX =
+
+        event.clientX;
+
+
+        lastMouseY =
+
+        event.clientY;
+
+
     }
 
-
-    // Buildings
-    createBuilding(
-        -10,
-        -10,
-        6,
-        12,
-        6,
-        0x888888
-    );
-
-    createBuilding(
-        10,
-        -15,
-        8,
-        8,
-        8,
-        0x777777
-    );
-
-    createBuilding(
-        -12,
-        15,
-        5,
-        6,
-        5,
-        0x999999
-    );
-
-    createBuilding(
-        12,
-        12,
-        7,
-        15,
-        7,
-        0x666666
-    );
+);
 
 
-    // Tree function
-    function createTree(x, z) {
 
-        const trunkGeometry =
-            new THREE.CylinderGeometry(
-                0.5,
-                0.5,
-                3
-            );
+window.addEventListener(
 
-        const trunkMaterial =
-            new THREE.MeshStandardMaterial({
-                color: 0x8B4513
-            });
+    "mouseup",
 
-        const trunk =
-            new THREE.Mesh(
-                trunkGeometry,
-                trunkMaterial
-            );
-
-        trunk.position.set(
-            x,
-            1.5,
-            z
-        );
-
-        scene.add(trunk);
+    () => {
 
 
-        const leavesGeometry =
-            new THREE.SphereGeometry(
-                2.5,
-                16,
-                16
-            );
+        isDragging = false;
 
-        const leavesMaterial =
-            new THREE.MeshStandardMaterial({
-                color: 0x228B22
-            });
 
-        const leaves =
-            new THREE.Mesh(
-                leavesGeometry,
-                leavesMaterial
-            );
-
-        leaves.position.set(
-            x,
-            4,
-            z
-        );
-
-        scene.add(leaves);
     }
 
-
-    // Trees
-    createTree(-5, -5);
-    createTree(6, -5);
-    createTree(-6, 7);
-    createTree(7, 7);
+);
 
 
-    // Animation
-    function animate() {
 
-        requestAnimationFrame(animate);
+window.addEventListener(
 
-        renderer.render(
-            scene,
-            camera
+    "mousemove",
+
+    (event) => {
+
+
+        if (!isDragging) return;
+
+
+        const deltaX =
+
+        event.clientX -
+
+        lastMouseX;
+
+
+        const deltaY =
+
+        event.clientY -
+
+        lastMouseY;
+
+
+        angle -=
+
+        deltaX *
+
+        0.01;
+
+
+        verticalAngle +=
+
+        deltaY *
+
+        0.01;
+
+
+        verticalAngle =
+
+        Math.max(
+
+            0.15,
+
+            Math.min(
+
+                1.45,
+
+                verticalAngle
+
+            )
+
         );
+
+
+        lastMouseX =
+
+        event.clientX;
+
+
+        lastMouseY =
+
+        event.clientY;
+
+
+        updateCamera();
+
     }
 
-    animate();
+);
 
 
-    // Resize
-    window.addEventListener(
-        "resize",
-        () => {
 
-            camera.aspect =
-                window.innerWidth /
-                window.innerHeight;
+// ==========================================
+// ZOOM
+// ==========================================
 
-            camera.updateProjectionMatrix();
 
-            renderer.setSize(
-                window.innerWidth,
-                window.innerHeight
-            );
-        }
+renderer.domElement.addEventListener(
+
+    "wheel",
+
+    (event) => {
+
+
+        event.preventDefault();
+
+
+        distance +=
+
+        event.deltaY *
+
+        0.03;
+
+
+        distance =
+
+        Math.max(
+
+            8,
+
+            Math.min(
+
+                100,
+
+                distance
+
+            )
+
+        );
+
+
+        updateCamera();
+
+    },
+
+    {
+
+        passive: false
+
+    }
+
+);
+
+
+
+// ==========================================
+// ANIMATION
+// ==========================================
+
+
+function animate() {
+
+
+    requestAnimationFrame(
+
+        animate
+
     );
+
+
+    renderer.render(
+
+        scene,
+
+        camera
+
+    );
+
+}
+
+
+animate();
+
+
+
+// ==========================================
+// RESIZE
+// ==========================================
+
+
+window.addEventListener(
+
+    "resize",
+
+    () => {
+
+
+        camera.aspect =
+
+        window.innerWidth /
+
+        window.innerHeight;
+
+
+        camera.updateProjectionMatrix();
+
+
+        renderer.setSize(
+
+            window.innerWidth,
+
+            window.innerHeight
+
+        );
+
+
+    }
+
+);
+
 
 </script>
 
-</body>
-</html>
 
+</body>
+
+</html>
+```
