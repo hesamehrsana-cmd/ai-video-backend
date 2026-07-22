@@ -138,3 +138,9 @@ def generate_video(request: VideoRequest):
             detail=str(e)
 
         )
+@app.get("/test")
+def test_connection():
+    return {
+        "success": True,
+        "message": "Backend connection works!"
+    }
