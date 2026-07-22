@@ -6,12 +6,10 @@
 
 <meta charset="UTF-8">
 
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0"
->
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-<title>Extreme Detail 3D Building</title>
+<title>High Quality 3D City</title>
 
 <style>
 
@@ -44,24 +42,48 @@ body {
 
     position: fixed;
 
-    top: 20px;
-    left: 20px;
+    top: 15px;
+    left: 15px;
+
+    z-index: 10;
 
     padding: 15px 20px;
 
     background:
-    rgba(0,0,0,0.75);
+    rgba(10,10,15,0.78);
 
     color: white;
 
     border-radius: 12px;
 
-    font-family: Arial,
-    sans-serif;
+    font-family: Arial;
 
     line-height: 1.7;
 
+    backdrop-filter:
+    blur(8px);
+
+}
+
+#stats {
+
+    position: fixed;
+
+    top: 15px;
+    right: 15px;
+
     z-index: 10;
+
+    padding: 10px 15px;
+
+    background:
+    rgba(0,0,0,0.65);
+
+    color: #00ff99;
+
+    border-radius: 10px;
+
+    font-family: monospace;
 
 }
 
@@ -73,7 +95,7 @@ body {
     left: 50%;
 
     transform:
-    translate(-50%, -50%);
+    translate(-50%,-50%);
 
     color: white;
 
@@ -83,8 +105,6 @@ body {
 
     text-shadow:
     0 0 5px black;
-
-    z-index: 20;
 
 }
 
@@ -98,11 +118,11 @@ body {
 
 <div id="info">
 
-🏢 Extreme Detail Building
+🏙️ High Quality City Demo
 
 <br>
 
-🖱️ Click = Look
+🖱️ Click = Camera
 
 <br>
 
@@ -118,12 +138,23 @@ Shift = Down
 
 <br>
 
-ESC = Release Mouse
+ESC = Release
 
 </div>
 
 
-<div id="crosshair">+</div>
+<div id="stats">
+
+FPS: --
+
+</div>
+
+
+<div id="crosshair">
+
++
+
+</div>
 
 
 <div id="game"></div>
@@ -158,6 +189,19 @@ new THREE.Color(
 );
 
 
+scene.fog =
+
+new THREE.Fog(
+
+0x87CEEB,
+
+60,
+
+180
+
+);
+
+
 
 // =====================================================
 // CAMERA
@@ -168,7 +212,7 @@ const camera =
 
 new THREE.PerspectiveCamera(
 
-75,
+70,
 
 window.innerWidth /
 
@@ -176,7 +220,7 @@ window.innerHeight,
 
 0.1,
 
-1000
+500
 
 );
 
@@ -202,7 +246,10 @@ const renderer =
 
 new THREE.WebGLRenderer({
 
-antialias: true
+antialias: true,
+
+powerPreference:
+"high-performance"
 
 });
 
@@ -222,7 +269,7 @@ Math.min(
 
 window.devicePixelRatio,
 
-2
+1.75
 
 )
 
@@ -235,6 +282,21 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type =
 
 THREE.PCFSoftShadowMap;
+
+
+renderer.outputColorSpace =
+
+THREE.SRGBColorSpace;
+
+
+renderer.toneMapping =
+
+THREE.ACESFilmicToneMapping;
+
+
+renderer.toneMappingExposure =
+
+1.1;
 
 
 document
@@ -250,7 +312,7 @@ renderer.domElement
 
 
 // =====================================================
-// LIGHT
+// LIGHTING
 // =====================================================
 
 
@@ -260,16 +322,16 @@ new THREE.DirectionalLight(
 
 0xffffff,
 
-2.5
+2.2
 
 );
 
 
 sun.position.set(
 
-30,
+40,
 
-50,
+60,
 
 30
 
@@ -279,30 +341,45 @@ sun.position.set(
 sun.castShadow = true;
 
 
-sun.shadow.mapSize.width = 2048;
+sun.shadow.mapSize.set(
+
+1024,
+
+1024
+
+);
 
 
-sun.shadow.mapSize.height = 2048;
+sun.shadow.camera.left = -80;
+
+
+sun.shadow.camera.right = 80;
+
+
+sun.shadow.camera.top = 80;
+
+
+sun.shadow.camera.bottom = -80;
 
 
 scene.add(sun);
 
 
 
-const ambient =
+const hemisphere =
 
 new THREE.HemisphereLight(
 
-0x87CEEB,
+0x9ed8ff,
 
-0x444444,
+0x3d4d32,
 
-1
+1.1
 
 );
 
 
-scene.add(ambient);
+scene.add(hemisphere);
 
 
 
@@ -311,85 +388,74 @@ scene.add(ambient);
 // =====================================================
 
 
-const concreteMaterial =
+const concrete =
 
 new THREE.MeshStandardMaterial({
 
-color: 0xb7b7b7,
+color: 0xb8b8b8,
 
-roughness: 0.75
+roughness: 0.72,
+
+metalness: 0.05
 
 });
 
 
-const darkConcreteMaterial =
+const darkConcrete =
 
 new THREE.MeshStandardMaterial({
 
-color: 0x555555,
+color: 0x444444,
 
 roughness: 0.8
 
 });
 
 
-const glassMaterial =
+const glass =
 
 new THREE.MeshPhysicalMaterial({
 
-color: 0x55bbee,
+color: 0x4fa8c7,
 
-metalness: 0.1,
+roughness: 0.08,
 
-roughness: 0.05,
+metalness: 0.15,
 
-transmission: 0.2,
+transmission: 0.15,
 
 transparent: true,
 
-opacity: 0.75
+opacity: 0.85
 
 });
 
 
-const metalMaterial =
+const metal =
 
 new THREE.MeshStandardMaterial({
 
-color: 0x333333,
+color: 0x252525,
 
-metalness: 0.8,
+roughness: 0.28,
 
-roughness: 0.25
+metalness: 0.85
 
 });
 
 
-const goldMaterial =
+const wood =
 
 new THREE.MeshStandardMaterial({
 
-color: 0xd4af37,
+color: 0x5a321d,
 
-metalness: 0.8,
-
-roughness: 0.2
+roughness: 0.65
 
 });
 
 
-const woodMaterial =
-
-new THREE.MeshStandardMaterial({
-
-color: 0x4b2e1f,
-
-roughness: 0.7
-
-});
-
-
-const stoneMaterial =
+const stone =
 
 new THREE.MeshStandardMaterial({
 
@@ -400,13 +466,26 @@ roughness: 0.9
 });
 
 
+const gold =
+
+new THREE.MeshStandardMaterial({
+
+color: 0xcaa83b,
+
+roughness: 0.22,
+
+metalness: 0.9
+
+});
+
+
 
 // =====================================================
 // HELPER
 // =====================================================
 
 
-function box(
+function addBox(
 
 w,
 
@@ -420,12 +499,16 @@ x,
 
 y,
 
-z
+z,
+
+parent = scene
 
 ) {
 
 
-const geometry =
+const mesh =
+
+new THREE.Mesh(
 
 new THREE.BoxGeometry(
 
@@ -435,14 +518,7 @@ h,
 
 d
 
-);
-
-
-const mesh =
-
-new THREE.Mesh(
-
-geometry,
+),
 
 material
 
@@ -466,7 +542,7 @@ mesh.castShadow = true;
 mesh.receiveShadow = true;
 
 
-scene.add(mesh);
+parent.add(mesh);
 
 
 return mesh;
@@ -480,19 +556,19 @@ return mesh;
 // =====================================================
 
 
-const ground =
+addBox(
 
-box(
-
-150,
+200,
 
 0.2,
 
-150,
+200,
 
 new THREE.MeshStandardMaterial({
 
-color: 0x4f8f45
+color: 0x4e9149,
+
+roughness: 1
 
 }),
 
@@ -507,23 +583,29 @@ color: 0x4f8f45
 
 
 // =====================================================
-// BUILDING BASE
+// ROAD
 // =====================================================
 
 
-box(
+addBox(
 
-26,
+16,
 
-1,
+0.15,
 
-20,
+180,
 
-stoneMaterial,
+new THREE.MeshStandardMaterial({
+
+color: 0x252525,
+
+roughness: 0.9
+
+}),
 
 0,
 
-0.5,
+0,
 
 0
 
@@ -532,23 +614,42 @@ stoneMaterial,
 
 
 // =====================================================
-// MAIN BUILDING
+// SIDEWALKS
 // =====================================================
 
 
-box(
+addBox(
 
-24,
+3,
 
-18,
+0.3,
 
-18,
+180,
 
-concreteMaterial,
+stone,
 
-0,
+-9.5,
 
-10,
+0.15,
+
+0
+
+);
+
+
+addBox(
+
+3,
+
+0.3,
+
+180,
+
+stone,
+
+9.5,
+
+0.15,
 
 0
 
@@ -557,55 +658,45 @@ concreteMaterial,
 
 
 // =====================================================
-// SIDE WALL DETAILS
+// ROAD MARKINGS
 // =====================================================
+
+
+const roadMarkMaterial =
+
+new THREE.MeshStandardMaterial({
+
+color: 0xffffff
+
+});
 
 
 for (
 
-let y = 3;
+let z = -85;
 
-y <= 17;
+z < 90;
 
-y += 3
+z += 10
 
 ) {
 
 
-box(
+addBox(
 
-0.4,
+0.35,
 
-2,
+0.04,
 
-17,
+5,
 
-darkConcreteMaterial,
+roadMarkMaterial,
 
--12.2,
+0,
 
-y,
+0.1,
 
-0
-
-);
-
-
-box(
-
-0.4,
-
-2,
-
-17,
-
-darkConcreteMaterial,
-
-12.2,
-
-y,
-
-0
+z
 
 );
 
@@ -614,55 +705,113 @@ y,
 
 
 // =====================================================
-// HORIZONTAL FACADE LINES
+// BUILDING
 // =====================================================
+
+
+const building =
+
+new THREE.Group();
+
+
+scene.add(building);
+
+
+
+// Main body
+
+
+addBox(
+
+26,
+
+20,
+
+20,
+
+concrete,
+
+0,
+
+10,
+
+0,
+
+building
+
+);
+
+
+
+// Dark vertical architectural strips
+
+
+for (
+
+let x = -12;
+
+x <= 12;
+
+x += 6
+
+) {
+
+
+addBox(
+
+0.35,
+
+19,
+
+0.4,
+
+darkConcrete,
+
+x,
+
+10,
+
+-10.2,
+
+building
+
+);
+
+}
+
+
+
+// Horizontal floors
 
 
 for (
 
 let y = 2;
 
-y <= 18;
+y <= 20;
 
-y += 3
+y += 4
 
 ) {
 
 
-box(
+addBox(
 
-24.5,
-
-0.25,
-
-0.35,
-
-darkConcreteMaterial,
-
-0,
-
-y,
-
--9.15
-
-);
-
-
-box(
-
-24.5,
+26.5,
 
 0.25,
 
 0.35,
 
-darkConcreteMaterial,
+darkConcrete,
 
 0,
 
 y,
 
-9.15
+-10.2,
+
+building
 
 );
 
@@ -692,147 +841,128 @@ new THREE.Group();
 
 
 
-// Glass
-
-
-const glass =
+const glassPanel =
 
 new THREE.Mesh(
 
 new THREE.BoxGeometry(
 
-3,
+3.7,
 
-2.1,
+2.7,
 
-0.15
+0.12
 
 ),
 
-glassMaterial
+glass
 
 );
 
 
-group.add(glass);
+group.add(
 
-
-
-// Left frame
-
-
-const left =
-
-new THREE.Mesh(
-
-new THREE.BoxGeometry(
-
-0.15,
-
-2.4,
-
-0.25
-
-),
-
-metalMaterial
+glassPanel
 
 );
 
 
-left.position.x = -1.5;
+
+// Frames
 
 
-group.add(left);
+const framePositions = [
 
+[-1.9, 0, 0],
 
+[1.9, 0, 0],
 
-// Right frame
+[0, 1.4, 0],
 
+[0, -1.4, 0],
 
-const right =
+[0, 0, 0]
 
-left.clone();
-
-
-right.position.x = 1.5;
-
-
-group.add(right);
-
-
-
-// Top
-
-
-const top =
-
-new THREE.Mesh(
-
-new THREE.BoxGeometry(
-
-3.1,
-
-0.15,
-
-0.25
-
-),
-
-metalMaterial
-
-);
-
-
-top.position.y = 1.2;
-
-
-group.add(top);
+];
 
 
 
-// Bottom
+framePositions.forEach(
+
+(p, index) => {
 
 
-const bottom =
-
-top.clone();
-
-
-bottom.position.y = -1.2;
-
-
-group.add(bottom);
+let geometry;
 
 
 
-// Middle divider
+if (
+
+index < 2
+
+) {
 
 
-const divider =
-
-new THREE.Mesh(
+geometry =
 
 new THREE.BoxGeometry(
 
 0.12,
 
-2.2,
+2.8,
 
-0.3
-
-),
-
-metalMaterial
+0.25
 
 );
 
 
-group.add(divider);
+}
+
+else {
+
+
+geometry =
+
+new THREE.BoxGeometry(
+
+3.8,
+
+0.12,
+
+0.25
+
+);
+
+}
 
 
 
-// Position
+const frame =
+
+new THREE.Mesh(
+
+geometry,
+
+metal
+
+);
+
+
+frame.position.set(
+
+p[0],
+
+p[1],
+
+p[2]
+
+);
+
+
+group.add(frame);
+
+});
+
 
 
 group.position.set(
@@ -846,13 +976,13 @@ z
 );
 
 
-scene.add(group);
+building.add(group);
 
 }
 
 
 
-// Front windows
+// Windows on front
 
 
 for (
@@ -879,11 +1009,11 @@ column++
 
 createWindow(
 
-column * 6,
+column * 7,
 
-3 + floor * 3,
+3.8 + floor * 4,
 
--9.2
+-10.25
 
 );
 
@@ -907,42 +1037,35 @@ y
 ) {
 
 
-const group =
+const balcony =
 
 new THREE.Group();
 
 
 
-// Floor
+addBox(
 
-
-const floor =
-
-new THREE.Mesh(
-
-new THREE.BoxGeometry(
-
-5.5,
+6,
 
 0.3,
 
-2.5
+3,
 
-),
+stone,
 
-stoneMaterial
+x,
+
+y,
+
+-11.5,
+
+balcony
 
 );
 
 
-floor.position.z = 1;
 
-
-group.add(floor);
-
-
-
-// Railings
+// Rail posts
 
 
 for (
@@ -966,83 +1089,59 @@ new THREE.CylinderGeometry(
 
 0.06,
 
-1.2,
+1.3,
 
 8
 
 ),
 
-metalMaterial
+metal
 
 );
 
 
 post.position.set(
 
-i * 1.2,
+x + i * 1.25,
 
-0.7,
+y + 0.75,
 
-2.1
+-10.1
 
 );
 
 
-group.add(post);
+balcony.add(post);
 
 }
 
 
 
-// Horizontal railing
+// Top rail
 
 
-const rail =
+addBox(
 
-new THREE.Mesh(
-
-new THREE.BoxGeometry(
-
-5.2,
+5.5,
 
 0.12,
 
-0.12
+0.12,
 
-),
-
-metalMaterial
-
-);
-
-
-rail.position.set(
-
-0,
-
-1.25,
-
-2.1
-
-);
-
-
-group.add(rail);
-
-
-
-group.position.set(
+metal,
 
 x,
 
-y,
+y + 1.4,
 
-0
+-10.1,
+
+balcony
 
 );
 
 
-scene.add(group);
+building.add(balcony);
 
 }
 
@@ -1050,7 +1149,7 @@ scene.add(group);
 
 createBalcony(
 
--6,
+-7,
 
 7
 
@@ -1059,9 +1158,9 @@ createBalcony(
 
 createBalcony(
 
-6,
+7,
 
-13
+15
 
 );
 
@@ -1072,66 +1171,60 @@ createBalcony(
 // =====================================================
 
 
-// Entrance frame
+addBox(
 
-
-box(
+8,
 
 7,
 
-6,
-
 0.5,
 
-darkConcreteMaterial,
+darkConcrete,
 
 0,
 
-3,
+3.5,
 
--9.5
-
-);
-
-
-
-// Glass doors
-
-
-box(
-
-2.8,
-
-4.5,
-
-0.15,
-
-glassMaterial,
-
--1.5,
-
-2.5,
-
--9.85
+-10.5
 
 );
 
 
-box(
 
-2.8,
+addBox(
 
-4.5,
+3.3,
+
+5,
 
 0.15,
 
-glassMaterial,
+glass,
 
-1.5,
+-1.8,
 
 2.5,
 
--9.85
+-10.85
+
+);
+
+
+addBox(
+
+3.3,
+
+5,
+
+0.15,
+
+glass,
+
+1.8,
+
+2.5,
+
+-10.85
 
 );
 
@@ -1140,9 +1233,7 @@ glassMaterial,
 // Door handles
 
 
-const handle1 =
-
-new THREE.Mesh(
+const handleGeometry =
 
 new THREE.SphereGeometry(
 
@@ -1152,44 +1243,57 @@ new THREE.SphereGeometry(
 
 12
 
-),
+);
 
-goldMaterial
+
+const handleMaterial =
+
+gold;
+
+
+
+const handleA =
+
+new THREE.Mesh(
+
+handleGeometry,
+
+handleMaterial
 
 );
 
 
-handle1.position.set(
+handleA.position.set(
 
--0.4,
+-0.45,
 
 2.5,
 
--10.1
+-11
 
 );
 
 
-scene.add(handle1);
+scene.add(handleA);
 
 
 
-const handle2 =
+const handleB =
 
-handle1.clone();
-
-
-handle2.position.x =
-
-0.4;
+handleA.clone();
 
 
-scene.add(handle2);
+handleB.position.x =
+
+0.45;
+
+
+scene.add(handleB);
 
 
 
 // =====================================================
-// ENTRANCE COLUMNS
+// COLUMNS
 // =====================================================
 
 
@@ -1206,17 +1310,17 @@ new THREE.Mesh(
 
 new THREE.CylinderGeometry(
 
-0.6,
+0.65,
 
-0.7,
+0.75,
 
-6,
+7,
 
-24
+20
 
 ),
 
-stoneMaterial
+stone
 
 );
 
@@ -1225,9 +1329,9 @@ column.position.set(
 
 x,
 
-3,
+3.5,
 
--10
+-11.1
 
 );
 
@@ -1241,16 +1345,237 @@ scene.add(column);
 
 
 
-createColumn(-4);
+createColumn(-4.5);
 
 
-createColumn(4);
+createColumn(4.5);
 
 
 
 // =====================================================
 // STAIRS
 // =====================================================
+
+
+for (
+
+let i = 0;
+
+i < 6;
+
+i++
+
+) {
+
+
+addBox(
+
+12 - i,
+
+0.35,
+
+1,
+
+stone,
+
+0,
+
+0.2 + i * 0.35,
+
+-12 - i
+
+);
+
+}
+
+
+
+// =====================================================
+// ROOF
+// =====================================================
+
+
+addBox(
+
+27,
+
+0.8,
+
+21,
+
+darkConcrete,
+
+0,
+
+20.4,
+
+0
+
+);
+
+
+
+// =====================================================
+// ROOFTOP DETAILS
+// =====================================================
+
+
+for (
+
+let x = -7;
+
+x <= 7;
+
+x += 7
+
+) {
+
+
+const tank =
+
+new THREE.Mesh(
+
+new THREE.CylinderGeometry(
+
+1.3,
+
+1.3,
+
+2.8,
+
+20
+
+),
+
+metal
+
+);
+
+
+tank.position.set(
+
+x,
+
+22.2,
+
+0
+
+);
+
+
+tank.castShadow = true;
+
+
+scene.add(tank);
+
+}
+
+
+
+// Small rooftop room
+
+
+addBox(
+
+7,
+
+3,
+
+5,
+
+darkConcrete,
+
+0,
+
+22,
+
+-5
+
+);
+
+
+addBox(
+
+6,
+
+2,
+
+0.15,
+
+glass,
+
+0,
+
+22,
+
+-7.6
+
+);
+
+
+
+// =====================================================
+// TREES
+// =====================================================
+
+
+function createTree(
+
+x,
+
+z,
+
+scale = 1
+
+) {
+
+
+const tree =
+
+new THREE.Group();
+
+
+
+const trunk =
+
+new THREE.Mesh(
+
+new THREE.CylinderGeometry(
+
+0.35,
+
+0.55,
+
+3,
+
+10
+
+),
+
+wood
+
+);
+
+
+trunk.position.y =
+
+1.5;
+
+
+tree.add(trunk);
+
+
+
+const leafMaterial =
+
+new THREE.MeshStandardMaterial({
+
+color: 0x237a32,
+
+roughness: 0.9
+
+});
+
 
 
 for (
@@ -1264,234 +1589,13 @@ i++
 ) {
 
 
-box(
-
-10 - i,
-
-0.4,
-
-1,
-
-stoneMaterial,
-
-0,
-
-0.2 + i * 0.4,
-
--11 - i
-
-);
-
-}
-
-
-
-// =====================================================
-// ROOF
-// =====================================================
-
-
-// Main roof
-
-
-box(
-
-25,
-
-0.8,
-
-19,
-
-darkConcreteMaterial,
-
-0,
-
-19,
-
-0
-
-);
-
-
-
-// Roof border
-
-
-box(
-
-26,
-
-1,
-
-0.7,
-
-metalMaterial,
-
-0,
-
-19.5,
-
--9.5
-
-);
-
-
-box(
-
-26,
-
-1,
-
-0.7,
-
-metalMaterial,
-
-0,
-
-19.5,
-
-9.5
-
-);
-
-
-
-// =====================================================
-// ROOFTOP EQUIPMENT
-// =====================================================
-
-
-// Water tanks
-
-
-for (
-
-let x = -6;
-
-x <= 6;
-
-x += 6
-
-) {
-
-
-const tank =
-
-new THREE.Mesh(
-
-new THREE.CylinderGeometry(
-
-1.2,
-
-1.2,
-
-2.5,
-
-24
-
-),
-
-metalMaterial
-
-);
-
-
-tank.position.set(
-
-x,
-
-20.7,
-
-0
-
-);
-
-
-scene.add(tank);
-
-}
-
-
-
-// Antenna
-
-
-const antenna =
-
-new THREE.Mesh(
-
-new THREE.CylinderGeometry(
-
-0.1,
-
-0.1,
-
-5,
-
-12
-
-),
-
-metalMaterial
-
-);
-
-
-antenna.position.set(
-
-0,
-
-23,
-
-0
-
-);
-
-
-scene.add(antenna);
-
-
-
-// =====================================================
-// PLANTERS
-// =====================================================
-
-
-function createPlanter(
-
-x,
-
-z
-
-) {
-
-
-box(
-
-1.5,
-
-0.8,
-
-1.5,
-
-stoneMaterial,
-
-x,
-
-0.4,
-
-z
-
-);
-
-
-const plant =
+const leaf =
 
 new THREE.Mesh(
 
 new THREE.SphereGeometry(
 
-1,
+1.4,
 
 12,
 
@@ -1499,36 +1603,62 @@ new THREE.SphereGeometry(
 
 ),
 
-new THREE.MeshStandardMaterial({
-
-color: 0x228B22
-
-})
+leafMaterial
 
 );
 
 
-plant.position.set(
+leaf.position.set(
+
+Math.sin(i) * 0.8,
+
+3.2 + i * 0.35,
+
+Math.cos(i) * 0.8
+
+);
+
+
+tree.add(leaf);
+
+}
+
+
+
+tree.position.set(
 
 x,
 
-1.5,
+0,
 
 z
 
 );
 
 
-scene.add(plant);
+tree.scale.setScalar(
+
+scale
+
+);
+
+
+scene.add(tree);
 
 }
 
 
 
-createPlanter(-7, -12);
+createTree(-13, -10, 1.2);
 
 
-createPlanter(7, -12);
+createTree(13, -10, 1.2);
+
+
+createTree(-14, 10, 1);
+
+
+createTree(14, 10, 1);
 
 
 
@@ -1558,11 +1688,11 @@ new THREE.CylinderGeometry(
 
 6,
 
-12
+10
 
 ),
 
-metalMaterial
+metal
 
 );
 
@@ -1578,7 +1708,24 @@ z
 );
 
 
+pole.castShadow = true;
+
+
 scene.add(pole);
+
+
+
+const lampMaterial =
+
+new THREE.MeshStandardMaterial({
+
+color: 0xffffbb,
+
+emissive: 0xffff55,
+
+emissiveIntensity: 1
+
+});
 
 
 
@@ -1588,23 +1735,15 @@ new THREE.Mesh(
 
 new THREE.SphereGeometry(
 
-0.4,
+0.35,
 
-16,
+12,
 
-16
+12
 
 ),
 
-new THREE.MeshStandardMaterial({
-
-color: 0xffffaa,
-
-emissive: 0xffff44,
-
-emissiveIntensity: 1
-
-})
+lampMaterial
 
 );
 
@@ -1613,7 +1752,7 @@ lamp.position.set(
 
 x,
 
-6,
+6.1,
 
 z
 
@@ -1626,15 +1765,21 @@ scene.add(lamp);
 
 
 
-createStreetLight(-10, -15);
+createStreetLight(-7.5, -20);
 
 
-createStreetLight(10, -15);
+createStreetLight(7.5, -20);
+
+
+createStreetLight(-7.5, 20);
+
+
+createStreetLight(7.5, 20);
 
 
 
 // =====================================================
-// PLAYER
+// MOVEMENT
 // =====================================================
 
 
@@ -1645,9 +1790,9 @@ window.addEventListener(
 
 "keydown",
 
-e => {
+event => {
 
-keys[e.code] = true;
+keys[event.code] = true;
 
 });
 
@@ -1656,26 +1801,20 @@ window.addEventListener(
 
 "keyup",
 
-e => {
+event => {
 
-keys[e.code] = false;
+keys[event.code] = false;
 
 });
 
 
 
-const playerSpeed = 0.18;
-
-
-
-// =====================================================
-// MOUSE LOOK
-// =====================================================
-
-
 let yaw = 0;
 
 let pitch = 0;
+
+
+const speed = 0.18;
 
 
 
@@ -1710,17 +1849,13 @@ renderer.domElement
 
 yaw -=
 
-event.movementX *
-
-0.002;
+event.movementX * 0.002;
 
 
 
 pitch -=
 
-event.movementY *
-
-0.002;
+event.movementY * 0.002;
 
 
 
@@ -1745,7 +1880,7 @@ pitch
 
 
 // =====================================================
-// MOVEMENT
+// MOVEMENT FUNCTION
 // =====================================================
 
 
@@ -1842,11 +1977,12 @@ direction.length() > 0
 direction.normalize();
 
 
+
 camera.position.addScaledVector(
 
 direction,
 
-playerSpeed
+speed
 
 );
 
@@ -1860,9 +1996,7 @@ keys.Space
 
 )
 
-camera.position.y +=
-
-playerSpeed;
+camera.position.y += speed;
 
 
 
@@ -1874,9 +2008,7 @@ keys.ShiftRight
 
 )
 
-camera.position.y -=
-
-playerSpeed;
+camera.position.y -= speed;
 
 
 
@@ -1921,6 +2053,62 @@ pitch;
 
 
 // =====================================================
+// FPS
+// =====================================================
+
+
+let frames = 0;
+
+let lastTime =
+
+performance.now();
+
+
+
+function updateFPS() {
+
+
+frames++;
+
+
+
+const now =
+
+performance.now();
+
+
+
+if (
+
+now - lastTime >= 1000
+
+) {
+
+
+document
+
+.getElementById("stats")
+
+.textContent =
+
+"FPS: " +
+
+frames;
+
+
+
+frames = 0;
+
+
+lastTime = now;
+
+}
+
+}
+
+
+
+// =====================================================
 // ANIMATION
 // =====================================================
 
@@ -1939,6 +2127,9 @@ movePlayer();
 
 
 updateCamera();
+
+
+updateFPS();
 
 
 
@@ -1977,6 +2168,7 @@ window.innerHeight;
 
 
 camera.updateProjectionMatrix();
+
 
 
 renderer.setSize(
