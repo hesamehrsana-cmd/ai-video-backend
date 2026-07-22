@@ -1,4 +1,4 @@
-
+```python
 import os
 import base64
 
@@ -8,32 +8,46 @@ from pydantic import BaseModel
 from huggingface_hub import InferenceClient
 
 
-app = FastAPI(title="AI Video Studio API")
+# ==========================================
+# APP
+# ==========================================
+
+app = FastAPI(
+    title="AI Video Studio API"
+)
 
 
-# -----------------------------
+# ==========================================
 # CORS
-# -----------------------------
+# ==========================================
 
 app.add_middleware(
     CORSMiddleware,
+
     allow_origins=[
         "https://hesamehrsana-cmd.github.io"
     ],
+
     allow_credentials=False,
+
     allow_methods=["*"],
+
     allow_headers=["*"],
 )
 
 
-# -----------------------------
-# Hugging Face API
-# -----------------------------
+# ==========================================
+# HUGGING FACE
+# ==========================================
 
 HF_TOKEN = os.environ.get("HF_TOKEN")
 
+
 if not HF_TOKEN:
-    print("WARNING: HF_TOKEN is not configured.")
+
+    print(
+        "WARNING: HF_TOKEN is not configured!"
+    )
 
 
 client = InferenceClient(
@@ -42,76 +56,148 @@ client = InferenceClient(
 )
 
 
-# -----------------------------
-# Request Model
-# -----------------------------
+# ==========================================
+# REQUEST MODEL
+# ==========================================
 
 class VideoRequest(BaseModel):
+
     prompt: str
 
 
-# -----------------------------
-# Home
-# -----------------------------
+# ==========================================
+# HOME
+# ==========================================
 
 @app.get("/")
 def home():
 
     return {
+
         "status": "online",
-        "service": "AI Video Studio"
+
+        "service":
+        "AI Video Studio"
+
     }
 
 
-# -----------------------------
-# Generate Video
-# -----------------------------
+# ==========================================
+# CONNECTION TEST
+# ==========================================
+
+@app.get("/test")
+def test_connection():
+
+    return {
+
+        "success": True,
+
+        "message":
+        "Backend connection works!"
+
+    }
+
+
+# ==========================================
+# GENERATE VIDEO
+# ==========================================
 
 @app.post("/generate")
-def generate_video(request: VideoRequest):
+def generate_video(
+    request: VideoRequest
+):
+
+    # Check API Key
 
     if not HF_TOKEN:
 
         raise HTTPException(
+
             status_code=500,
-            detail="HF_TOKEN is not configured."
+
+            detail=
+            "HF_TOKEN is not configured."
+
         )
 
 
-    prompt = request.prompt.strip()
+    # Check Prompt
+
+    prompt = (
+        request.prompt.strip()
+    )
 
 
     if not prompt:
 
         raise HTTPException(
+
             status_code=400,
-            detail="Prompt cannot be empty."
+
+            detail=
+            "Prompt cannot be empty."
+
         )
 
 
     try:
 
         print(
-            f"Generating video for: {prompt}"
+            "Starting video generation..."
+        )
+
+        print(
+            f"Prompt: {prompt}"
         )
 
 
-        # Generate video
-        video_bytes = client.text_to_video(
+        # ==================================
+        # GENERATE VIDEO
+        # ==================================
 
-            prompt,
+        video_bytes = (
+            client.text_to_video(
 
-            model=
-            "Lightricks/LTX-Video-0.9.5",
+                prompt,
+
+                model=
+                "Lightricks/LTX-Video-0.9.5"
+
+            )
+        )
+
+
+        print(
+            "Video generated successfully!"
+        )
+
+
+        # ==================================
+        # CONVERT TO BASE64
+        # ==================================
+
+        video_base64 = (
+
+            base64.b64encode(
+
+                video_bytes
+
+            ).decode(
+                "utf-8"
+            )
 
         )
 
 
-        # Convert video to Base64
-        video_base64 = base64.b64encode(
-            video_bytes
-        ).decode("utf-8")
+        print(
+            "Video converted to Base64."
+        )
 
+
+        # ==================================
+        # RETURN RESULT
+        # ==================================
 
         return {
 
@@ -126,7 +212,10 @@ def generate_video(request: VideoRequest):
     except Exception as e:
 
         print(
-            "VIDEO GENERATION ERROR:",
+            "VIDEO GENERATION ERROR:"
+        )
+
+        print(
             str(e)
         )
 
@@ -138,9 +227,4 @@ def generate_video(request: VideoRequest):
             detail=str(e)
 
         )
-@app.get("/test")
-def test_connection():
-    return {
-        "success": True,
-        "message": "Backend connection works!"
-    }
+```
