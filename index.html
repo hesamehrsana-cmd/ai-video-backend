@@ -11,7 +11,7 @@
     content="width=device-width, initial-scale=1.0"
 >
 
-<title>Spirit Maze</title>
+<title>Ancient Maze</title>
 
 <style>
 
@@ -30,7 +30,7 @@ body {
 
     overflow: hidden;
 
-    background: #07120b;
+    background: #090704;
 
     font-family: Arial, sans-serif;
 
@@ -46,7 +46,7 @@ body {
 
 
 /* =========================
-   MAIN MENU
+   MENU
 ========================= */
 
 #menu {
@@ -68,10 +68,15 @@ body {
     color: white;
 
     background:
+
         radial-gradient(
+
             circle at center,
-            rgba(30, 90, 50, 0.45),
-            rgba(3, 10, 6, 0.98)
+
+            rgba(130, 90, 35, 0.35),
+
+            rgba(5, 4, 2, 0.98)
+
         );
 
 }
@@ -82,17 +87,21 @@ body {
 
     margin: 0 0 10px;
 
-    letter-spacing: 5px;
+    letter-spacing: 6px;
+
+    color: #e7bd55;
 
     text-shadow:
-        0 0 15px #53ff9a,
-        0 0 35px #1cff75;
+
+        0 0 15px rgba(255, 190, 60, 0.6),
+
+        0 0 35px rgba(255, 150, 20, 0.3);
 
 }
 
 #menu p {
 
-    color: #b9d8c5;
+    color: #c9b99a;
 
     margin-bottom: 35px;
 
@@ -112,20 +121,23 @@ body {
 
     height: 135px;
 
-    border-radius: 18px;
+    border-radius: 16px;
 
     border:
+
         1px solid
-        rgba(120, 255, 170, 0.4);
+
+        rgba(220, 175, 80, 0.45);
 
     background:
-        rgba(20, 50, 32, 0.8);
 
-    color: white;
+        rgba(50, 35, 18, 0.85);
+
+    color: #f2d28a;
 
     cursor: pointer;
 
-    font-size: 20px;
+    font-size: 19px;
 
     transition: 0.25s;
 
@@ -134,12 +146,16 @@ body {
 .level:hover {
 
     transform:
+
         translateY(-7px)
+
         scale(1.03);
 
     box-shadow:
-        0 0 25px
-        rgba(80, 255, 150, 0.5);
+
+        0 0 30px
+
+        rgba(230, 170, 60, 0.35);
 
 }
 
@@ -168,20 +184,27 @@ body {
 
     display: none;
 
-    color: white;
+    color: #f5e5bf;
 
     background:
-        rgba(0, 0, 0, 0.55);
+
+        rgba(20, 12, 5, 0.72);
 
     padding: 12px 16px;
 
-    border-radius: 10px;
+    border-radius: 9px;
+
+    border:
+
+        1px solid
+
+        rgba(210, 160, 65, 0.35);
 
 }
 
 
 /* =========================
-   PAUSE BUTTON
+   PAUSE
 ========================= */
 
 #pauseButton {
@@ -200,12 +223,13 @@ body {
 
     border: none;
 
-    border-radius: 10px;
+    border-radius: 9px;
 
-    color: white;
+    color: #f6e4bd;
 
     background:
-        rgba(0, 0, 0, 0.65);
+
+        rgba(25, 16, 8, 0.78);
 
     cursor: pointer;
 
@@ -214,7 +238,8 @@ body {
 #pauseButton:hover {
 
     background:
-        rgba(30, 90, 55, 0.9);
+
+        rgba(90, 60, 25, 0.9);
 
 }
 
@@ -232,14 +257,16 @@ body {
     left: 50%;
 
     transform:
+
         translateX(-50%);
 
     z-index: 5;
 
-    color: white;
+    color: #f5e7c8;
 
     background:
-        rgba(0, 0, 0, 0.65);
+
+        rgba(20, 12, 5, 0.75);
 
     padding: 10px 20px;
 
@@ -269,9 +296,11 @@ body {
     justify-content: center;
 
     background:
-        rgba(0, 0, 0, 0.6);
+
+        rgba(0, 0, 0, 0.7);
 
     backdrop-filter:
+
         blur(7px);
 
 }
@@ -284,26 +313,25 @@ body {
 
     text-align: center;
 
-    color: white;
+    color: #f4dfb1;
 
-    border-radius: 20px;
+    border-radius: 18px;
 
     background:
-        rgba(15, 35, 23, 0.95);
+
+        rgba(35, 23, 11, 0.97);
 
     border:
-        1px solid
-        rgba(120, 255, 170, 0.3);
 
-    box-shadow:
-        0 0 50px
-        rgba(0, 0, 0, 0.6);
+        1px solid
+
+        rgba(220, 170, 70, 0.35);
 
 }
 
 .pauseBox h2 {
 
-    font-size: 35px;
+    font-size: 34px;
 
     margin-top: 0;
 
@@ -319,27 +347,29 @@ body {
 
     border: none;
 
-    border-radius: 9px;
+    border-radius: 8px;
 
     cursor: pointer;
 
-    color: white;
+    color: #f6e6c5;
 
     background:
-        rgba(60, 110, 75, 0.8);
+
+        rgba(95, 65, 30, 0.85);
 
 }
 
 .pauseBox button:hover {
 
     background:
-        rgba(75, 150, 95, 0.95);
+
+        rgba(135, 90, 35, 0.95);
 
 }
 
 
 /* =========================
-   COMPLETE MESSAGE
+   COMPLETE
 ========================= */
 
 #message {
@@ -351,28 +381,36 @@ body {
     left: 50%;
 
     transform:
+
         translate(-50%, -50%);
 
     z-index: 50;
 
-    color: white;
+    color: #f5e6c2;
 
     text-align: center;
 
     display: none;
 
     background:
-        rgba(0, 0, 0, 0.9);
+
+        rgba(20, 12, 5, 0.96);
 
     padding: 30px 45px;
 
-    border-radius: 18px;
+    border-radius: 16px;
+
+    border:
+
+        1px solid
+
+        rgba(230, 180, 70, 0.45);
 
 }
 
 #message h2 {
 
-    color: #74ffad;
+    color: #e9bd51;
 
 }
 
@@ -390,10 +428,10 @@ body {
 
 
 /* =========================
-   LIGHTNING FLASH
+   INTRO LIGHT
 ========================= */
 
-#lightningFlash {
+#introLight {
 
     position: fixed;
 
@@ -407,11 +445,13 @@ body {
 
         radial-gradient(
 
-            circle,
+            ellipse at 50% 50%,
 
-            rgba(255,255,255,1),
+            rgba(255,255,255,1) 0%,
 
-            rgba(170,240,255,0.7),
+            rgba(255,240,200,0.95) 20%,
+
+            rgba(255,190,70,0.35) 50%,
 
             transparent 75%
 
@@ -432,14 +472,12 @@ body {
 <div id="game"></div>
 
 
-<!-- MAIN MENU -->
-
 <div id="menu">
 
-    <h1>SPIRIT MAZE</h1>
+    <h1>ANCIENT MAZE</h1>
 
     <p>
-        Find the exit. Escape the maze.
+        Find the ancient gate and escape.
     </p>
 
     <div class="levels">
@@ -476,8 +514,6 @@ body {
 </div>
 
 
-<!-- HUD -->
-
 <div id="hud">
 
     LEVEL:
@@ -497,8 +533,6 @@ body {
 </div>
 
 
-<!-- PAUSE -->
-
 <button id="pauseButton">
 
     PAUSE
@@ -508,12 +542,10 @@ body {
 
 <div id="startHint">
 
-    Click to enter the maze
+    Click to enter the ancient maze
 
 </div>
 
-
-<!-- PAUSE MENU -->
 
 <div id="pauseMenu">
 
@@ -544,12 +576,10 @@ body {
 </div>
 
 
-<!-- COMPLETE -->
-
 <div id="message">
 
     <h2>
-        LEVEL COMPLETE
+        YOU FOUND THE ANCIENT GATE
     </h2>
 
     <p id="resultText"></p>
@@ -563,7 +593,7 @@ body {
 </div>
 
 
-<div id="lightningFlash"></div>
+<div id="introLight"></div>
 
 
 <script type="module">
@@ -588,7 +618,7 @@ scene.background =
 
 new THREE.Color(
 
-0x78b9d5
+0x7895a0
 
 );
 
@@ -597,7 +627,7 @@ scene.fog =
 
 new THREE.Fog(
 
-0x78b9d5,
+0x7895a0,
 
 45,
 
@@ -640,6 +670,7 @@ new THREE.WebGLRenderer({
     antialias: true,
 
     powerPreference:
+
         "high-performance"
 
 });
@@ -705,18 +736,18 @@ const sun =
 
 new THREE.DirectionalLight(
 
-0xffffff,
+0xffe5b0,
 
-1.6
+1.7
 
 );
 
 
 sun.position.set(
 
-20,
+25,
 
-50,
+45,
 
 20
 
@@ -749,11 +780,11 @@ const ambient =
 
 new THREE.HemisphereLight(
 
-0xa9ddff,
+0xa7c8d8,
 
-0x203c26,
+0x302010,
 
-1.4
+1.35
 
 );
 
@@ -770,53 +801,59 @@ ambient
 // =====================================================
 
 
-const grassMaterial =
+const stoneMaterial =
 
 new THREE.MeshStandardMaterial({
 
-    color: 0x315f2d,
+    color: 0x746653,
 
     roughness: 0.95,
 
-    metalness: 0
+    metalness: 0.0
 
 });
 
 
-const foliageMaterials = [
+const stoneDarkMaterial =
 
-    new THREE.MeshStandardMaterial({
+new THREE.MeshStandardMaterial({
 
-        color: 0x3f7a38,
+    color: 0x51483d,
 
-        roughness: 1
+    roughness: 1
 
-    }),
+});
 
-    new THREE.MeshStandardMaterial({
 
-        color: 0x2d642f,
+const goldMaterial =
 
-        roughness: 1
+new THREE.MeshStandardMaterial({
 
-    }),
+    color: 0xc99b35,
 
-    new THREE.MeshStandardMaterial({
+    roughness: 0.32,
 
-        color: 0x4d873d,
+    metalness: 0.72
 
-        roughness: 1
+});
 
-    })
 
-];
+const mossMaterial =
+
+new THREE.MeshStandardMaterial({
+
+    color: 0x3e4e2c,
+
+    roughness: 1
+
+});
 
 
 const groundMaterial =
 
 new THREE.MeshStandardMaterial({
 
-    color: 0x527d45,
+    color: 0x59644c,
 
     roughness: 1
 
@@ -827,15 +864,15 @@ const portalMaterial =
 
 new THREE.MeshStandardMaterial({
 
-    color: 0x63ffd0,
+    color: 0xffd36a,
 
-    emissive: 0x18ffae,
+    emissive: 0xd07b16,
 
     emissiveIntensity: 2,
 
-    transparent: true,
+    metalness: 0.5,
 
-    opacity: 0.85
+    roughness: 0.25
 
 });
 
@@ -859,6 +896,8 @@ let exitPosition = null;
 
 let exitGroup = null;
 
+let wallColliders = [];
+
 let startTime = 0;
 
 let playing = false;
@@ -867,16 +906,12 @@ let paused = false;
 
 let introAnimation = false;
 
-let lightningActive = false;
+let introTime = 0;
 
-let lightningTime = 0;
-
-let wallColliders = [];
-
-
-const playerRadius = 0.42;
 
 const wallHeight = 6;
+
+const playerRadius = 0.42;
 
 
 const player = {
@@ -908,7 +943,7 @@ Number(
 
     localStorage.getItem(
 
-        "spiritMazeLevel"
+        "ancientMazeLevel"
 
     ) || 1
 
@@ -932,23 +967,16 @@ window.addEventListener(
 
         if (
 
-            e.code === "Escape"
+            e.code === "Escape" &&
+
+            playing &&
+
+            !introAnimation
 
         ) {
 
 
-            if (
-
-                playing &&
-
-                !introAnimation
-
-            ) {
-
-
-                togglePause();
-
-            }
+            togglePause();
 
         }
 
@@ -1119,11 +1147,11 @@ function generateMaze(size) {
 
 
 // =====================================================
-// NATURAL HEDGE
+// ANCIENT WALL
 // =====================================================
 
 
-function createHedge(
+function createAncientWall(
 
     x,
 
@@ -1137,9 +1165,9 @@ function createHedge(
         new THREE.Group();
 
 
-    // Main hedge body
+    // Main stone wall
 
-    const bodyGeometry =
+    const wallGeometry =
 
         new THREE.BoxGeometry(
 
@@ -1152,128 +1180,93 @@ function createHedge(
         );
 
 
-    const body =
+    const wall =
 
         new THREE.Mesh(
 
-            bodyGeometry,
+            wallGeometry,
 
-            grassMaterial
+            stoneMaterial
 
         );
 
 
-    body.position.y =
+    wall.position.y =
 
         wallHeight / 2;
 
 
-    body.castShadow =
-
-        false;
-
-
-    body.receiveShadow =
+    wall.receiveShadow =
 
         true;
 
 
     group.add(
 
-        body
+        wall
 
     );
 
 
-    // Lightweight foliage
+    // Decorative stones
 
-    const foliageGeometry =
+    const stoneGeometry =
 
-        new THREE.IcosahedronGeometry(
+        new THREE.BoxGeometry(
 
-            1,
+            1.25,
 
-            1
+            1.0,
+
+            1.25
 
         );
-
-
-    const foliageCount = 5;
 
 
     for (
 
         let i = 0;
 
-        i < foliageCount;
+        i < 5;
 
         i++
 
     ) {
 
 
-        const foliage =
+        const stone =
 
             new THREE.Mesh(
 
-                foliageGeometry,
+                stoneGeometry,
 
-                foliageMaterials[
+                i % 2 === 0
 
-                    i %
+                    ? stoneMaterial
 
-                    foliageMaterials.length
-
-                ]
+                    : stoneDarkMaterial
 
             );
 
 
-        foliage.scale.set(
+        stone.position.set(
 
-            1.1 +
+            (
 
-            Math.random() *
+                Math.random() -
 
-            0.9,
+                0.5
+
+            ) *
+
+            3.5,
 
 
             0.7 +
 
             Math.random() *
 
-            0.8,
-
-
-            1.1 +
-
-            Math.random() *
-
-            0.9
-
-        );
-
-
-        foliage.position.set(
-
-            (
-
-                Math.random() -
-
-                0.5
-
-            ) *
-
-            3.4,
-
-
-            wallHeight -
-
-            0.3 +
-
-            Math.random() *
-
-            0.8,
+            4.5,
 
 
             (
@@ -1284,22 +1277,33 @@ function createHedge(
 
             ) *
 
-            3.4
+            3.5
 
         );
 
 
-        foliage.rotation.set(
+        stone.rotation.y =
+
+            Math.random() *
+
+            0.4;
+
+
+        stone.scale.set(
+
+            0.8 +
 
             Math.random() *
 
             0.5,
 
+            0.7 +
 
             Math.random() *
 
-            Math.PI,
+            0.5,
 
+            0.8 +
 
             Math.random() *
 
@@ -1308,19 +1312,164 @@ function createHedge(
         );
 
 
-        foliage.castShadow =
+        group.add(
 
-            false;
+            stone
+
+        );
+
+    }
 
 
-        foliage.receiveShadow =
+    // Golden top pieces
 
-            true;
+    const goldGeometry =
+
+        new THREE.BoxGeometry(
+
+            1.1,
+
+            0.35,
+
+            1.1
+
+        );
+
+
+    for (
+
+        let i = 0;
+
+        i < 4;
+
+        i++
+
+    ) {
+
+
+        const gold =
+
+            new THREE.Mesh(
+
+                goldGeometry,
+
+                goldMaterial
+
+            );
+
+
+        gold.position.set(
+
+            (
+
+                i -
+
+                1.5
+
+            ) *
+
+            1.05,
+
+
+            wallHeight +
+
+            0.18,
+
+
+            0
+
+        );
+
+
+        gold.rotation.y =
+
+            Math.random() *
+
+            0.2;
 
 
         group.add(
 
-            foliage
+            gold
+
+        );
+
+    }
+
+
+    // Small moss details
+
+    for (
+
+        let i = 0;
+
+        i < 2;
+
+        i++
+
+    ) {
+
+
+        const moss =
+
+            new THREE.Mesh(
+
+                new THREE.SphereGeometry(
+
+                    0.45,
+
+                    6,
+
+                    6
+
+                ),
+
+                mossMaterial
+
+            );
+
+
+        moss.scale.y =
+
+            0.35;
+
+
+        moss.position.set(
+
+            (
+
+                Math.random() -
+
+                0.5
+
+            ) *
+
+            3.2,
+
+
+            1.0 +
+
+            Math.random() *
+
+            3.5,
+
+
+            (
+
+                Math.random() -
+
+                0.5
+
+            ) *
+
+            3.2
+
+        );
+
+
+        group.add(
+
+            moss
 
         );
 
@@ -1493,7 +1642,7 @@ function buildMaze() {
 
                 mazeGroup.add(
 
-                    createHedge(
+                    createAncientWall(
 
                         wallX,
 
@@ -1512,20 +1661,17 @@ function buildMaze() {
 
                         cellSize / 2,
 
-
                     maxX:
 
                         wallX +
 
                         cellSize / 2,
 
-
                     minZ:
 
                         wallZ -
 
                         cellSize / 2,
-
 
                     maxZ:
 
@@ -1611,7 +1757,9 @@ function createExit() {
     };
 
 
-    const portal =
+    // Ancient gate
+
+    const gate =
 
         new THREE.Mesh(
 
@@ -1619,9 +1767,9 @@ function createExit() {
 
                 2.1,
 
-                0.35,
+                0.38,
 
-                16,
+                10,
 
                 32
 
@@ -1632,28 +1780,30 @@ function createExit() {
         );
 
 
-    portal.position.y =
+    gate.position.y =
 
         2.3;
 
 
-    portal.castShadow =
+    gate.rotation.x =
 
-        false;
+        0;
 
 
     exitGroup.add(
 
-        portal
+        gate
 
     );
 
+
+    // Golden light
 
     const light =
 
         new THREE.PointLight(
 
-            0x50ffbd,
+            0xffbd45,
 
             8,
 
@@ -1672,82 +1822,6 @@ function createExit() {
         light
 
     );
-
-
-    for (
-
-        let i = 0;
-
-        i < 12;
-
-        i++
-
-    ) {
-
-
-        const particle =
-
-            new THREE.Mesh(
-
-                new THREE.SphereGeometry(
-
-                    0.08,
-
-                    8,
-
-                    8
-
-                ),
-
-                new THREE.MeshBasicMaterial({
-
-                    color:
-
-                        0x9affd5
-
-                })
-
-            );
-
-
-        particle.position.set(
-
-            (
-
-                Math.random() -
-
-                0.5
-
-            ) *
-
-            4,
-
-
-            Math.random() *
-
-            4,
-
-
-            (
-
-                Math.random() -
-
-                0.5
-
-            ) *
-
-            4
-
-        );
-
-
-        exitGroup.add(
-
-            particle
-
-        );
-
-    }
 
 
     exitGroup.position.set(
@@ -1771,211 +1845,11 @@ function createExit() {
 
 
 // =====================================================
-// LIGHTNING
+// INTRO LIGHT
 // =====================================================
 
 
-const lightningGroup =
-
-    new THREE.Group();
-
-
-scene.add(
-
-    lightningGroup
-
-);
-
-
-lightningGroup.visible =
-
-    false;
-
-
-const lightningLight =
-
-    new THREE.PointLight(
-
-        0xffffff,
-
-        0,
-
-        35
-
-    );
-
-
-lightningGroup.add(
-
-    lightningLight
-
-);
-
-
-function createLightningBolt() {
-
-
-    const points = [];
-
-
-    const startY = 28;
-
-
-    const endY = 1;
-
-
-    let x = 0;
-
-
-    let z = 0;
-
-
-    points.push(
-
-        new THREE.Vector3(
-
-            x,
-
-            startY,
-
-            z
-
-        )
-
-    );
-
-
-    const segments = 12;
-
-
-    for (
-
-        let i = 1;
-
-        i < segments;
-
-        i++
-
-    ) {
-
-
-        const t =
-
-            i /
-
-            segments;
-
-
-        x +=
-
-            (
-
-                Math.random() -
-
-                0.5
-
-            ) *
-
-            2.5;
-
-
-        z +=
-
-            (
-
-                Math.random() -
-
-                0.5
-
-            ) *
-
-            2.5;
-
-
-        points.push(
-
-            new THREE.Vector3(
-
-                x,
-
-                startY +
-
-                (
-
-                    endY -
-
-                    startY
-
-                ) *
-
-                t,
-
-                z
-
-            )
-
-        );
-
-    }
-
-
-    points.push(
-
-        new THREE.Vector3(
-
-            x,
-
-            endY,
-
-            z
-
-        )
-
-    );
-
-
-    const geometry =
-
-        new THREE.BufferGeometry()
-
-        .setFromPoints(
-
-            points
-
-        );
-
-
-    const material =
-
-        new THREE.LineBasicMaterial({
-
-            color:
-
-                0xffffff,
-
-            transparent:
-
-                true,
-
-            opacity:
-
-                1
-
-        });
-
-
-    return new THREE.Line(
-
-        geometry,
-
-        material
-
-    );
-
-}
-
-
-function startLightningAnimation() {
+function startIntro() {
 
 
     introAnimation =
@@ -1983,219 +1857,67 @@ function startLightningAnimation() {
         true;
 
 
+    introTime =
+
+        0;
+
+
     playing =
 
         false;
-
-
-    lightningActive =
-
-        true;
-
-
-    lightningTime =
-
-        0;
-
-
-    lightningGroup.visible =
-
-        true;
-
-
-    lightningGroup.position.set(
-
-        player.x,
-
-        0,
-
-        player.z
-
-    );
-
-
-    const bolt =
-
-        createLightningBolt();
-
-
-    lightningGroup.add(
-
-        bolt
-
-    );
-
-
-    lightningLight.intensity =
-
-        0;
 
 
     camera.position.set(
 
         player.x,
 
-        27,
+        2,
 
         player.z
 
     );
 
 
-    camera.lookAt(
-
-        player.x,
+    camera.rotation.set(
 
         0,
 
-        player.z
+        0,
+
+        0
 
     );
 
-}
 
-
-function updateLightningAnimation() {
-
-
-    if (
-
-        !lightningActive
-
-    ) {
-
-
-        return;
-
-    }
-
-
-    lightningTime +=
-
-        0.016;
-
-
-    if (
-
-        lightningTime < 1.5
-
-    ) {
-
-
-        lightningLight.intensity =
-
-            0;
-
-    }
-
-
-    else if (
-
-        lightningTime < 1.7
-
-    ) {
-
-
-        lightningLight.intensity =
-
-            18;
-
-
-        flashLightning();
-
-    }
-
-
-    else if (
-
-        lightningTime < 2.2
-
-    ) {
-
-
-        lightningLight.intensity =
-
-            4;
-
-    }
-
-
-    else {
-
-
-        lightningLight.intensity =
-
-            0;
-
-
-        lightningGroup.visible =
-
-            false;
-
-
-        lightningActive =
-
-            false;
-
-
-        introAnimation =
-
-            false;
-
-
-        playing =
-
-            true;
-
-
-        startTime =
-
-            performance.now();
-
-    }
-
-}
-
-
-function flashLightning() {
-
-
-    const flash =
+    const light =
 
         document
 
         .getElementById(
 
-            "lightningFlash"
+            "introLight"
 
         );
 
 
-    flash.animate(
+    light.style.opacity =
+
+        "1";
+
+
+    light.animate(
 
         [
 
             {
 
-                opacity:
-
-                    0
+                opacity: 1
 
             },
 
             {
 
-                opacity:
-
-                    1
-
-            },
-
-            {
-
-                opacity:
-
-                    0
+                opacity: 0
 
             }
 
@@ -2203,11 +1925,57 @@ function flashLightning() {
 
         {
 
-            duration:
+            duration: 2200,
 
-                350
+            easing:
+
+                "ease-out",
+
+            fill:
+
+                "forwards"
 
         }
+
+    );
+
+
+    setTimeout(
+
+        () => {
+
+
+            introAnimation =
+
+                false;
+
+
+            playing =
+
+                true;
+
+
+            startTime =
+
+                performance.now();
+
+
+            document
+
+            .getElementById(
+
+                "startHint"
+
+            )
+
+            .style.display =
+
+                "block";
+
+
+        },
+
+        2200
 
     );
 
@@ -2359,19 +2127,6 @@ function startLevel(
 
     .getElementById(
 
-        "startHint"
-
-    )
-
-    .style.display =
-
-        "block";
-
-
-    document
-
-    .getElementById(
-
         "levelNumber"
 
     )
@@ -2381,9 +2136,7 @@ function startLevel(
         level;
 
 
-    // Start with lightning
-
-    startLightningAnimation();
+    startIntro();
 
 }
 
@@ -2705,7 +2458,7 @@ document.addEventListener(
 
 
 // =====================================================
-// PLAYER MOVEMENT
+// PLAYER
 // =====================================================
 
 
@@ -2716,7 +2469,9 @@ function movePlayer() {
 
         !playing ||
 
-        paused
+        paused ||
+
+        introAnimation
 
     ) {
 
@@ -3028,7 +2783,7 @@ function checkExit() {
 
 
 // =====================================================
-// LEVEL COMPLETE
+// COMPLETE
 // =====================================================
 
 
@@ -3089,7 +2844,7 @@ function completeLevel() {
 
         localStorage.setItem(
 
-            "spiritMazeLevel",
+            "ancientMazeLevel",
 
             unlockedLevel
 
@@ -3209,8 +2964,25 @@ function togglePause() {
 
 
 // =====================================================
-// PAUSE BUTTONS
+// BUTTONS
 // =====================================================
+
+
+document
+
+.getElementById(
+
+    "pauseButton"
+
+)
+
+.addEventListener(
+
+    "click",
+
+    togglePause
+
+);
 
 
 document
@@ -3225,12 +2997,7 @@ document
 
     "click",
 
-    () => {
-
-
-        togglePause();
-
-    }
+    togglePause
 
 );
 
@@ -3367,25 +3134,8 @@ document
 );
 
 
-document
-
-.getElementById(
-
-    "pauseButton"
-
-)
-
-.addEventListener(
-
-    "click",
-
-    togglePause
-
-);
-
-
 // =====================================================
-// LEVEL BUTTONS
+// LEVELS
 // =====================================================
 
 
@@ -3665,7 +3415,7 @@ function updateTimer() {
 
 
 // =====================================================
-// ANIMATION LOOP
+// ANIMATION
 // =====================================================
 
 
@@ -3677,9 +3427,6 @@ function animate() {
         animate
 
     );
-
-
-    updateLightningAnimation();
 
 
     movePlayer();
