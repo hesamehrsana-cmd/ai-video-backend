@@ -1,225 +1,267 @@
-```html
+
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="en">
 
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
 <title>Spirit Maze</title>
 
 <style>
 
-*{
-    box-sizing:border-box;
+* {
+    box-sizing: border-box;
 }
 
-html,body{
+html,
+body {
 
-    margin:0;
-    width:100%;
-    height:100%;
+    margin: 0;
 
-    overflow:hidden;
+    width: 100%;
+    height: 100%;
 
-    font-family:
-    Arial,
-    sans-serif;
+    overflow: hidden;
 
-    background:#07120b;
+    background: #07120b;
 
-}
-
-#game{
-
-    position:fixed;
-
-    inset:0;
+    font-family: Arial, sans-serif;
 
 }
 
-#menu{
+#game {
 
-    position:fixed;
+    position: fixed;
 
-    inset:0;
+    inset: 0;
 
-    z-index:10;
+}
 
-    display:flex;
+#menu {
 
-    flex-direction:column;
+    position: fixed;
 
-    align-items:center;
+    inset: 0;
 
-    justify-content:center;
+    z-index: 20;
 
-    color:white;
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: white;
 
     background:
-
-    radial-gradient(
-        circle at center,
-        rgba(20,70,40,.45),
-        rgba(3,10,6,.97)
-    );
+        radial-gradient(
+            circle at center,
+            rgba(30, 90, 50, .45),
+            rgba(3, 10, 6, .98)
+        );
 
 }
 
-#menu h1{
+#menu h1 {
 
-    font-size:58px;
+    font-size: 58px;
 
-    margin:0 0 10px;
+    margin: 0 0 10px;
 
-    letter-spacing:4px;
+    letter-spacing: 5px;
 
     text-shadow:
-    0 0 20px #54ff9b;
+        0 0 15px #53ff9a,
+        0 0 35px #1cff75;
 
 }
 
-#menu p{
+#menu p {
 
-    color:#b9d8c5;
+    color: #b9d8c5;
 
-    margin-bottom:35px;
-
-}
-
-.levels{
-
-    display:flex;
-
-    gap:18px;
+    margin-bottom: 35px;
 
 }
 
-.level{
+.levels {
 
-    width:130px;
+    display: flex;
 
-    height:130px;
+    gap: 18px;
 
-    border-radius:18px;
+}
 
-    border:1px solid
-    rgba(120,255,170,.4);
+.level {
+
+    width: 135px;
+
+    height: 135px;
+
+    border-radius: 18px;
+
+    border: 1px solid
+        rgba(120, 255, 170, .4);
 
     background:
-    rgba(20,50,32,.75);
+        rgba(20, 50, 32, .8);
 
-    color:white;
+    color: white;
 
-    cursor:pointer;
+    cursor: pointer;
 
-    font-size:20px;
+    font-size: 20px;
 
-    transition:.2s;
+    transition: .25s;
 
 }
 
-.level:hover{
+.level:hover {
 
     transform:
-    translateY(-7px);
+        translateY(-7px)
+        scale(1.03);
 
     box-shadow:
-    0 0 25px
-    rgba(80,255,150,.5);
+        0 0 25px
+        rgba(80, 255, 150, .5);
 
 }
 
-.level.locked{
+.level.locked {
 
-    opacity:.35;
+    opacity: .35;
 
-    cursor:not-allowed;
+    cursor: not-allowed;
 
 }
 
-#hud{
+#hud {
 
-    position:fixed;
+    position: fixed;
 
-    top:15px;
+    top: 15px;
 
-    left:15px;
+    left: 15px;
 
-    z-index:5;
+    z-index: 5;
 
-    display:none;
+    display: none;
 
-    color:white;
+    color: white;
 
     background:
-    rgba(0,0,0,.55);
+        rgba(0, 0, 0, .55);
 
-    padding:12px 16px;
+    padding: 12px 16px;
 
-    border-radius:10px;
+    border-radius: 10px;
 
-    direction:ltr;
+    direction: ltr;
 
 }
 
-#message{
+#startHint {
 
-    position:fixed;
+    position: fixed;
 
-    top:50%;
+    bottom: 25px;
 
-    left:50%;
+    left: 50%;
 
     transform:
-    translate(-50%,-50%);
+        translateX(-50%);
 
-    z-index:20;
+    z-index: 5;
 
-    color:white;
-
-    text-align:center;
-
-    display:none;
+    color: white;
 
     background:
-    rgba(0,0,0,.85);
+        rgba(0, 0, 0, .6);
 
-    padding:30px 45px;
+    padding: 10px 20px;
 
-    border-radius:18px;
+    border-radius: 20px;
 
-}
-
-#message h2{
-
-    color:#74ffad;
+    display: none;
 
 }
 
-#startHint{
+#message {
 
-    position:fixed;
+    position: fixed;
 
-    bottom:25px;
+    top: 50%;
 
-    left:50%;
+    left: 50%;
 
     transform:
-    translateX(-50%);
+        translate(-50%, -50%);
 
-    z-index:5;
+    z-index: 30;
 
-    color:white;
+    color: white;
+
+    text-align: center;
+
+    display: none;
 
     background:
-    rgba(0,0,0,.55);
+        rgba(0, 0, 0, .9);
 
-    padding:10px 20px;
+    padding: 30px 45px;
 
-    border-radius:20px;
+    border-radius: 18px;
 
-    display:none;
+    box-shadow:
+        0 0 40px
+        rgba(50, 255, 150, .25);
+
+}
+
+#message h2 {
+
+    color: #74ffad;
+
+}
+
+#message button {
+
+    padding: 10px 25px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+}
+
+#spiritFlash {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 25;
+
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(160, 255, 210, .9),
+            rgba(80, 255, 160, .25),
+            transparent 70%
+        );
+
+    opacity: 0;
 
 }
 
@@ -239,46 +281,46 @@ html,body{
     <h1>SPIRIT MAZE</h1>
 
     <p>
-        Enter the maze. Find the exit. Escape.
+        Find the exit. Escape the maze.
     </p>
 
     <div class="levels">
 
         <button
-        class="level"
-        id="level1">
+            class="level"
+            id="level1">
 
-        LEVEL 1
+            LEVEL 1
 
-        <br>
+            <br>
 
-        <small>BEGINNER</small>
-
-        </button>
-
-
-        <button
-        class="level locked"
-        id="level2">
-
-        🔒
-
-        <br>
-
-        LEVEL 2
+            <small>BEGINNER</small>
 
         </button>
 
 
         <button
-        class="level locked"
-        id="level3">
+            class="level locked"
+            id="level2">
 
-        🔒
+            🔒
 
-        <br>
+            <br>
 
-        LEVEL 3
+            LEVEL 2
+
+        </button>
+
+
+        <button
+            class="level locked"
+            id="level3">
+
+            🔒
+
+            <br>
+
+            LEVEL 3
 
         </button>
 
@@ -290,16 +332,12 @@ html,body{
 <div id="hud">
 
     LEVEL:
-    <span id="levelNumber">
-    1
-    </span>
+    <span id="levelNumber">1</span>
 
     &nbsp; | &nbsp;
 
     TIME:
-    <span id="timer">
-    0.0
-    </span>
+    <span id="timer">0.0</span>
 
 </div>
 
@@ -314,19 +352,21 @@ html,body{
 <div id="message">
 
     <h2>
-    LEVEL COMPLETE
+        LEVEL COMPLETE
     </h2>
 
     <p id="resultText"></p>
 
-    <button
-    id="nextButton">
+    <button id="nextButton">
 
-    NEXT LEVEL
+        NEXT LEVEL
 
     </button>
 
 </div>
+
+
+<div id="spiritFlash"></div>
 
 
 
@@ -364,9 +404,9 @@ new THREE.Fog(
 
 0x78b9d5,
 
-35,
+45,
 
-110
+130
 
 );
 
@@ -397,7 +437,7 @@ camera.position.set(
 
 0,
 
-5,
+25,
 
 0
 
@@ -414,10 +454,10 @@ const renderer =
 
 new THREE.WebGLRenderer({
 
-antialias:true,
+    antialias: true,
 
-powerPreference:
-"high-performance"
+    powerPreference:
+        "high-performance"
 
 });
 
@@ -435,9 +475,9 @@ renderer.setPixelRatio(
 
 Math.min(
 
-window.devicePixelRatio,
+    window.devicePixelRatio,
 
-1.25
+    1.25
 
 )
 
@@ -462,7 +502,7 @@ renderer.domElement
 
 
 // =====================================================
-// LIGHT
+// LIGHTING
 // =====================================================
 
 
@@ -481,7 +521,7 @@ sun.position.set(
 
 20,
 
-40,
+50,
 
 20
 
@@ -496,11 +536,11 @@ const ambient =
 
 new THREE.HemisphereLight(
 
-0x9ddfff,
+0xa9ddff,
 
-0x233a27,
+0x203c26,
 
-1.3
+1.4
 
 );
 
@@ -518,9 +558,15 @@ const grassMaterial =
 
 new THREE.MeshStandardMaterial({
 
-color:0x286b35,
+    color: 0x245f2f,
 
-roughness:1
+    roughness: 1,
+
+    metalness: 0,
+
+    transparent: false,
+
+    opacity: 1
 
 });
 
@@ -529,20 +575,9 @@ const groundMaterial =
 
 new THREE.MeshStandardMaterial({
 
-color:0x4f8747,
+    color: 0x527d45,
 
-roughness:1
-
-});
-
-
-const pathMaterial =
-
-new THREE.MeshStandardMaterial({
-
-color:0x756d50,
-
-roughness:1
+    roughness: 1
 
 });
 
@@ -551,18 +586,18 @@ const exitMaterial =
 
 new THREE.MeshStandardMaterial({
 
-color:0x62ffad,
+    color: 0x67ffad,
 
-emissive:0x23ff82,
+    emissive: 0x20ff7d,
 
-emissiveIntensity:2
+    emissiveIntensity: 2
 
 });
 
 
 
 // =====================================================
-// GAME VARIABLES
+// VARIABLES
 // =====================================================
 
 
@@ -570,7 +605,7 @@ let currentLevel = 1;
 
 let mazeSize = 11;
 
-let cellSize = 4;
+const cellSize = 4;
 
 let maze = [];
 
@@ -582,17 +617,17 @@ let startTime = 0;
 
 let playing = false;
 
-let spiritMode = false;
+let introAnimation = false;
 
 let unlockedLevel =
 
 Number(
 
-localStorage.getItem(
+    localStorage.getItem(
 
-"spiritMazeLevel"
+        "spiritMazeLevel"
 
-) || 1
+    ) || 1
 
 );
 
@@ -605,30 +640,43 @@ localStorage.getItem(
 
 const player = {
 
-    x:0,
+    x: 0,
 
-    z:0,
+    z: 0,
 
-    y:2,
+    y: 2,
 
-    velocityY:0,
+    velocityY: 0,
 
-    grounded:true
+    grounded: true
 
 };
 
 
 
-// =====================================================
-// CONTROLS
-// =====================================================
+// Player collision radius
+
+const playerRadius = 0.38;
 
 
-const keys = {};
+
+// =====================================================
+// CAMERA ANGLES
+// =====================================================
+
 
 let yaw = 0;
 
 let pitch = 0;
+
+
+
+// =====================================================
+// KEYS
+// =====================================================
+
+
+const keys = {};
 
 
 
@@ -641,6 +689,7 @@ e => {
     keys[e.code] = true;
 
 });
+
 
 
 window.addEventListener(
@@ -656,91 +705,121 @@ e => {
 
 
 // =====================================================
-// MAZE GENERATION
+// MAZE GENERATOR
 // =====================================================
 
 
-function generateMaze(size){
+function generateMaze(size) {
+
 
     const grid = [];
 
-    for(let z=0;z<size;z++){
 
-        grid[z]=[];
+    for (
 
-        for(let x=0;x<size;x++){
+        let z = 0;
 
-            grid[z][x]=1;
+        z < size;
+
+        z++
+
+    ) {
+
+
+        grid[z] = [];
+
+
+        for (
+
+            let x = 0;
+
+            x < size;
+
+            x++
+
+        ) {
+
+
+            grid[z][x] = 1;
 
         }
 
     }
 
 
-    function carve(x,z){
 
-        grid[z][x]=0;
+    function carve(x, z) {
 
 
-        const directions=[
+        grid[z][x] = 0;
 
-            [2,0],
 
-            [-2,0],
+        const directions = [
 
-            [0,2],
 
-            [0,-2]
+            [2, 0],
+
+
+            [-2, 0],
+
+
+            [0, 2],
+
+
+            [0, -2]
+
 
         ];
 
 
         directions.sort(
 
-            () => Math.random()-.5
+            () => Math.random() - .5
 
         );
 
 
-        for(
+        for (
 
-            const [dx,dz]
+            const [dx, dz]
 
             of directions
 
-        ){
-
-            const nx=x+dx;
-
-            const nz=z+dz;
+        ) {
 
 
-            if(
+            const nx = x + dx;
 
-                nx>0 &&
+            const nz = z + dz;
 
-                nx<size-1 &&
 
-                nz>0 &&
+            if (
 
-                nz<size-1 &&
+                nx > 0 &&
 
-                grid[nz][nx]===1
+                nx < size - 1 &&
 
-            ){
+                nz > 0 &&
+
+                nz < size - 1 &&
+
+                grid[nz][nx] === 1
+
+            ) {
+
 
                 grid[
 
-                    z+dz/2
+                    z + dz / 2
 
                 ][
 
-                    x+dx/2
+                    x + dx / 2
 
-                ]=0;
+                ] = 0;
 
 
-                carve(nx,nz);
+                carve(nx, nz);
 
             }
 
@@ -749,7 +828,8 @@ function generateMaze(size){
     }
 
 
-    carve(1,1);
+
+    carve(1, 1);
 
 
     return grid;
@@ -763,9 +843,11 @@ function generateMaze(size){
 // =====================================================
 
 
-function buildMaze(){
+function buildMaze() {
 
-    if(mazeGroup){
+
+    if (mazeGroup) {
+
 
         scene.remove(
 
@@ -797,9 +879,13 @@ function buildMaze(){
     );
 
 
+
     const total =
 
-    mazeSize * cellSize;
+    mazeSize *
+
+    cellSize;
+
 
 
     // Ground
@@ -822,9 +908,9 @@ function buildMaze(){
     );
 
 
-    ground.rotation.x=
+    ground.rotation.x =
 
-    -Math.PI/2;
+    -Math.PI / 2;
 
 
     mazeGroup.add(
@@ -834,34 +920,38 @@ function buildMaze(){
     );
 
 
+
     // Walls
 
 
-    for(
+    for (
 
-        let z=0;
+        let z = 0;
 
-        z<mazeSize;
+        z < mazeSize;
 
         z++
 
-    ){
+    ) {
 
-        for(
 
-            let x=0;
+        for (
 
-            x<mazeSize;
+            let x = 0;
+
+            x < mazeSize;
 
             x++
 
-        ){
+        ) {
 
-            if(
 
-                maze[z][x]===1
+            if (
 
-            ){
+                maze[z][x] === 1
+
+            ) {
+
 
                 const wall =
 
@@ -871,7 +961,7 @@ function buildMaze(){
 
                         cellSize,
 
-                        4,
+                        5,
 
                         cellSize
 
@@ -888,19 +978,19 @@ function buildMaze(){
 
                         x -
 
-                        mazeSize/2
+                        mazeSize / 2
 
                     ) *
 
                     cellSize,
 
-                    2,
+                    2.5,
 
                     (
 
                         z -
 
-                        mazeSize/2
+                        mazeSize / 2
 
                     ) *
 
@@ -922,36 +1012,40 @@ function buildMaze(){
     }
 
 
+
     // Exit
 
 
-    exitPosition={
+    exitPosition = {
+
 
         x:
 
         (
 
-            mazeSize-2 -
+            mazeSize - 2 -
 
-            mazeSize/2
+            mazeSize / 2
 
-        )*
+        ) *
 
         cellSize,
+
 
         z:
 
         (
 
-            mazeSize-2 -
+            mazeSize - 2 -
 
-            mazeSize/2
+            mazeSize / 2
 
-        )*
+        ) *
 
         cellSize
 
     };
+
 
 
     const exit =
@@ -964,7 +1058,7 @@ function buildMaze(){
 
             1.2,
 
-            .2,
+            .15,
 
             24
 
@@ -979,7 +1073,7 @@ function buildMaze(){
 
         exitPosition.x,
 
-        .15,
+        .08,
 
         exitPosition.z
 
@@ -1001,13 +1095,26 @@ function buildMaze(){
 // =====================================================
 
 
-const spirit =
+const spiritGroup =
+
+new THREE.Group();
+
+
+scene.add(
+
+    spiritGroup
+
+);
+
+
+
+const spiritCore =
 
 new THREE.Mesh(
 
     new THREE.SphereGeometry(
 
-        .6,
+        .55,
 
         16,
 
@@ -1017,25 +1124,383 @@ new THREE.Mesh(
 
     new THREE.MeshBasicMaterial({
 
-        color:0x8affc2,
+        color: 0x9affd0,
 
-        transparent:true,
+        transparent: true,
 
-        opacity:.8
+        opacity: .9
 
     })
 
 );
 
 
-scene.add(
+spiritGroup.add(
 
-    spirit
+    spiritCore
 
 );
 
 
-spirit.visible=false;
+
+const spiritGlow =
+
+new THREE.PointLight(
+
+0x5dffae,
+
+5,
+
+15
+
+);
+
+
+spiritGroup.add(
+
+    spiritGlow
+
+);
+
+
+
+spiritGroup.visible =
+
+false;
+
+
+
+// =====================================================
+// SPIRIT INTRO
+// =====================================================
+
+
+let spiritTime = 0;
+
+
+let spiritStart =
+
+new THREE.Vector3();
+
+
+
+function startSpiritAnimation() {
+
+
+    introAnimation = true;
+
+    playing = false;
+
+    spiritTime = 0;
+
+
+    spiritGroup.visible =
+
+    true;
+
+
+    spiritStart.set(
+
+        player.x,
+
+        24,
+
+        player.z
+
+    );
+
+
+    spiritGroup.position.copy(
+
+        spiritStart
+
+    );
+
+
+    camera.position.set(
+
+        player.x,
+
+        28,
+
+        player.z
+
+    );
+
+
+    camera.lookAt(
+
+        player.x,
+
+        0,
+
+        player.z
+
+    );
+
+}
+
+
+
+function updateSpiritAnimation() {
+
+
+    if (!introAnimation)
+
+        return;
+
+
+
+    spiritTime +=
+
+    .016;
+
+
+
+    const t =
+
+    Math.min(
+
+        spiritTime / 6,
+
+        1
+
+    );
+
+
+
+    // Smooth easing
+
+
+    const ease =
+
+    t * t *
+
+    (3 - 2 * t);
+
+
+
+    // Spirit approaches from above
+
+
+    const targetY =
+
+    2.3;
+
+
+
+    const y =
+
+    24 +
+
+    (
+
+        targetY - 24
+
+    ) *
+
+    ease;
+
+
+
+    // Gentle orbit
+
+
+    const orbitRadius =
+
+    Math.max(
+
+        0,
+
+        5 *
+
+        (1 - ease)
+
+    );
+
+
+    spiritGroup.position.set(
+
+        player.x +
+
+        Math.sin(
+
+            spiritTime * 2
+
+        ) *
+
+        orbitRadius,
+
+
+        y,
+
+
+        player.z +
+
+        Math.cos(
+
+            spiritTime * 2
+
+        ) *
+
+        orbitRadius
+
+    );
+
+
+
+    // Camera follows spirit
+
+
+    const cameraHeight =
+
+    28 -
+
+    24 *
+
+    ease;
+
+
+
+    camera.position.set(
+
+        player.x,
+
+        cameraHeight,
+
+        player.z
+
+    );
+
+
+
+    camera.lookAt(
+
+        player.x,
+
+        1,
+
+        player.z
+
+    );
+
+
+
+    // Final possession
+
+
+    if (t >= 1) {
+
+
+        introAnimation = false;
+
+
+        spiritGroup.visible =
+
+        false;
+
+
+
+        camera.position.set(
+
+            player.x,
+
+            player.y,
+
+            player.z
+
+        );
+
+
+
+        yaw = 0;
+
+        pitch = 0;
+
+
+
+        camera.rotation.set(
+
+            0,
+
+            0,
+
+            0
+
+        );
+
+
+
+        // Flash
+
+
+        const flash =
+
+        document
+
+        .getElementById(
+
+            "spiritFlash"
+
+        );
+
+
+        flash.animate(
+
+            [
+
+                {
+
+                    opacity: 0
+
+                },
+
+                {
+
+                    opacity: 1
+
+                },
+
+                {
+
+                    opacity: 0
+
+                }
+
+            ],
+
+            {
+
+                duration: 700
+
+            }
+
+        );
+
+
+
+        setTimeout(
+
+            () => {
+
+
+                playing = true;
+
+
+                startTime =
+
+                performance.now();
+
+
+            },
+
+            500
+
+        );
+
+    }
+
+}
 
 
 
@@ -1044,104 +1509,76 @@ spirit.visible=false;
 // =====================================================
 
 
-function startLevel(level){
+function startLevel(level) {
 
-    currentLevel=
+
+    currentLevel =
 
     level;
 
 
-    mazeSize=
+    mazeSize =
 
     11 +
 
     (
 
-        level-1
+        level - 1
 
-    )*
+    ) *
 
     4;
 
 
-    if(
+    if (
 
-        mazeSize%2===0
+        mazeSize % 2 === 0
 
-    ){
+    ) {
+
 
         mazeSize++;
 
     }
 
 
+
     buildMaze();
 
 
-    player.x=
+
+    player.x =
 
     (
 
         1 -
 
-        mazeSize/2
+        mazeSize / 2
 
-    )*
+    ) *
 
     cellSize;
 
 
-    player.z=
+
+    player.z =
 
     (
 
         1 -
 
-        mazeSize/2
+        mazeSize / 2
 
-    )*
+    ) *
 
     cellSize;
 
 
-    player.y=2;
 
+    player.y = 2;
 
-    camera.position.set(
+    player.velocityY = 0;
 
-        player.x,
-
-        25,
-
-        player.z
-
-    );
-
-
-    yaw=0;
-
-    pitch=
-
-    -Math.PI/2;
-
-
-    spiritMode=true;
-
-    playing=false;
-
-
-    spirit.visible=true;
-
-
-    spirit.position.set(
-
-        player.x,
-
-        25,
-
-        player.z
-
-    );
 
 
     document
@@ -1152,9 +1589,10 @@ function startLevel(level){
 
     )
 
-    .style.display=
+    .style.display =
 
     "none";
+
 
 
     document
@@ -1165,9 +1603,10 @@ function startLevel(level){
 
     )
 
-    .style.display=
+    .style.display =
 
     "block";
+
 
 
     document
@@ -1178,9 +1617,10 @@ function startLevel(level){
 
     )
 
-    .style.display=
+    .style.display =
 
     "block";
+
 
 
     document
@@ -1191,72 +1631,179 @@ function startLevel(level){
 
     )
 
-    .textContent=
+    .textContent =
 
     level;
+
+
+
+    startSpiritAnimation();
 
 }
 
 
 
 // =====================================================
-// SPIRIT DESCENT
+// COLLISION
 // =====================================================
 
 
-function updateSpirit(){
-
-    if(
-
-        !spiritMode
-
-    ) return;
+function isWalkable(x, z) {
 
 
-    spirit.position.y-=
+    const gx =
 
-    .15;
+    Math.floor(
 
+        x / cellSize +
 
-    camera.position.y=
+        mazeSize / 2
 
-    spirit.position.y;
-
-
-    if(
-
-        spirit.position.y<=
-
-        player.y
-
-    ){
-
-        spiritMode=false;
-
-        spirit.visible=false;
-
-        playing=true;
-
-        startTime=
-
-        performance.now();
-
-        camera.position.y=
-
-        player.y;
+    );
 
 
-        document
+    const gz =
 
-        .getElementById(
+    Math.floor(
 
-            "startHint"
+        z / cellSize +
+
+        mazeSize / 2
+
+    );
+
+
+
+    if (
+
+        gx < 0 ||
+
+        gz < 0 ||
+
+        gx >= mazeSize ||
+
+        gz >= mazeSize
+
+    ) {
+
+
+        return false;
+
+    }
+
+
+
+    if (
+
+        maze[gz][gx] === 1
+
+    ) {
+
+
+        return false;
+
+    }
+
+
+
+    return true;
+
+}
+
+
+
+// Smooth collision system
+
+
+function tryMove(dx, dz) {
+
+
+    const nextX =
+
+    player.x + dx;
+
+
+    const nextZ =
+
+    player.z + dz;
+
+
+
+    // Full movement
+
+
+    if (
+
+        isWalkable(
+
+            nextX,
+
+            nextZ
 
         )
 
-        .style.display=
+    ) {
 
-        "none";
+
+        player.x =
+
+        nextX;
+
+
+        player.z =
+
+        nextZ;
+
+
+        return;
+
+    }
+
+
+
+    // Slide along X
+
+
+    if (
+
+        isWalkable(
+
+            nextX,
+
+            player.z
+
+        )
+
+    ) {
+
+
+        player.x =
+
+        nextX;
+
+    }
+
+
+
+    // Slide along Z
+
+
+    if (
+
+        isWalkable(
+
+            player.x,
+
+            nextZ
+
+        )
+
+    ) {
+
+
+        player.z =
+
+        nextZ;
 
     }
 
@@ -1269,17 +1816,23 @@ function updateSpirit(){
 // =====================================================
 
 
-renderer.domElement.addEventListener(
+renderer
+
+.domElement
+
+.addEventListener(
 
 "click",
 
-()=>{
+() => {
 
-    if(
+
+    if (
 
         playing
 
-    ){
+    ) {
+
 
         renderer
 
@@ -1297,42 +1850,51 @@ document.addEventListener(
 
 "mousemove",
 
-e=>{
+e => {
 
-    if(
+
+    if (
 
         document
 
-        .pointerLockElement!==
+        .pointerLockElement !==
 
         renderer.domElement
 
-    ) return;
+    ) {
 
 
-    yaw-=
+        return;
 
-    e.movementX*
-
-    .003;
+    }
 
 
-    pitch-=
 
-    e.movementY*
+    yaw -=
 
-    .003;
+    e.movementX *
+
+    .0025;
 
 
-    pitch=
+
+    pitch -=
+
+    e.movementY *
+
+    .0025;
+
+
+
+    pitch =
 
     Math.max(
 
-        -1.4,
+        -1.45,
 
         Math.min(
 
-            1.4,
+            1.45,
 
             pitch
 
@@ -1345,150 +1907,98 @@ e=>{
 
 
 // =====================================================
-// COLLISION
+// MOVEMENT
 // =====================================================
 
 
-function canMove(
-
-    x,
-
-    z
-
-){
-
-    const gx=
-
-    Math.floor(
-
-        x/cellSize +
-
-        mazeSize/2
-
-    );
+function movePlayer() {
 
 
-    const gz=
+    if (!playing)
 
-    Math.floor(
-
-        z/cellSize +
-
-        mazeSize/2
-
-    );
-
-
-    if(
-
-        gx<0 ||
-
-        gz<0 ||
-
-        gx>=mazeSize ||
-
-        gz>=mazeSize
-
-    ){
-
-        return false;
-
-    }
-
-
-    return maze[gz][gx]===0;
-
-}
+        return;
 
 
 
-// =====================================================
-// PLAYER MOVEMENT
-// =====================================================
+    const speed =
+
+    .11;
 
 
-function movePlayer(){
 
-    if(
+    let forwardX =
 
-        !playing
-
-    ) return;
+    -Math.sin(yaw);
 
 
-    const speed=
+    let forwardZ =
 
-    .12;
-
-
-    const forward=
-
-    new THREE.Vector3(
-
-        -Math.sin(yaw),
-
-        0,
-
-        -Math.cos(yaw)
-
-    );
+    -Math.cos(yaw);
 
 
-    const right=
 
-    new THREE.Vector3(
+    let rightX =
 
-        Math.cos(yaw),
-
-        0,
-
-        -Math.sin(yaw)
-
-    );
+    Math.cos(yaw);
 
 
-    let dx=0;
+    let rightZ =
 
-    let dz=0;
+    -Math.sin(yaw);
 
 
-    if(keys.KeyW){
 
-        dx+=forward.x;
+    let dx = 0;
 
-        dz+=forward.z;
+    let dz = 0;
+
+
+
+    if (keys.KeyW) {
+
+
+        dx += forwardX;
+
+        dz += forwardZ;
 
     }
 
 
-    if(keys.KeyS){
 
-        dx-=forward.x;
-
-        dz-=forward.z;
-
-    }
+    if (keys.KeyS) {
 
 
-    if(keys.KeyA){
+        dx -= forwardX;
 
-        dx-=right.x;
-
-        dz-=right.z;
+        dz -= forwardZ;
 
     }
 
 
-    if(keys.KeyD){
 
-        dx+=right.x;
+    if (keys.KeyA) {
 
-        dz+=right.z;
+
+        dx -= rightX;
+
+        dz -= rightZ;
 
     }
 
 
-    const length=
+
+    if (keys.KeyD) {
+
+
+        dx += rightX;
+
+        dz += rightZ;
+
+    }
+
+
+
+    const length =
 
     Math.hypot(
 
@@ -1499,112 +2009,88 @@ function movePlayer(){
     );
 
 
-    if(length>0){
 
-        dx/=length;
+    if (
 
-        dz/=length;
+        length > 0
 
-
-        const nx=
-
-        player.x+
-
-        dx*
-
-        speed;
+    ) {
 
 
-        const nz=
+        dx /= length;
 
-        player.z+
-
-        dz*
-
-        speed;
+        dz /= length;
 
 
-        if(
 
-            canMove(
+        tryMove(
 
-                nx,
+            dx * speed,
 
-                player.z
+            dz * speed
 
-            )
-
-        ){
-
-            player.x=nx;
-
-        }
-
-
-        if(
-
-            canMove(
-
-                player.x,
-
-                nz
-
-            )
-
-        ){
-
-            player.z=nz;
-
-        }
+        );
 
     }
+
 
 
     // Jump
 
 
-    if(
+    if (
 
         keys.Space &&
 
         player.grounded
 
-    ){
+    ) {
 
-        player.velocityY=
+
+        player.velocityY =
 
         .22;
 
-        player.grounded=
+
+        player.grounded =
 
         false;
 
     }
 
 
-    player.velocityY-=
+
+    player.velocityY -=
 
     .012;
 
 
-    player.y+=
+
+    player.y +=
 
     player.velocityY;
 
 
-    if(
 
-        player.y<=2
+    if (
 
-    ){
+        player.y <= 2
 
-        player.y=2;
+    ) {
 
-        player.velocityY=0;
 
-        player.grounded=true;
+        player.y = 2;
+
+
+        player.velocityY = 0;
+
+
+        player.grounded =
+
+        true;
 
     }
+
 
 
     camera.position.set(
@@ -1618,17 +2104,19 @@ function movePlayer(){
     );
 
 
-    camera.rotation.order=
+
+    camera.rotation.order =
 
     "YXZ";
 
 
-    camera.rotation.y=
+
+    camera.rotation.y =
 
     yaw;
 
 
-    camera.rotation.x=
+    camera.rotation.x =
 
     pitch;
 
@@ -1637,39 +2125,41 @@ function movePlayer(){
 
 
 // =====================================================
-// EXIT CHECK
+// EXIT
 // =====================================================
 
 
-function checkExit(){
-
-    if(
-
-        !playing
-
-    ) return;
+function checkExit() {
 
 
-    const distance=
+    if (!playing)
+
+        return;
+
+
+
+    const distance =
 
     Math.hypot(
 
-        player.x-
+        player.x -
 
         exitPosition.x,
 
-        player.z-
+        player.z -
 
         exitPosition.z
 
     );
 
 
-    if(
 
-        distance<1.5
+    if (
 
-    ){
+        distance < 1.4
+
+    ) {
+
 
         completeLevel();
 
@@ -1684,50 +2174,55 @@ function checkExit(){
 // =====================================================
 
 
-function completeLevel(){
-
-    playing=false;
+function completeLevel() {
 
 
-    const time=
+    playing = false;
+
+
+
+    const time =
 
     (
 
-        performance.now()-
+        performance.now() -
 
         startTime
 
-    )/
-
-    1000;
+    ) / 1000;
 
 
-    const oldBest=
+
+    const oldBest =
 
     localStorage.getItem(
 
-        "level"+
+        "level" +
 
-        currentLevel+
+        currentLevel +
 
         "Best"
 
     );
 
 
-    if(
+
+    if (
 
         !oldBest ||
 
-        time<Number(oldBest)
+        time <
 
-    ){
+        Number(oldBest)
+
+    ) {
+
 
         localStorage.setItem(
 
-            "level"+
+            "level" +
 
-            currentLevel+
+            currentLevel +
 
             "Best",
 
@@ -1738,23 +2233,26 @@ function completeLevel(){
     }
 
 
-    if(
 
-        currentLevel>=
+    if (
+
+        currentLevel >=
 
         unlockedLevel
 
-    ){
+    ) {
 
-        unlockedLevel=
+
+        unlockedLevel =
 
         Math.min(
 
             3,
 
-            currentLevel+1
+            currentLevel + 1
 
         );
+
 
 
         localStorage.setItem(
@@ -1768,6 +2266,7 @@ function completeLevel(){
     }
 
 
+
     document
 
     .getElementById(
@@ -1776,13 +2275,14 @@ function completeLevel(){
 
     )
 
-    .textContent=
+    .textContent =
 
-    "Your time: "+
+    "Your time: " +
 
-    time.toFixed(2)+
+    time.toFixed(2) +
 
     " seconds";
+
 
 
     document
@@ -1793,16 +2293,89 @@ function completeLevel(){
 
     )
 
-    .style.display=
+    .style.display =
 
     "block";
+
+
+
+    updateMenu();
 
 }
 
 
 
 // =====================================================
-// LEVEL BUTTONS
+// MENU
+// =====================================================
+
+
+function updateMenu() {
+
+
+    for (
+
+        let i = 1;
+
+        i <= 3;
+
+        i++
+
+    ) {
+
+
+        const button =
+
+        document
+
+        .getElementById(
+
+            "level" + i
+
+        );
+
+
+
+        if (
+
+            i <=
+
+            unlockedLevel
+
+        ) {
+
+
+            button
+
+            .classList
+
+            .remove(
+
+                "locked"
+
+            );
+
+
+            button
+
+            .textContent =
+
+            "LEVEL " + i;
+
+        }
+
+    }
+
+}
+
+
+
+updateMenu();
+
+
+
+// =====================================================
+// BUTTONS
 // =====================================================
 
 
@@ -1818,7 +2391,8 @@ document
 
 "click",
 
-()=>{
+() => {
+
 
     startLevel(1);
 
@@ -1838,13 +2412,15 @@ document
 
 "click",
 
-()=>{
+() => {
 
-    if(
 
-        unlockedLevel>=2
+    if (
 
-    ){
+        unlockedLevel >= 2
+
+    ) {
+
 
         startLevel(2);
 
@@ -1866,13 +2442,15 @@ document
 
 "click",
 
-()=>{
+() => {
 
-    if(
 
-        unlockedLevel>=3
+    if (
 
-    ){
+        unlockedLevel >= 3
+
+    ) {
+
 
         startLevel(3);
 
@@ -1883,7 +2461,7 @@ document
 
 
 // =====================================================
-// NEXT
+// NEXT LEVEL
 // =====================================================
 
 
@@ -1899,7 +2477,8 @@ document
 
 "click",
 
-()=>{
+() => {
+
 
     document
 
@@ -1909,20 +2488,22 @@ document
 
     )
 
-    .style.display=
+    .style.display =
 
     "none";
 
 
-    if(
 
-        currentLevel<3
+    if (
 
-    ){
+        currentLevel < 3
+
+    ) {
+
 
         startLevel(
 
-            currentLevel+1
+            currentLevel + 1
 
         );
 
@@ -1933,91 +2514,30 @@ document
 
 
 // =====================================================
-// UPDATE LEVEL LOCKS
-// =====================================================
-
-
-function updateMenu(){
-
-    for(
-
-        let i=1;
-
-        i<=3;
-
-        i++
-
-    ){
-
-        const button=
-
-        document
-
-        .getElementById(
-
-            "level"+i
-
-        );
-
-
-        if(
-
-            i<=unlockedLevel
-
-        ){
-
-            button
-
-            .classList
-
-            .remove(
-
-                "locked"
-
-            );
-
-
-            button
-
-            .textContent=
-
-            "LEVEL "+i;
-
-        }
-
-    }
-
-}
-
-
-updateMenu();
-
-
-
-// =====================================================
 // TIMER
 // =====================================================
 
 
-function updateTimer(){
+function updateTimer() {
 
-    if(
+
+    if (
 
         playing
 
-    ){
+    ) {
 
-        const time=
+
+        const time =
 
         (
 
-            performance.now()-
+            performance.now() -
 
             startTime
 
-        )/
+        ) / 1000;
 
-        1000;
 
 
         document
@@ -2028,7 +2548,7 @@ function updateTimer(){
 
         )
 
-        .textContent=
+        .textContent =
 
         time.toFixed(1);
 
@@ -2039,11 +2559,12 @@ function updateTimer(){
 
 
 // =====================================================
-// LOOP
+// ANIMATION LOOP
 // =====================================================
 
 
-function animate(){
+function animate() {
+
 
     requestAnimationFrame(
 
@@ -2052,13 +2573,14 @@ function animate(){
     );
 
 
-    updateSpirit();
+    updateSpiritAnimation();
 
     movePlayer();
 
     checkExit();
 
     updateTimer();
+
 
 
     renderer.render(
@@ -2070,6 +2592,7 @@ function animate(){
     );
 
 }
+
 
 
 animate();
@@ -2085,16 +2608,19 @@ window.addEventListener(
 
 "resize",
 
-()=>{
+() => {
 
-    camera.aspect=
 
-    window.innerWidth/
+    camera.aspect =
+
+    window.innerWidth /
 
     window.innerHeight;
 
 
+
     camera.updateProjectionMatrix();
+
 
 
     renderer.setSize(
