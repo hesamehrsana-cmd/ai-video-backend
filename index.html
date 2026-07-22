@@ -1,94 +1,94 @@
-
+```html
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+>
 
-    <title>AI World Simulator</title>
+<title>AI World Simulator</title>
 
-    <style>
+<style>
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        html,
-        body {
+html,
+body {
 
-            width: 100%;
-            height: 100%;
+    width: 100%;
+    height: 100%;
 
-            overflow: hidden;
+    overflow: hidden;
 
-            background: #87CEEB;
+    background: #87CEEB;
 
-        }
+}
 
-        #game {
+#game {
 
-            width: 100%;
-            height: 100%;
+    width: 100%;
+    height: 100%;
 
-        }
+}
 
-        #info {
+#info {
 
-            position: fixed;
+    position: fixed;
 
-            top: 20px;
-            left: 20px;
+    top: 20px;
+    left: 20px;
 
-            padding: 14px 18px;
+    padding: 14px 18px;
 
-            background:
-                rgba(0, 0, 0, 0.7);
+    background:
+    rgba(0, 0, 0, 0.75);
 
-            color: white;
+    color: white;
 
-            border-radius: 10px;
+    border-radius: 10px;
 
-            font-family: Arial,
-            sans-serif;
+    font-family: Arial,
+    sans-serif;
 
-            line-height: 1.7;
+    line-height: 1.7;
 
-            z-index: 10;
+    z-index: 10;
 
-        }
+}
 
-        #crosshair {
+#crosshair {
 
-            position: fixed;
+    position: fixed;
 
-            left: 50%;
-            top: 50%;
+    left: 50%;
+    top: 50%;
 
-            transform:
-                translate(-50%, -50%);
+    transform:
+    translate(-50%, -50%);
 
-            color: white;
+    color: white;
 
-            font-size: 22px;
+    font-size: 22px;
 
-            pointer-events: none;
+    pointer-events: none;
 
-            z-index: 20;
+    z-index: 20;
 
-            text-shadow:
-                0 0 5px black;
+    text-shadow:
+    0 0 5px black;
 
-        }
+}
 
-    </style>
+</style>
 
 </head>
 
@@ -98,34 +98,34 @@
 
 <div id="info">
 
-    🌍 AI World Simulator
+🌍 AI World Simulator
 
-    <br>
+<br>
 
-    🖱️ Click = Control Camera
+🖱️ Click = Control Camera
 
-    <br>
+<br>
 
-    W A S D = Move
+W A S D = Move
 
-    <br>
+<br>
 
-    Space = Up
+Space = Up
 
-    <br>
+<br>
 
-    Shift = Down
+Shift = Down
 
-    <br>
+<br>
 
-    ESC = Release Mouse
+ESC = Release Mouse
 
 </div>
 
 
 <div id="crosshair">
 
-    +
++
 
 </div>
 
@@ -143,9 +143,9 @@ import * as THREE from
 
 
 
-// ==========================================
+// =================================================
 // SCENE
-// ==========================================
+// =================================================
 
 
 const scene =
@@ -157,78 +157,78 @@ scene.background =
 
 new THREE.Color(
 
-    0x87CEEB
+0x87CEEB
 
 );
 
 
 
-// ==========================================
+// =================================================
 // CAMERA
-// ==========================================
+// =================================================
 
 
 const camera =
 
 new THREE.PerspectiveCamera(
 
-    75,
+75,
 
-    window.innerWidth /
+window.innerWidth /
 
-    window.innerHeight,
+window.innerHeight,
 
-    0.1,
+0.1,
 
-    1000
+1000
 
 );
 
 
 camera.position.set(
 
-    0,
+0,
 
-    5,
+5,
 
-    20
+30
 
 );
 
 
 
-// ==========================================
+// =================================================
 // RENDERER
-// ==========================================
+// =================================================
 
 
 const renderer =
 
 new THREE.WebGLRenderer({
 
-    antialias: true
+antialias: true
 
 });
 
 
 renderer.setSize(
 
-    window.innerWidth,
+window.innerWidth,
 
-    window.innerHeight
+window.innerHeight
 
 );
 
 
 renderer.setPixelRatio(
 
-    Math.min(
+Math.min(
 
-        window.devicePixelRatio,
+window.devicePixelRatio,
 
-        2
+2
 
-    )
+)
 
 );
 
@@ -239,78 +239,76 @@ document
 
 .appendChild(
 
-    renderer.domElement
+renderer.domElement
 
 );
 
 
 
-// ==========================================
-// LIGHT
-// ==========================================
+// =================================================
+// LIGHTING
+// =================================================
 
 
 const sun =
 
 new THREE.DirectionalLight(
 
-    0xffffff,
+0xffffff,
 
-    2
+2
 
 );
 
 
 sun.position.set(
 
-    20,
+30,
 
-    30,
+50,
 
-    20
+20
 
 );
 
 
 scene.add(
 
-    sun
-
+sun
 );
-
 
 
 const ambient =
 
 new THREE.AmbientLight(
 
-    0xffffff,
+0xffffff,
 
-    0.7
+0.65
 
 );
 
 
 scene.add(
 
-    ambient
+ambient
 
 );
 
 
 
-// ==========================================
+// =================================================
 // GROUND
-// ==========================================
+// =================================================
 
 
 const groundGeometry =
 
 new THREE.PlaneGeometry(
 
-    200,
+300,
 
-    200
+300
 
 );
 
@@ -319,7 +317,7 @@ const groundMaterial =
 
 new THREE.MeshStandardMaterial({
 
-    color: 0x4caf50
+color: 0x4caf50
 
 });
 
@@ -328,9 +326,9 @@ const ground =
 
 new THREE.Mesh(
 
-    groundGeometry,
+groundGeometry,
 
-    groundMaterial
+groundMaterial
 
 );
 
@@ -342,24 +340,39 @@ ground.rotation.x =
 
 scene.add(
 
-    ground
+ground
 
 );
 
 
 
-// ==========================================
+// =================================================
 // ROAD
-// ==========================================
+// =================================================
+
+
+function createRoad(
+
+x,
+
+z,
+
+width,
+
+length,
+
+rotation = 0
+
+) {
 
 
 const roadGeometry =
 
 new THREE.PlaneGeometry(
 
-    12,
+width,
 
-    200
+length
 
 );
 
@@ -368,7 +381,7 @@ const roadMaterial =
 
 new THREE.MeshStandardMaterial({
 
-    color: 0x333333
+color: 0x292929
 
 });
 
@@ -377,9 +390,9 @@ const road =
 
 new THREE.Mesh(
 
-    roadGeometry,
+roadGeometry,
 
-    roadMaterial
+roadMaterial
 
 );
 
@@ -389,279 +402,909 @@ road.rotation.x =
 -Math.PI / 2;
 
 
-road.position.y =
+road.rotation.z =
 
-0.02;
+rotation;
 
 
-scene.add(
+road.position.set(
 
-    road
+x,
+
+0.03,
+
+z
 
 );
 
 
+scene.add(
 
-// ==========================================
-// BUILDINGS
-// ==========================================
+road
 
-
-function createBuilding(
-
-    x,
-
-    z,
-
-    width,
-
-    height,
-
-    depth,
-
-    color
-
-) {
-
-
-    const geometry =
-
-    new THREE.BoxGeometry(
-
-        width,
-
-        height,
-
-        depth
-
-    );
-
-
-    const material =
-
-    new THREE.MeshStandardMaterial({
-
-        color: color
-
-    });
-
-
-    const building =
-
-    new THREE.Mesh(
-
-        geometry,
-
-        material
-
-    );
-
-
-    building.position.set(
-
-        x,
-
-        height / 2,
-
-        z
-
-    );
-
-
-    scene.add(
-
-        building
-
-    );
+);
 
 }
 
 
 
-createBuilding(
-
-    -10,
-
-    -10,
-
-    6,
-
-    12,
-
-    6,
-
-    0x888888
-
-);
+// Main road
 
 
-createBuilding(
+createRoad(
 
-    10,
+0,
 
-    -15,
+0,
 
-    8,
+14,
 
-    8,
-
-    8,
-
-    0x777777
-
-);
-
-
-createBuilding(
-
-    -12,
-
-    15,
-
-    5,
-
-    6,
-
-    5,
-
-    0x999999
-
-);
-
-
-createBuilding(
-
-    12,
-
-    12,
-
-    7,
-
-    15,
-
-    7,
-
-    0x666666
+200
 
 );
 
 
 
-// ==========================================
-// TREES
-// ==========================================
+// =================================================
+// ROAD LINES
+// =================================================
 
 
-function createTree(
+function createRoadLine(
 
-    x,
+x,
 
-    z
+z,
+
+length,
+
+rotation = 0
 
 ) {
 
 
-    const trunkGeometry =
+const geometry =
 
-    new THREE.CylinderGeometry(
+new THREE.PlaneGeometry(
 
-        0.5,
+0.35,
 
-        0.5,
+length
 
-        3
-
-    );
+);
 
 
-    const trunkMaterial =
+const material =
 
-    new THREE.MeshStandardMaterial({
+new THREE.MeshStandardMaterial({
 
-        color: 0x8B4513
+color: 0xffffff
 
-    });
-
-
-    const trunk =
-
-    new THREE.Mesh(
-
-        trunkGeometry,
-
-        trunkMaterial
-
-    );
+});
 
 
-    trunk.position.set(
+const line =
 
-        x,
+new THREE.Mesh(
 
-        1.5,
+geometry,
 
-        z
+material
 
-    );
-
-
-    scene.add(
-
-        trunk
-
-    );
+);
 
 
+line.rotation.x =
 
-    const leavesGeometry =
-
-    new THREE.SphereGeometry(
-
-        2.5,
-
-        16,
-
-        16
-
-    );
+-Math.PI / 2;
 
 
-    const leavesMaterial =
+line.rotation.z =
 
-    new THREE.MeshStandardMaterial({
-
-        color: 0x228B22
-
-    });
+rotation;
 
 
-    const leaves =
+line.position.set(
 
-    new THREE.Mesh(
+x,
 
-        leavesGeometry,
+0.05,
 
-        leavesMaterial
+z
 
-    );
-
-
-    leaves.position.set(
-
-        x,
-
-        4,
-
-        z
-
-    );
+);
 
 
-    scene.add(
+scene.add(
 
-        leaves
+line
 
-    );
+);
+
+}
+
+
+
+// Dashed road markings
+
+
+for (
+
+let z = -95;
+
+z < 100;
+
+z += 10
+
+) {
+
+
+createRoadLine(
+
+0,
+
+z,
+
+5
+
+);
+
+}
+
+
+
+// =================================================
+// SIDEWALK
+// =================================================
+
+
+function createSidewalk(
+
+x
+
+) {
+
+
+const geometry =
+
+new THREE.BoxGeometry(
+
+3,
+
+0.25,
+
+200
+
+);
+
+
+const material =
+
+new THREE.MeshStandardMaterial({
+
+color: 0x999999
+
+});
+
+
+const sidewalk =
+
+new THREE.Mesh(
+
+geometry,
+
+material
+
+);
+
+
+sidewalk.position.set(
+
+x,
+
+0.15,
+
+0
+
+);
+
+
+scene.add(
+
+sidewalk
+
+);
+
+}
+
+
+createSidewalk(-8.5);
+
+
+createSidewalk(8.5);
+
+
+
+// =================================================
+// BUILDING
+// =================================================
+
+
+function createBuilding(
+
+x,
+
+z,
+
+width,
+
+height,
+
+depth,
+
+color
+
+) {
+
+
+const group =
+
+new THREE.Group();
+
+
+
+// Main building
+
+
+const bodyGeometry =
+
+new THREE.BoxGeometry(
+
+width,
+
+height,
+
+depth
+
+);
+
+
+const bodyMaterial =
+
+new THREE.MeshStandardMaterial({
+
+color: color
+
+});
+
+
+const body =
+
+new THREE.Mesh(
+
+bodyGeometry,
+
+bodyMaterial
+
+);
+
+
+body.position.y =
+
+height / 2;
+
+
+group.add(
+
+body
+
+);
+
+
+
+// Roof
+
+
+const roofGeometry =
+
+new THREE.BoxGeometry(
+
+width + 0.4,
+
+0.5,
+
+depth + 0.4
+
+);
+
+
+const roofMaterial =
+
+new THREE.MeshStandardMaterial({
+
+color: 0x333333
+
+});
+
+
+const roof =
+
+new THREE.Mesh(
+
+roofGeometry,
+
+roofMaterial
+
+);
+
+
+roof.position.y =
+
+height + 0.25;
+
+
+group.add(
+
+roof
+
+);
+
+
+
+// Door
+
+
+const doorGeometry =
+
+new THREE.BoxGeometry(
+
+1.5,
+
+2.5,
+
+0.15
+
+);
+
+
+const doorMaterial =
+
+new THREE.MeshStandardMaterial({
+
+color: 0x4b2e1f
+
+});
+
+
+const door =
+
+new THREE.Mesh(
+
+doorGeometry,
+
+doorMaterial
+
+);
+
+
+door.position.set(
+
+0,
+
+1.25,
+
+depth / 2 + 0.08
+
+);
+
+
+group.add(
+
+door
+
+);
+
+
+
+// Door handle
+
+
+const handleGeometry =
+
+new THREE.SphereGeometry(
+
+0.08,
+
+8,
+
+8
+
+);
+
+
+const handleMaterial =
+
+new THREE.MeshStandardMaterial({
+
+color: 0xffd700
+
+});
+
+
+const handle =
+
+new THREE.Mesh(
+
+handleGeometry,
+
+handleMaterial
+
+);
+
+
+handle.position.set(
+
+0.4,
+
+1.3,
+
+depth / 2 + 0.2
+
+);
+
+
+group.add(
+
+handle
+
+);
+
+
+
+// Windows
+
+
+const windowMaterial =
+
+new THREE.MeshStandardMaterial({
+
+color: 0x7ddcff,
+
+metalness: 0.2,
+
+roughness: 0.2
+
+});
+
+
+
+const windowRows =
+
+Math.max(
+
+1,
+
+Math.floor(
+
+height / 4
+
+)
+
+);
+
+
+const windowColumns =
+
+Math.max(
+
+1,
+
+Math.floor(
+
+width / 3
+
+)
+
+);
+
+
+
+for (
+
+let row = 0;
+
+row < windowRows;
+
+row++
+
+) {
+
+
+for (
+
+let col = 0;
+
+col < windowColumns;
+
+col++
+
+) {
+
+
+const windowGeometry =
+
+new THREE.BoxGeometry(
+
+1.2,
+
+1.4,
+
+0.12
+
+);
+
+
+const win =
+
+new THREE.Mesh(
+
+windowGeometry,
+
+windowMaterial
+
+);
+
+
+const xPos =
+
+(
+
+col -
+
+(
+
+windowColumns - 1
+
+) / 2
+
+) * 2.2;
+
+
+const yPos =
+
+3 +
+
+row * 3;
+
+
+win.position.set(
+
+xPos,
+
+yPos,
+
+depth / 2 + 0.08
+
+);
+
+
+group.add(
+
+win
+
+);
+
+}
+
+}
+
+
+
+// Building position
+
+
+group.position.set(
+
+x,
+
+0,
+
+z
+
+);
+
+
+scene.add(
+
+group
+
+);
+
+}
+
+
+
+// =================================================
+// BUILDINGS
+// =================================================
+
+
+createBuilding(
+
+-16,
+
+-15,
+
+10,
+
+14,
+
+10,
+
+0x777777
+
+);
+
+
+createBuilding(
+
+16,
+
+-15,
+
+10,
+
+10,
+
+10,
+
+0x8b8b8b
+
+);
+
+
+createBuilding(
+
+-16,
+
+15,
+
+9,
+
+8,
+
+9,
+
+0x999999
+
+);
+
+
+createBuilding(
+
+16,
+
+15,
+
+12,
+
+18,
+
+12,
+
+0x666666
+
+);
+
+
+
+// =================================================
+// TREE
+// =================================================
+
+
+function createTree(
+
+x,
+
+z
+
+) {
+
+
+const group =
+
+new THREE.Group();
+
+
+
+// Trunk
+
+
+const trunkGeometry =
+
+new THREE.CylinderGeometry(
+
+0.45,
+
+0.6,
+
+3,
+
+10
+
+);
+
+
+const trunkMaterial =
+
+new THREE.MeshStandardMaterial({
+
+color: 0x6b3f20
+
+});
+
+
+const trunk =
+
+new THREE.Mesh(
+
+trunkGeometry,
+
+trunkMaterial
+
+);
+
+
+trunk.position.y =
+
+1.5;
+
+
+group.add(
+
+trunk
+
+);
+
+
+
+// Leaves
+
+
+const leafMaterial =
+
+new THREE.MeshStandardMaterial({
+
+color: 0x197a32
+
+});
+
+
+
+const leaf1 =
+
+new THREE.Mesh(
+
+new THREE.SphereGeometry(
+
+2.2,
+
+12,
+
+12
+
+),
+
+leafMaterial
+
+);
+
+
+leaf1.position.y =
+
+4;
+
+
+group.add(
+
+leaf1
+
+);
+
+
+
+const leaf2 =
+
+new THREE.Mesh(
+
+new THREE.SphereGeometry(
+
+1.7,
+
+12,
+
+12
+
+),
+
+leafMaterial
+
+);
+
+
+leaf2.position.set(
+
+-1,
+
+5,
+
+0
+
+);
+
+
+group.add(
+
+leaf2
+
+);
+
+
+
+const leaf3 =
+
+new THREE.Mesh(
+
+new THREE.SphereGeometry(
+
+1.7,
+
+12,
+
+12
+
+),
+
+leafMaterial
+
+);
+
+
+leaf3.position.set(
+
+1,
+
+5,
+
+0
+
+);
+
+
+group.add(
+
+leaf3
+
+);
+
+
+group.position.set(
+
+x,
+
+0,
+
+z
+
+);
+
+
+scene.add(
+
+group
+
+);
 
 }
 
@@ -672,61 +1315,473 @@ function createTree(
 
 createTree(
 
-    -5,
+-11,
 
-    -5
-
-);
-
-
-createTree(
-
-    6,
-
-    -5
+-8
 
 );
 
 
 createTree(
 
-    -6,
+11,
 
-    7
+-8
 
 );
 
 
 createTree(
 
-    7,
+-11,
 
-    7
+8
+
+);
+
+
+createTree(
+
+11,
+
+8
 
 );
 
 
 
-// ==========================================
+// =================================================
+// STREET LIGHT
+// =================================================
+
+
+function createStreetLight(
+
+x,
+
+z
+
+) {
+
+
+const group =
+
+new THREE.Group();
+
+
+
+// Pole
+
+
+const poleGeometry =
+
+new THREE.CylinderGeometry(
+
+0.12,
+
+0.12,
+
+5,
+
+8
+
+);
+
+
+const poleMaterial =
+
+new THREE.MeshStandardMaterial({
+
+color: 0x333333
+
+});
+
+
+const pole =
+
+new THREE.Mesh(
+
+poleGeometry,
+
+poleMaterial
+
+);
+
+
+pole.position.y =
+
+2.5;
+
+
+group.add(
+
+pole
+
+);
+
+
+
+// Lamp
+
+
+const lampGeometry =
+
+new THREE.SphereGeometry(
+
+0.35,
+
+12,
+
+12
+
+);
+
+
+const lampMaterial =
+
+new THREE.MeshStandardMaterial({
+
+color: 0xffffaa,
+
+emissive: 0xffff44,
+
+emissiveIntensity: 0.5
+
+});
+
+
+const lamp =
+
+new THREE.Mesh(
+
+lampGeometry,
+
+lampMaterial
+
+);
+
+
+lamp.position.y =
+
+5.1;
+
+
+group.add(
+
+lamp
+
+);
+
+
+group.position.set(
+
+x,
+
+0,
+
+z
+
+);
+
+
+scene.add(
+
+group
+
+);
+
+}
+
+
+
+// Street lights
+
+
+createStreetLight(
+
+-7,
+
+-20
+
+);
+
+
+createStreetLight(
+
+7,
+
+-20
+
+);
+
+
+createStreetLight(
+
+-7,
+
+20
+
+);
+
+
+createStreetLight(
+
+7,
+
+20
+
+);
+
+
+
+// =================================================
+// CAR
+// =================================================
+
+
+function createCar(
+
+x,
+
+z,
+
+color
+
+) {
+
+
+const group =
+
+new THREE.Group();
+
+
+
+// Body
+
+
+const bodyGeometry =
+
+new THREE.BoxGeometry(
+
+2.5,
+
+0.7,
+
+4
+
+);
+
+
+const bodyMaterial =
+
+new THREE.MeshStandardMaterial({
+
+color: color
+
+});
+
+
+const body =
+
+new THREE.Mesh(
+
+bodyGeometry,
+
+bodyMaterial
+
+);
+
+
+body.position.y =
+
+0.7;
+
+
+group.add(
+
+body
+
+);
+
+
+
+// Top
+
+
+const topGeometry =
+
+new THREE.BoxGeometry(
+
+1.8,
+
+0.6,
+
+2
+
+);
+
+
+const top =
+
+new THREE.Mesh(
+
+topGeometry,
+
+bodyMaterial
+
+);
+
+
+top.position.y =
+
+1.25;
+
+
+group.add(
+
+top
+
+);
+
+
+
+// Wheels
+
+
+const wheelMaterial =
+
+new THREE.MeshStandardMaterial({
+
+color: 0x111111
+
+});
+
+
+
+const wheelPositions = [
+
+[-1.2, 0.5, -1.3],
+
+[1.2, 0.5, -1.3],
+
+[-1.2, 0.5, 1.3],
+
+[1.2, 0.5, 1.3]
+
+];
+
+
+
+for (
+
+const pos of wheelPositions
+
+) {
+
+
+const wheel =
+
+new THREE.Mesh(
+
+new THREE.CylinderGeometry(
+
+0.45,
+
+0.45,
+
+0.3,
+
+12
+
+),
+
+wheelMaterial
+
+);
+
+
+wheel.rotation.z =
+
+Math.PI / 2;
+
+
+wheel.position.set(
+
+pos[0],
+
+pos[1],
+
+pos[2]
+
+);
+
+
+group.add(
+
+wheel
+
+);
+
+}
+
+
+group.position.set(
+
+x,
+
+0,
+
+z
+
+);
+
+
+scene.add(
+
+group
+
+);
+
+}
+
+
+
+// Cars
+
+
+createCar(
+
+-3,
+
+-20,
+
+0xff3333
+
+);
+
+
+createCar(
+
+3,
+
+20,
+
+0x3366ff
+
+);
+
+
+
+// =================================================
 // PLAYER
-// ==========================================
+// =================================================
 
 
 const player = {
 
-    speed: 0.15,
-
-    velocityY: 0,
-
-    gravity: 0.01
+speed: 0.15
 
 };
-
-
-
-// ==========================================
-// KEYBOARD
-// ==========================================
 
 
 const keys = {};
@@ -735,13 +1790,13 @@ const keys = {};
 
 window.addEventListener(
 
-    "keydown",
+"keydown",
 
-    (event) => {
+(event) => {
 
-        keys[event.code] = true;
+keys[event.code] = true;
 
-    }
+}
 
 );
 
@@ -749,21 +1804,21 @@ window.addEventListener(
 
 window.addEventListener(
 
-    "keyup",
+"keyup",
 
-    (event) => {
+(event) => {
 
-        keys[event.code] = false;
+keys[event.code] = false;
 
-    }
+}
 
 );
 
 
 
-// ==========================================
+// =================================================
 // MOUSE LOOK
-// ==========================================
+// =================================================
 
 
 let yaw = 0;
@@ -774,14 +1829,13 @@ let pitch = 0;
 
 renderer.domElement.addEventListener(
 
-    "click",
+"click",
 
-    () => {
+() => {
 
-        renderer.domElement
-            .requestPointerLock();
+renderer.domElement.requestPointerLock();
 
-    }
+}
 
 );
 
@@ -789,310 +1843,282 @@ renderer.domElement.addEventListener(
 
 document.addEventListener(
 
-    "mousemove",
+"mousemove",
 
-    (event) => {
-
-
-        if (
-
-            document.pointerLockElement !==
-
-            renderer.domElement
-
-        ) {
-
-            return;
-
-        }
+(event) => {
 
 
-        const sensitivity =
+if (
 
-        0.002;
+document.pointerLockElement !==
 
+renderer.domElement
 
-        yaw -=
-
-        event.movementX *
-
-        sensitivity;
+) return;
 
 
-        pitch -=
+const sensitivity =
 
-        event.movementY *
-
-        sensitivity;
+0.002;
 
 
-        pitch =
+yaw -=
 
-        Math.max(
+event.movementX *
 
-            -Math.PI / 2,
+sensitivity;
 
-            Math.min(
 
-                Math.PI / 2,
+pitch -=
 
-                pitch
+event.movementY *
 
-            )
+sensitivity;
 
-        );
 
-    }
+pitch =
+
+Math.max(
+
+-Math.PI / 2,
+
+Math.min(
+
+Math.PI / 2,
+
+pitch
+
+)
+
+);
+
+}
 
 );
 
 
 
-// ==========================================
+// =================================================
 // MOVEMENT
-// ==========================================
+// =================================================
 
 
 function movePlayer() {
 
 
-    const direction =
+const direction =
 
-    new THREE.Vector3();
+new THREE.Vector3();
 
 
-    const forward =
+const forward =
 
-    new THREE.Vector3();
+new THREE.Vector3();
 
 
-    const right =
+const right =
 
-    new THREE.Vector3();
+new THREE.Vector3();
 
 
+camera.getWorldDirection(
 
-    camera.getWorldDirection(
+forward
 
-        forward
+);
 
-    );
 
+forward.y = 0;
 
-    forward.y = 0;
 
+forward.normalize();
 
-    forward.normalize();
 
+right.crossVectors(
 
+forward,
 
-    right.crossVectors(
+camera.up
 
-        forward,
+).normalize();
 
-        camera.up
 
-    ).normalize();
 
+if (
 
+keys["KeyW"]
 
-    if (
+)
 
-        keys["KeyW"]
+direction.add(
 
-    ) {
+forward
 
-        direction.add(
+);
 
-            forward
 
-        );
 
-    }
+if (
 
+keys["KeyS"]
 
+)
 
-    if (
+direction.sub(
 
-        keys["KeyS"]
+forward
 
-    ) {
+);
 
-        direction.sub(
 
-            forward
 
-        );
+if (
 
-    }
+keys["KeyA"]
 
+)
 
+direction.sub(
 
-    if (
+right
 
-        keys["KeyA"]
+);
 
-    ) {
 
-        direction.sub(
 
-            right
+if (
 
-        );
+keys["KeyD"]
 
-    }
+)
 
+direction.add(
 
+right
 
-    if (
+);
 
-        keys["KeyD"]
 
-    ) {
 
-        direction.add(
+if (
 
-            right
+direction.length() > 0
 
-        );
+) {
 
-    }
 
+direction.normalize();
 
 
-    if (
+camera.position.x +=
 
-        direction.length() > 0
+direction.x *
 
-    ) {
+player.speed;
 
-        direction.normalize();
 
+camera.position.z +=
 
-        camera.position.x +=
+direction.z *
 
-        direction.x *
-
-        player.speed;
-
-
-        camera.position.z +=
-
-        direction.z *
-
-        player.speed;
-
-    }
-
-
-
-    // UP
-
-
-    if (
-
-        keys["Space"]
-
-    ) {
-
-        camera.position.y +=
-
-        player.speed;
-
-    }
-
-
-
-    // DOWN
-
-
-    if (
-
-        keys["ShiftLeft"] ||
-
-        keys["ShiftRight"]
-
-    ) {
-
-        camera.position.y -=
-
-        player.speed;
-
-    }
-
-
-
-    // Minimum height
-
-
-    if (
-
-        camera.position.y < 1
-
-    ) {
-
-        camera.position.y = 1;
-
-    }
+player.speed;
 
 }
 
 
 
-// ==========================================
+if (
+
+keys["Space"]
+
+)
+
+camera.position.y +=
+
+player.speed;
+
+
+
+if (
+
+keys["ShiftLeft"] ||
+
+keys["ShiftRight"]
+
+)
+
+camera.position.y -=
+
+player.speed;
+
+
+
+if (
+
+camera.position.y < 1
+
+)
+
+camera.position.y = 1;
+
+}
+
+
+
+// =================================================
 // CAMERA ROTATION
-// ==========================================
+// =================================================
 
 
 function updateCameraRotation() {
 
 
-    camera.rotation.order =
+camera.rotation.order =
 
-    "YXZ";
-
-
-    camera.rotation.y =
-
-    yaw;
+"YXZ";
 
 
-    camera.rotation.x =
+camera.rotation.y =
 
-    pitch;
+yaw;
+
+
+camera.rotation.x =
+
+pitch;
 
 }
 
 
 
-// ==========================================
+// =================================================
 // ANIMATION
-// ==========================================
+// =================================================
 
 
 function animate() {
 
 
-    requestAnimationFrame(
+requestAnimationFrame(
 
-        animate
+animate
 
-    );
-
-
-    movePlayer();
+);
 
 
-    updateCameraRotation();
+movePlayer();
 
 
-    renderer.render(
+updateCameraRotation();
 
-        scene,
 
-        camera
+renderer.render(
 
-    );
+scene,
+
+camera
+
+);
 
 }
 
@@ -1101,43 +2127,42 @@ animate();
 
 
 
-// ==========================================
+// =================================================
 // RESIZE
-// ==========================================
+// =================================================
 
 
 window.addEventListener(
 
-    "resize",
+"resize",
 
-    () => {
-
-
-        camera.aspect =
-
-        window.innerWidth /
-
-        window.innerHeight;
+() => {
 
 
-        camera.updateProjectionMatrix();
+camera.aspect =
+
+window.innerWidth /
+
+window.innerHeight;
 
 
-        renderer.setSize(
+camera.updateProjectionMatrix();
 
-            window.innerWidth,
 
-            window.innerHeight
+renderer.setSize(
 
-        );
+window.innerWidth,
 
-    }
+window.innerHeight
+
+);
+
+}
 
 );
 
 
 </script>
-
 
 </body>
 
